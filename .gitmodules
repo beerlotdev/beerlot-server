@@ -1,0 +1,3 @@
+[submodule "api/api"]
+	path = api/api
+	url = https://github.com/beerlotdev/beerlot-api
