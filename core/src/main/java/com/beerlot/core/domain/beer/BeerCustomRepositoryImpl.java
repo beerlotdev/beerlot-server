@@ -16,6 +16,7 @@ import static com.beerlot.core.domain.beer.QBeerTag.beerTag;
 @Repository
 @RequiredArgsConstructor
 public class BeerCustomRepositoryImpl implements BeerCustomRepository {
+
     private final JPAQueryFactory queryFactory;
 
     public List<Beer> findByKeywordAndTags(String keyword, List<Tag> tags) {

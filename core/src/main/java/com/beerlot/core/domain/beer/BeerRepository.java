@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BeerRepository extends JpaRepository<Beer, Long> {
+public interface BeerRepository extends JpaRepository<Beer, Long>, BeerCustomRepository {
     Optional<Beer> findById(Long id);
 }

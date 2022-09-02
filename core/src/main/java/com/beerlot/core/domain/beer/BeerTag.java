@@ -15,8 +15,9 @@ public class BeerTag extends BaseEntity {
 
     @EmbeddedId
     private BeerTagId id;
+
     @MapsId("beerId")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
