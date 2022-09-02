@@ -1,7 +1,7 @@
-package com.beerlot.core.beer;
+package com.beerlot.core.domain.beer;
 
 import com.beerlot.core.common.BaseEntity;
-import com.beerlot.core.member.Member;
+import com.beerlot.core.domain.member.Member;
 
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;

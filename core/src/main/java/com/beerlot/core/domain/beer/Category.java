@@ -1,4 +1,4 @@
-package com.beerlot.core.beer;
+package com.beerlot.core.domain.beer;
 
 import lombok.AccessLevel;
 import lombok.Builder;

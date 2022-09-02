@@ -1,12 +1,14 @@
-package com.beerlot.core.beer;
+package com.beerlot.core.domain.beer;
 
 import com.beerlot.core.common.BaseEntity;
+import com.beerlot.core.domain.tag.Tag;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,11 +40,15 @@ public class Beer extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+
     @Builder
-    public Beer(String nameEn, String nameKo, Country origin, Float volume) {
+    public Beer(Long id, String nameEn, String nameKo, String description, Float volume, Country origin, Category category) {
+        this.id = id;
         this.nameEn = nameEn;
         this.nameKo = nameKo;
-        this.origin = origin;
+        this.description = description;
         this.volume = volume;
+        this.origin = origin;
+        this.category = category;
     }
 }

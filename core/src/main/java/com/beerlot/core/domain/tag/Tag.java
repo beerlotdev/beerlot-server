@@ -1,12 +1,14 @@
-package com.beerlot.core.tag;
+package com.beerlot.core.domain.tag;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tag")
 public class Tag {

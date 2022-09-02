@@ -1,8 +1,7 @@
-package com.beerlot.core.beer;
+package com.beerlot.core.domain.beer;
 
-import com.beerlot.core.beer.Beer;
 import com.beerlot.core.common.BaseEntity;
-import com.beerlot.core.tag.Tag;
+import com.beerlot.core.domain.tag.Tag;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -14,10 +13,14 @@ import javax.persistence.*;
 @Table(name = "beer_tag")
 public class BeerTag extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @EmbeddedId
+    private BeerTagId id;
+    @MapsId("beerId")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
+    @MapsId("tagId")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private Tag tag;
@@ -26,5 +29,6 @@ public class BeerTag extends BaseEntity {
     public BeerTag(Beer beer, Tag tag) {
         this.beer = beer;
         this.tag = tag;
+        this.id = new BeerTagId(beer.getId(), tag.getId());
     }
 }

@@ -1,4 +1,4 @@
-package com.beerlot.core.member;
+package com.beerlot.core.domain.member;
 
 import com.beerlot.core.common.BaseEntity;
 import lombok.AccessLevel;

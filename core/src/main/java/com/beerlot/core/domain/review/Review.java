@@ -1,8 +1,8 @@
-package com.beerlot.core.review;
+package com.beerlot.core.domain.review;
 
-import com.beerlot.core.beer.Beer;
+import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.common.BaseEntity;
-import com.beerlot.core.member.Member;
+import com.beerlot.core.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
