@@ -1,11 +1,12 @@
 package com.beerlot.core.domain.beer;
 
 import com.beerlot.core.domain.tag.Tag;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,10 +20,13 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Beer> findByKeywordAndTags(String keyword, List<Tag> tags) {
+    public List<BeerResDto> findByKeywordAndTags(String keyword, List<Tag> tags) {
         return queryFactory
-                .selectFrom(beer)
-                .innerJoin(beerTag).on(beer.id.eq(beerTag.beer.id))
+                //.selectFrom(beer)
+                .select(Projections.fields(BeerResDto.class, beer.id, beer.nameKo))
+                .from(beer)
+                .join(beerTag)
+                .on(beer.id.eq(beerTag.beer.id))
                 .where(
                     containKeyword(keyword),
                     hasTags(tags)

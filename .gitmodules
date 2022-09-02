@@ -1,3 +1,0 @@
-[submodule "api/spec"]
-	path = api/spec
-	url = git@github.com:beerlot/beerlot-api.git
