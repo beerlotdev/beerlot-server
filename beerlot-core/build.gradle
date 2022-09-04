@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.beerlot'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '18'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
@@ -20,10 +20,12 @@ dependencyManagement {
 
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
     implementation 'org.postgresql:postgresql:42.4.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.2'
     implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    implementation 'org.springframework:spring-webmvc:5.3.22'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.2'
     annotationProcessor (

@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseEntity {
 
     @CreatedDate
