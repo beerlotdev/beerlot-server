@@ -1,18 +1,19 @@
 package com.beerlot.core.domain.beer.repository;
 
+import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.dto.BeerResDto;
-import com.beerlot.core.domain.tag.Tag;
-import com.querydsl.core.types.Projections;
+import com.beerlot.core.domain.category.Category;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.beerlot.core.domain.beer.QBeer.beer;
+import static com.beerlot.core.domain.category.QCategory.category;
 import static com.beerlot.core.domain.tag.QBeerTag.beerTag;
 
 @Repository
@@ -21,33 +22,42 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<BeerResDto> findByKeywordAndTags(String keyword, List<Tag> tags) {
+    public List<BeerResDto> findBySearch (String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes) {
         return queryFactory
-                //.selectFrom(beer)
-                .select(Projections.fields(BeerResDto.class, beer.id, beer.nameKo))
-                .from(beer)
-                .join(beerTag)
-                .on(beer.id.eq(beerTag.beer.id))
+                .selectFrom(beer)
+                .innerJoin(beer.beerTags, beerTag)
+                .innerJoin(beer.category, category)
                 .where(
-                        containKeyword(keyword),
-                        hasTags(tags)
+                        hasKeyword(keyword),
+                        hasCategories(categories),
+                        hasCountries(countries),
+                        hasVolumes(volumes)
                 )
-                .fetch();
+                .fetch().stream().map(BeerResDto::of).collect(Collectors.toList());
     }
 
-    private BooleanExpression containKeyword(String keyword) {
+    private BooleanExpression hasKeyword(String keyword) {
         if (StringUtils.isNullOrEmpty(keyword)) {
             return null;
         }
-        return beer.description.contains(keyword);
+        return beer.description.contains(keyword)
+                .or(beer.category.description.contains(keyword))
+                .or(beer.beerTags.any().tag.description.contains(keyword));
     }
 
-    private BooleanExpression hasTags(List<Tag> tags) {
-        for (Tag tag : tags) {
-            if (beerTag.tag.id.equals(tag.getId())) {
-                return Expressions.asBoolean(true).isTrue();
-            }
-        }
-        return Expressions.asBoolean(false).isFalse();
+    private BooleanExpression hasCategories(List<Category> categories) {
+        if (categories == null) return null;
+        return beer.category.in(categories);
+    }
+
+    private BooleanExpression hasCountries(List<Country> countries) {
+        if (countries == null) return null;
+        return beer.origin.in(countries);
+    }
+
+    private BooleanExpression hasVolumes(List<Integer> volumes) {
+        if (volumes == null) return null;
+        BooleanExpression be = beer.volume.castToNum(Integer.class).in(volumes);
+        return be;
     }
 }
