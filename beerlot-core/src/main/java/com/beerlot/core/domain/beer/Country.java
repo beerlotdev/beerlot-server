@@ -1,8 +1,10 @@
 package com.beerlot.core.domain.beer;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum Country {
     AD("Andorra", "안도라"),
     AE("United Arab Emirates", "아랍에미리트"),
