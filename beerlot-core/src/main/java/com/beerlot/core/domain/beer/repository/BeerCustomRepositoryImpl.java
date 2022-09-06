@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.beer.repository;
 
 import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.dto.BeerResDto;
+import com.beerlot.core.domain.beer.dto.FindBeerResDto;
 import com.beerlot.core.domain.category.Category;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
@@ -22,7 +22,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<BeerResDto> findBySearch (String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes) {
+    public List<FindBeerResDto> findBySearch (String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes) {
         return queryFactory
                 .selectFrom(beer)
                 .innerJoin(beer.beerTags, beerTag)
@@ -33,7 +33,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                         hasCountries(countries),
                         hasVolumes(volumes)
                 )
-                .fetch().stream().map(BeerResDto::of).collect(Collectors.toList());
+                .fetch().stream().map(FindBeerResDto::of).collect(Collectors.toList());
     }
 
     private BooleanExpression hasKeyword(String keyword) {

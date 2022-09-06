@@ -4,7 +4,7 @@ import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.dto.BeerResDto;
+import com.beerlot.core.domain.beer.dto.FindBeerResDto;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.tag.BeerTag;
 import com.beerlot.core.domain.tag.Tag;
@@ -102,67 +102,67 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
 
         @Test
         public void givenOneCategory() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, List.of(categoryImperialIPA), null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, List.of(categoryImperialIPA), null, null);
             assertEquals(1, beers.size());
         }
 
         @Test
         public void givenTwoCategories() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, List.of(categoryImperialIPA, categoryAmericanBlondeAle), null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, List.of(categoryImperialIPA, categoryAmericanBlondeAle), null, null);
             assertEquals(2, beers.size());
         }
 
         @Test
         public void givenOneCountry() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, List.of(Country.US), null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, List.of(Country.US), null);
             assertEquals(2, beers.size());
         }
 
         @Test
         public void givenCountryHasNoBeers() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, List.of(Country.AD), null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, List.of(Country.AD), null);
             assertEquals(0, beers.size());
         }
 
         @Test
         public void givenKeywordForBeerDescription() {
-            List<BeerResDto> beers = beerRepository.findBySearch("Dinner", null, null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch("Dinner", null, null, null);
             assertEquals(1, beers.size());
         }
 
         @Test
         public void givenKeywordForTagDescription() {
-            List<BeerResDto> beers = beerRepository.findBySearch("Citra", null, null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch("Citra", null, null, null);
             assertEquals(2, beers.size());
         }
 
         @Test
         public void givenKeywordForCategoryDescription() {
-            List<BeerResDto> beers = beerRepository.findBySearch("IPA", null, null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch("IPA", null, null, null);
             assertEquals(1, beers.size());
         }
 
         @Test
         public void givenOneVolume() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(4));
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(4));
             assertEquals(1, beers.size());
         }
 
         @Test
         public void givenTwoVolumes() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(4, 8));
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(4, 8));
             assertEquals(2, beers.size());
         }
 
         @Test
         public void givenVolumeHasNoBeer() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(5));
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, null, List.of(5));
             assertEquals(0, beers.size());
         }
 
         @Test
         public void givenNoSearchCondition() {
-            List<BeerResDto> beers = beerRepository.findBySearch(null, null, null, null);
+            List<FindBeerResDto> beers = beerRepository.findBySearch(null, null, null, null);
             assertEquals(2, beers.size());
         }
     }
