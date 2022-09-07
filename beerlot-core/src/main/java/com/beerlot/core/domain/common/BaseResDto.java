@@ -1,4 +1,4 @@
-package com.beerlot.core.common;
+package com.beerlot.core.domain.common;
 
 import lombok.Getter;
 

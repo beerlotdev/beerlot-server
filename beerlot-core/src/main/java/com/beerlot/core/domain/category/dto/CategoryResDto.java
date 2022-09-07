@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.category.dto;
 
-import com.beerlot.core.common.BaseResDto;
+import com.beerlot.core.domain.common.BaseResDto;
 
 public class CategoryResDto extends BaseResDto {
 

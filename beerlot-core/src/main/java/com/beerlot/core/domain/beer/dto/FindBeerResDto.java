@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.beer.dto;
 
-import com.beerlot.core.common.BaseResDto;
+import com.beerlot.core.domain.common.BaseResDto;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.category.Category;
