@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.tag.dto;
 
-import com.beerlot.core.common.BaseResDto;
+import com.beerlot.core.domain.common.BaseResDto;
 
 public class TagResDto extends BaseResDto {
 

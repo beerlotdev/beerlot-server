@@ -1,10 +1,11 @@
 package com.beerlot.core.domain.tag;
 
-import com.beerlot.core.common.BaseEntity;
+import com.beerlot.core.domain.common.BaseEntity;
 import com.beerlot.core.domain.beer.Beer;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "beer_tag")
+@Getter
 public class BeerTag extends BaseEntity {
 
     @EmbeddedId

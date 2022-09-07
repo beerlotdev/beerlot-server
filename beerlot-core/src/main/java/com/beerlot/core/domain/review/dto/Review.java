@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.review.dto;
 
 import com.beerlot.core.domain.beer.Beer;
-import com.beerlot.core.common.BaseEntity;
+import com.beerlot.core.domain.common.BaseEntity;
 import com.beerlot.core.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
