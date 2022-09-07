@@ -3,10 +3,15 @@ package com.beerlot.core.domain.beer.repository;
 import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.dto.FindBeerResDto;
 import com.beerlot.core.domain.category.Category;
+import com.beerlot.core.domain.common.PageRequestCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,8 +27,8 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<FindBeerResDto> findBySearch (String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes) {
-        return queryFactory
+    public Page<FindBeerResDto> findBySearch (String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes, Pageable pageable) {
+        List<FindBeerResDto> findBeerResDtos = queryFactory
                 .selectFrom(beer)
                 .innerJoin(beer.beerTags, beerTag)
                 .innerJoin(beer.category, category)
@@ -33,7 +38,11 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                         hasCountries(countries),
                         hasVolumes(volumes)
                 )
+                .limit(pageable.getPageSize())
+                .offset((long) (pageable.getPageNumber() - 1) * (long)pageable.getPageSize())
                 .fetch().stream().map(FindBeerResDto::of).collect(Collectors.toList());
+
+        return new PageImpl<>(findBeerResDtos, pageable, findBeerResDtos.size());
     }
 
     private BooleanExpression hasKeyword(String keyword) {
