@@ -1,3 +1,4 @@
 rootProject.name = 'beerlot-server'
 
 include 'beerlot-core'
+include 'beerlot-spec'
