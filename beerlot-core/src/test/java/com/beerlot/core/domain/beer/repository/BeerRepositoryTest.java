@@ -62,7 +62,7 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
                 .nameEn("Bigwave")
                 .description("Bigwave is blah blah.")
                 .volume(4.4f)
-                .origin(Country.US)
+                .country(Country.US)
                 .category(categoryAmericanBlondeAle)
                 .imageUrl("https://beerlot.com/image_url")
                 .build());
@@ -72,7 +72,7 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
                 .nameEn("Maine Beer Dinner")
                 .description("Maine Beer Dinner is blah blah.")
                 .volume(8.2f)
-                .origin(Country.US)
+                .country(Country.US)
                 .category(categoryImperialIPA)
                 .imageUrl("https://beerlot.com/image_url")
                 .build());

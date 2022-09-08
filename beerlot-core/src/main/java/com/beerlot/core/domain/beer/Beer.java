@@ -34,8 +34,8 @@ public class Beer extends BaseEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "origin", nullable = false)
-    private Country origin;
+    @Column(name = "country", nullable = false)
+    private Country country;
 
     @Column(name = "volume", nullable = false)
     private Float volume;
@@ -55,13 +55,13 @@ public class Beer extends BaseEntity {
     }
 
     @Builder
-    public Beer(Long id, String nameEn, String nameKo, String description, Float volume, Country origin, Category category, String imageUrl) {
+    public Beer(Long id, String nameEn, String nameKo, String description, Float volume, Country country, Category category, String imageUrl) {
         this.id = id;
         this.nameEn = nameEn;
         this.nameKo = nameKo;
         this.description = description;
         this.volume = volume;
-        this.origin = origin;
+        this.country = country;
         this.category = category;
         this.imageUrl = imageUrl;
     }

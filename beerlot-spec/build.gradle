@@ -17,6 +17,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.3'
@@ -26,18 +27,20 @@ dependencies {
 
 openApiGenerate {
     generatorName = 'spring'
-    inputSpec = "$rootDir/spec/beerlot-api-spec.yaml".toString()
+    inputSpec = "$rootDir/beerlot-spec/spec/beerlot-api-spec.yaml".toString()
     outputDir = "$buildDir/generated".toString()
     apiPackage = 'com.beerlot.api.generated.api'
     modelPackage = 'com.beerlot.api.generated.model'
-    modelNameSuffix = 'Dto'
-    templateDir = "$rootDir/templates".toString()
+    templateDir = "$rootDir/beerlot-spec/templates".toString()
     configOptions = [
             dateLibrary: 'java11',
             useTags: 'true',
             interfaceOnly: 'true',
             hideGenerationTimestamp: 'true',
             useBeanValidation: 'false'
+    ]
+    importMappings = [
+            'BeerPage': 'com.beerlot.spec.util.page.BeerPage'
     ]
 }
 
