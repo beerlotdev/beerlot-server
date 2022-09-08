@@ -1,10 +1,10 @@
 package com.beerlot.core.domain.beer.repository;
 
+import com.beerlot.api.generated.model.FindBeerResDto;
 import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.dto.FindBeerResDto;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.tag.BeerTag;
 import com.beerlot.core.domain.tag.Tag;
@@ -104,13 +104,13 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
 
         @Test
         public void givenOneCategory() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA), null, null, PageRequest.of(1, 2));
+            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId()), null, null, PageRequest.of(1, 2));
             assertEquals(1, page.getContent().size());
         }
 
         @Test
         public void givenTwoCategories() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA, categoryAmericanBlondeAle), null, null, PageRequest.of(1, 2));
+            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId(), categoryAmericanBlondeAle.getId()), null, null, PageRequest.of(1, 2));
             assertEquals(2, page.getContent().size());
         }
 
