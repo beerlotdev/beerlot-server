@@ -1,9 +1,10 @@
 package com.beerlot.core.domain.beer.service;
 
 import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.dto.FindBeerResDto;
+import com.beerlot.api.generated.model.FindBeerResDto;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
-import com.beerlot.core.domain.category.Category;
+import com.beerlot.core.domain.beer.util.FindBeerResHelper;
+import com.beerlot.core.domain.category.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,15 +21,18 @@ public class BeerService {
     @Autowired
     private BeerRepository beerRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Transactional(readOnly = true)
     public FindBeerResDto findBeerById(Long id) {
-        return FindBeerResDto.of(beerRepository.findById(id).get());
+        return FindBeerResHelper.of(beerRepository.findById(id).get());
     }
 
     @Transactional(readOnly = true)
-    public Page<FindBeerResDto> findBeersBySearch(String keyword, List<Category> categories, List<Country> countries, List<Integer> volumes, int page, int size) {
+    public Page<FindBeerResDto> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
         /*TODO: Change the parameter to List<Long> categoryIds*/
         Pageable pageable = (PageRequest) PageRequest.of(page, size);
-        return beerRepository.findBySearch(keyword, categories, countries, volumes, pageable);
+        return beerRepository.findBySearch(keyword, categoryIds, Country.valuesOf(countries), volumes, pageable);
     }
 }

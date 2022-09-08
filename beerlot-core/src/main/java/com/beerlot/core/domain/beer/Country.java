@@ -3,6 +3,9 @@ package com.beerlot.core.domain.beer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Getter
 public enum Country {
@@ -260,5 +263,9 @@ public enum Country {
     private String nameEn;
 
     private String nameKo;
+
+    public static List<Country> valuesOf(List<String> countries) {
+        return countries.stream().map(Country::valueOf).collect(Collectors.toList());
+    }
 }
 
