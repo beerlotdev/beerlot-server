@@ -1,3 +1,3 @@
-[submodule "beerlot-spec/spec"]
-	path = beerlot-spec/spec
-	url = git@github.com:beerlot/beerlot-spec.git
+[submodule "beerlot-core/spec"]
+	path = beerlot-core/spec
+	url = https://github.com/beerlot/beerlot-spec

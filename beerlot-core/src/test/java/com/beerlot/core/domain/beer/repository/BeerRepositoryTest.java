@@ -8,13 +8,13 @@ import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.tag.BeerTag;
 import com.beerlot.core.domain.tag.Tag;
+import org.springframework.data.domain.Page;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
