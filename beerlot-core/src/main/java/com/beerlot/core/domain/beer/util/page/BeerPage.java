@@ -1,4 +1,4 @@
-package com.beerlot.spec.util.page;
+package com.beerlot.core.domain.beer.util.page;
 
 import com.beerlot.api.generated.model.FindBeerResDto;
 import org.springframework.data.domain.PageImpl;

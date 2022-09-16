@@ -3,7 +3,8 @@ package com.beerlot.core.domain.beer.controller;
 import com.beerlot.api.generated.api.BeerApi;
 import com.beerlot.api.generated.model.FindBeerResDto;
 import com.beerlot.core.domain.beer.service.BeerService;
-import com.beerlot.spec.util.page.BeerPage;
+
+import com.beerlot.core.domain.beer.util.page.BeerPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

@@ -1,41 +1,57 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.2' apply false
-    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-}
-
-group = 'com.beerlot'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-repositories {
-    mavenCentral()
-}
-
-dependencyManagement {
-    imports {
-        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-    }
+    id "org.openapi.generator" version "6.1.0"
 }
 
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
     implementation 'org.postgresql:postgresql:42.4.1'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.3'
     implementation 'com.querydsl:querydsl-jpa:5.0.0'
     implementation 'org.springframework:spring-webmvc:5.3.22'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.openapitools:openapi-generator-gradle-plugin:6.1.0'
     runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
     annotationProcessor (
             'org.projectlombok:lombok:1.18.24',
             'com.querydsl:querydsl-apt:5.0.0:jpa',
             'org.springframework.boot:spring-boot-starter-data-jpa:2.7.2'
     )
-    implementation project(':beerlot-spec')
 }
 
-test {
-    useJUnitPlatform()
+def openApiSpecFile = "$projectDir/spec/beerlot-api-spec.yaml"
+def openApiOutputDir = "$buildDir/generated"
+
+openApiGenerate {
+    generatorName = 'spring'
+    inputSpec = openApiSpecFile.toString()
+    outputDir = openApiOutputDir.toString()
+    apiPackage = 'com.beerlot.api.generated.api'
+    modelPackage = 'com.beerlot.api.generated.model'
+    configOptions = [
+            dateLibrary: 'java11',
+            useTags: 'true',
+            interfaceOnly: 'true',
+            hideGenerationTimestamp: 'true',
+            useBeanValidation: 'false'
+    ]
+    importMappings = [
+            'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage'
+    ]
 }
+
+openApiValidate {
+    inputSpec = openApiSpecFile.toString()
+    recommend = true
+}
+
+sourceSets.main.java { srcDir "${buildDir}/generated/src/main/java" }
+
+tasks.openApiGenerate.dependsOn tasks.openApiValidate
+compileJava.dependsOn tasks.openApiGenerate
+bootRun.dependsOn tasks.openApiGenerate
+
