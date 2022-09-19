@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./build/libs/beerlot-core-0.0.1-SNAPSHOT.jar /app/beerlot-core-0.0.1-SNAPSHOT.jar
 
+RUN chmod -R +x /app
+
 CMD ["java", "-jar", "/app/beerlot.core-0.0.1-SNAPSHOT.jar"]
 
 
