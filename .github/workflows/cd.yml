@@ -42,7 +42,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build
-        run: ./gradlew clean build
+        run: |
+          cd beerlot-core
+          ./gradlew clean build
 
       - name: Push to Artifact Repository
         run: |
