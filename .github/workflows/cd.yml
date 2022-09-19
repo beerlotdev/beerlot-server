@@ -47,6 +47,13 @@ jobs:
       - name: Push to Artifact Repository
         run: |
           cd beerlot-core
-          docker build -t beerlot-core:latest .
+          docker build -t asia-northeast1-docker.pkg.dev/beerlot-core/container/beerlot-core:latest .
           docker push asia-northeast1-docker.pkg.dev/beerlot-core/container/beerlot-core:latest
           
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: beerlot-core
+          region: asia-northeast1
+          # NOTE: If using a pre-built image, update the image name here
+          image: asia-northeast1-docker.pkg.dev/beerlot-core/container/beerlot-core:latest
