@@ -30,13 +30,19 @@ jobs:
           distribution: 'adopt'
 
       - name: Authorize to GCP
+        id: gcp-auth
         uses: google-github-actions/auth@v0
         with:
           service_account: ${{ secrets.DEPLOY_SA }}
           credentials_json: ${{ secrets.CREDENTIALS_JSON }}
 
       - name: Authorize to Docker Repository
-        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+        uses: 'docker/login-action@v1'
+        with:
+          username: 'oauth2accesstoken'
+          password: ${{ steps.gcp-auth.outputs.access_token }}
+          registry: 'asia-northeast1-docker.pkg.dev'
+        #run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
