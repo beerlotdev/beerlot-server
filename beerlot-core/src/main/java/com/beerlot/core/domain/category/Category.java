@@ -26,7 +26,7 @@ public class Category {
     @Column(name = "name_ko", nullable = false, unique = true)
     private String nameKo;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

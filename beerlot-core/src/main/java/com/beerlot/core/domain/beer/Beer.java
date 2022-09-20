@@ -30,7 +30,7 @@ public class Beer extends BaseEntity {
     @Column(name = "name_ko", nullable = false, unique = true)
     private String nameKo;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
