@@ -40,17 +40,17 @@ jobs:
         uses: google-github-actions/auth@v0
         with:
           token_format: 'access_token'
-          service_account: '${{ secrets.GCP_SA_DEPLOY }}'
-          workload_identity_provider: '${{ secrets.GCP_WI_PROVIDER }}'
+          service_account: ${{ secrets.GCP_SA_DEPLOY }}
+          workload_identity_provider: ${{ secrets.GCP_WI_PROVIDER }}
           #credentials_json: ${{ secrets.CREDENTIALS_JSON }}
 
       - name: Authorize to Docker Repository
         uses: 'docker/login-action@v1'
-        with:
-          username: 'oauth2accesstoken'
-          password: ${{ steps.auth.outputs.access_token }}
-          registry: 'asia-northeast1-docker.pkg.dev'
-        #run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+        #with:
+          #username: 'oauth2accesstoken'
+          #password: ${{ steps.auth.outputs.access_token }}
+          #registry: 'asia-northeast1-docker.pkg.dev'
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
@@ -71,7 +71,7 @@ jobs:
           gcloud run deploy beerlot-core \
             --region asia-northeast1 \
             --image asia-northeast1-docker.pkg.dev/beerlot-dev/beerlot-core-image/beerlot-core:latest \
-          
+
         #uses: google-github-actions/deploy-cloudrun@v0
         #with:
           #service: beerlot-core
