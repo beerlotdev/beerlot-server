@@ -39,5 +39,5 @@ jobs:
 
       - name: Build
         run: |
-          cd beerlot-core \
+          cd beerlot-core
           ./gradlew clean build
