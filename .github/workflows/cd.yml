@@ -8,6 +8,9 @@ on:
         default: 'develop'
         required: true
 
+env:
+  PROJECT_ID: 'beerlot-dev'
+
 jobs:
   build:
 
