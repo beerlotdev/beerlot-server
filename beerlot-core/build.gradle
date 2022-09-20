@@ -31,6 +31,7 @@ dependencies {
     implementation 'org.openapitools:jackson-databind-nullable:0.2.3'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.openapitools:openapi-generator-gradle-plugin:6.1.0'
+    implementation 'org.jasypt:jasypt:1.9.3'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
     annotationProcessor (
