@@ -6,6 +6,6 @@ COPY ./build/libs/beerlot-core-0.0.1-SNAPSHOT.jar /app/beerlot-core-0.0.1-SNAPSH
 
 RUN chmod -R +x /app
 
-CMD ["java", "-jar", "/app/beerlot.core-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=dev", "/app/beerlot-core-0.0.1-SNAPSHOT.jar"]
 
 
