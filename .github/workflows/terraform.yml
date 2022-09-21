@@ -1,0 +1,72 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        type: environment
+        default: 'dev'
+        required: true
+      is_plan_only:
+        description: 'Plan Only, No Apply'
+        type: boolean
+        default: false
+        required: true
+
+jobs:
+  job_information:
+    name: 'Job Information'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start job information
+        run: |
+          echo "Terraforming"
+          echo "Selected branch: " ${{ github.ref_name }}
+          echo "Selected environment: " ${{ inputs.environment }}
+          echo "Run plan only: " ${{ inputs.is_plan_only }}
+
+  terraform:
+    needs:
+      - job_information
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Authorize to GCP
+        uses: google-github-actions/auth@v0
+        with:
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        working-directory: terraform/${{ inputs.environment }}
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        working-directory: terraform/${{ inputs.environment }}
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: terraform/${{ inputs.environment }}
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        working-directory: terraform/${{ inputs.environment }}
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.is_plan_only == 'false' }}
+        working-directory: terraform/${{ inputs.environment }}
+        run: terraform apply -auto-approve
