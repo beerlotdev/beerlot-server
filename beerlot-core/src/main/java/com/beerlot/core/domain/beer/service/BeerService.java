@@ -33,6 +33,7 @@ public class BeerService {
     public Page<FindBeerResDto> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
         /*TODO: Change the parameter to List<Long> categoryIds*/
         Pageable pageable = (PageRequest) PageRequest.of(page, size);
-        return beerRepository.findBySearch(keyword, categoryIds, Country.valuesOf(countries), volumes, pageable);
+        List<Country> parsedCountries = countries == null ? null : Country.valuesOf(countries);
+        return beerRepository.findBySearch(keyword, categoryIds, parsedCountries, volumes, pageable);
     }
 }
