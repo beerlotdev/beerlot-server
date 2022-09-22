@@ -17,6 +17,8 @@ jobs:
       id-token: 'write'
       contents: 'read'
 
+    environment: ${{ inputs.environment }}
+
     defaults:
       run:
         shell: bash
