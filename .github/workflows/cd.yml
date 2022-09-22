@@ -2,10 +2,11 @@ name: CD
 
 on:
   workflow_dispatch:
-    environment:
+    inputs:
+      environment:
         description: 'Environment'
         type: environment
-        default: 'develop'
+        default: 'dev'
         required: true
 
 jobs:
