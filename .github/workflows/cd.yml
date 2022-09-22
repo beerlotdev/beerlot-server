@@ -7,10 +7,7 @@ on:
         type: environment
         default: 'develop'
         required: true
-
-env:
-  PROJECT_ID: 'beerlot-dev'
-
+        
 jobs:
   build:
 
