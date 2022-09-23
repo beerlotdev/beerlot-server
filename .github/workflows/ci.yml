@@ -24,8 +24,8 @@ jobs:
           echo "CI workflow"
           echo "Selected branch: " ${{ github.ref_name }}
 
-  setup:
-    name: 'Setup'
+  build:
+    name: 'Gradle Test & Build'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -42,10 +42,6 @@ jobs:
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
-  test_and_build:
-    name: 'Test & Build'
-    runs-on: ubuntu-latest
-    steps:
       - name: Gradle Test and Build
         run: |
           cd beerlot-core

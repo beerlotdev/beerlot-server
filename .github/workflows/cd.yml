@@ -24,8 +24,8 @@ jobs:
           echo "Selected branch: " ${{ github.ref_name }}
           echo "Selected environment: " ${{ inputs.environment }}
 
-  setup:
-    name: 'Setup'
+  deploy:
+    name: 'Build Docker Image & Deploy'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -51,16 +51,12 @@ jobs:
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
-  test_and_build:
-    name: 'Test & Build'
-    runs-on: ubuntu-latest
-    steps:
       - name: Gradle Test and Build
         run: |
           cd beerlot-core
           ./gradlew clean build
 
-      - name: Create Docker Image
+      - name: Build Docker Image
         run: |
           cd beerlot-core
           docker build -t asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/beerlot-core-repository/beerlot-core:latest .
@@ -69,13 +65,8 @@ jobs:
         run:
           docker push asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/beerlot-core-repository/beerlot-core:latest
 
-  deploy:
-    name: 'Deploy Application'
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy beerlot-core \
             --region asia-northeast1 \
             --image asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/beerlot-core-repository/beerlot-core:latest \
-
