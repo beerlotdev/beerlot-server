@@ -1,9 +1,10 @@
-name: TestAndBuild
+name: CI
 
 on:
   push:
     branches:
       - develop
+      - main
   pull_request:
     types:
       - opened
@@ -14,14 +15,18 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  job_information:
+    name: 'Job Information'
     runs-on: ubuntu-latest
+    steps:
+      - name: 'Start Job Information'
+        run: |
+          echo "CI workflow"
+          echo "Selected branch: " ${{ github.ref_name }}
 
-    defaults:
-      run:
-        shell: bash
-
+  setup:
+    name: 'Setup'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,7 +42,11 @@ jobs:
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Build
+  test_and_build:
+    name: 'Test & Build'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gradle Test and Build
         run: |
           cd beerlot-core
           ./gradlew clean build
