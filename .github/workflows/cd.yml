@@ -77,4 +77,15 @@ jobs:
         run: |
           gcloud run deploy beerlot-core \
             --region asia-northeast1 \
+<<<<<<< HEAD
             --image asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/beerlot-core-repository/beerlot-core:latest \
+=======
+            --image asia-northeast1-docker.pkg.dev/beerlot-dev-363211/beerlot-core-repository/beerlot-core:latest \
+
+        #uses: google-github-actions/deploy-cloudrun@v0
+        #with:
+          #service: beerlot-core
+          #region: asia-northeast1
+          # NOTE: If using a pre-built image, update the image name here
+          #image: asia-northeast1-docker.pkg.dev/beerlot-dev/beerlot-core-image/beerlot-core:latest
+>>>>>>> 47d6644d5edb6d139fa24a6ed91d41cc29986945
