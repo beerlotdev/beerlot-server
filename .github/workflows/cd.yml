@@ -27,6 +27,7 @@ jobs:
   deploy:
     name: 'Build Docker Image & Deploy'
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
