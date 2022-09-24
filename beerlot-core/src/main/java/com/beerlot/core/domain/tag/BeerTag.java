@@ -1,8 +1,7 @@
 package com.beerlot.core.domain.tag;
 
-import com.beerlot.core.domain.common.BaseEntity;
 import com.beerlot.core.domain.beer.Beer;
-
+import com.beerlot.core.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
