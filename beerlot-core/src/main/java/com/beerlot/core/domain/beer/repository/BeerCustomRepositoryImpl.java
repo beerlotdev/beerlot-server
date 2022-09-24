@@ -1,15 +1,17 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.core.domain.beer.Country;
 import com.beerlot.api.generated.model.FindBeerResDto;
+import com.beerlot.core.domain.beer.Beer;
+import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.util.FindBeerResHelper;
+import com.beerlot.core.domain.common.Page;
+import com.beerlot.core.domain.common.PageCustomImpl;
+import com.beerlot.core.domain.common.PageCustomRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,8 +27,8 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public Page<FindBeerResDto> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, Pageable pageable) {
-        List<FindBeerResDto> findBeerResDtos = queryFactory
+    public Page<FindBeerResDto> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
+        JPAQuery<Beer> query = queryFactory
                 .selectFrom(beer)
                 .innerJoin(beer.beerTags, beerTag)
                 .innerJoin(beer.category, category)
@@ -35,12 +37,16 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                         hasCategories(categoryIds),
                         hasCountries(countries),
                         hasVolumes(volumes)
-                )
-                .limit(pageable.getPageSize())
-                .offset((long) (pageable.getPageNumber() - 1) * (long)pageable.getPageSize())
+                );
+
+        long totalElements = query.fetch().size();
+
+        List<FindBeerResDto> findBeerResDtos = query
+                .limit(pageRequest.getSize())
+                .offset(pageRequest.getOffset())
                 .fetch().stream().map(FindBeerResHelper::of).collect(Collectors.toList());
 
-        return new PageImpl<>(findBeerResDtos, pageable, findBeerResDtos.size());
+        return new PageCustomImpl<>(findBeerResDtos, pageRequest, totalElements);
     }
 
     private BooleanExpression hasKeyword(String keyword) {
