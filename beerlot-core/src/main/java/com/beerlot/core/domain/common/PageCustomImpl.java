@@ -1,0 +1,45 @@
+package com.beerlot.core.domain.common;
+
+import java.util.List;
+
+public class PageCustomImpl<T> extends ChunkCustom<T> implements Page<T> {
+
+    private int size;
+
+    private int page;
+
+    private long totalElements;
+
+    @Override
+    public int getPage() {
+        return page;
+    }
+
+    @Override
+    public int getTotalPages() {
+        return size == 0 ? 1 : (int) Math.ceil((double) totalElements / (double) size);
+    }
+
+    @Override
+    public long getTotalElements() {
+        return totalElements;
+    }
+
+    @Override
+    public Integer getNextPage() {
+        return page == getTotalPages() ? null : page + 1;
+    }
+
+    @Override
+    public PageCustomRequest getPageRequest() {
+        return pageRequest;
+    }
+
+    public PageCustomImpl(List<T> contents, PageCustomRequest pageRequest, long totalElements) {
+        super(contents, pageRequest);
+
+        this.size = pageRequest.getSize();
+        this.page = pageRequest.getPage();
+        this.totalElements = totalElements;
+    }
+}
