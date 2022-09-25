@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.common;
+package com.beerlot.core.domain.common.page;
 
 import java.util.List;
 
