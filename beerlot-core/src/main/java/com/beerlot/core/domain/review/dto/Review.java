@@ -2,7 +2,7 @@ package com.beerlot.core.domain.review.dto;
 
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.common.BaseEntity;
-import com.beerlot.core.domain.member.Member;
+import com.beerlot.core.domain.user.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +33,6 @@ public class Review extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private User user;
 }
 

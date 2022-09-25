@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.member;
+package com.beerlot.core.domain.user;
 
 import com.beerlot.core.domain.common.BaseEntity;
 import lombok.AccessLevel;
@@ -11,26 +11,29 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
-    @Column(name = "member_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
-
     @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(name = "provider_type", nullable = false)
+    private ProviderType providerType;
+
+    @Column(name = "role_type", nullable = false)
+    private RoleType roleType;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "is_email_verified", nullable = false)
-    private Boolean isEmailVerified = false;
+    @Column(name = "status_message")
+    private String statusMessage;
 }
 
