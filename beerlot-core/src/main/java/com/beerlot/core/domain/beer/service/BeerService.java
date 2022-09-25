@@ -1,12 +1,12 @@
 package com.beerlot.core.domain.beer.service;
 
-import com.beerlot.api.generated.model.FindBeerResDto;
+import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
-import com.beerlot.core.domain.beer.util.FindBeerResHelper;
+import com.beerlot.core.domain.beer.util.BeerResponseHelper;
 import com.beerlot.core.domain.category.repository.CategoryRepository;
-import com.beerlot.core.domain.common.Page;
-import com.beerlot.core.domain.common.PageCustomRequest;
+import com.beerlot.core.domain.common.page.Page;
+import com.beerlot.core.domain.common.page.PageCustomRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +24,12 @@ public class BeerService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public FindBeerResDto findBeerById(Long id) {
-        return FindBeerResHelper.of(beerRepository.findById(id).get());
+    public BeerResponse findBeerById(Long id) {
+        return BeerResponseHelper.of(beerRepository.findById(id).get());
     }
 
     @Transactional(readOnly = true)
-    public Page<FindBeerResDto> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
+    public Page<BeerResponse> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
         /*TODO: Change the parameter to List<Long> categoryIds*/
         PageCustomRequest pageCustomRequest = new PageCustomRequest(page, size);
         List<Country> parsedCountries = countries == null ? null : Country.valuesOf(countries);
