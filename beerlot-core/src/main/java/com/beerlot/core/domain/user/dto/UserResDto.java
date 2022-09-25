@@ -1,8 +1,8 @@
-package com.beerlot.core.domain.member.dto;
+package com.beerlot.core.domain.user.dto;
 
 import com.beerlot.core.domain.common.BaseResDto;
 
-public class MemberResDto extends BaseResDto {
+public class UserResDto extends BaseResDto {
 
     private String email;
 
