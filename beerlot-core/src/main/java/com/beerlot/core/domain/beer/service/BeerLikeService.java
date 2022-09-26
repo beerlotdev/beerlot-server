@@ -26,30 +26,31 @@ public class BeerLikeService {
 
     /* TODO: Include memberId and validateMember*/
     public void likeBeer(Long beerId) {
-        validateBeer(beerId);
-        validateBeerLike(beerId, 1L);
+        checkBeerExist(beerId);
+        checkBeerLikeExist(beerId, 1L, true);
         BeerLike beerLike = new BeerLike(beerRepository.findById(beerId).get(), memberRepository.findById(1L).get());
         beerLikeRepository.save(beerLike);
     }
 
+    /* TODO: Include memberId and validateMember*/
     public void unlikeBeer(Long beerId) {
-        validateBeer(beerId);
-        if (!beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, 1L)) {
-            throw new NotFoundException(ErrorCode.BEER_LIKE_NOT_FOUND);
-        }
+        checkBeerExist(beerId);
+        checkBeerLikeExist(beerId, 1L, false);
         beerLikeRepository.deleteByBeer_IdAndMember_Id(beerId, 1L);
         beerRepository.findById(beerId).get().unlikeBeer();
     }
 
-    private void validateBeer(Long beerId) {
+    private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
             throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);
         }
     }
 
-    private void validateBeerLike(Long beerId, Long memberId) {
-        if (beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
+    private void checkBeerLikeExist(Long beerId, Long memberId, boolean isPositive) {
+        if (isPositive && beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
             throw new ConflictException(ErrorCode.BEER_LIKE_CONFLICT);
+        } else if (!isPositive && !beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
+            throw new NotFoundException(ErrorCode.BEER_LIKE_NOT_FOUND);
         }
     }
 }

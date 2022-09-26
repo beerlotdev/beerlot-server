@@ -38,13 +38,13 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewResponse findById(Long reviewId) {
-        validateReview(reviewId);
+        checkReviewExist(reviewId);
         return ReviewResponseHelper.of(reviewRepository.findById(reviewId).get());
     }
 
     @Transactional(readOnly = true)
     public ReviewPage findByBeerId(Long beerId, Integer page, Integer size) {
-        validateBeer(beerId);
+        checkBeerExist(beerId);
         PageCustomRequest pageRequest = new PageCustomRequest(page, size);
         Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
         List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class ReviewService {
     }
 
     public void createReview(Long beerId, ReviewCreateRequest reviewCreateRequest) {
-        validateBeer(beerId);
+        checkBeerExist(beerId);
         Review review = Review.builder()
                 .content(reviewCreateRequest.getContent())
                 .rate(reviewCreateRequest.getRate())
@@ -64,24 +64,24 @@ public class ReviewService {
     }
 
     public ReviewResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest) {
-        validateReview(reviewId);
+        checkReviewExist(reviewId);
         Review review = reviewRepository.findById(reviewId).get();
         review.updateModel(reviewUpdateRequest);
         return ReviewResponseHelper.of(review);
     }
 
     public void deleteReview(Long reviewId) {
-        validateReview(reviewId);
+        checkReviewExist(reviewId);
         reviewRepository.deleteById(reviewId);
     }
 
-    private void validateBeer(Long beerId) {
+    private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
             throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);
         }
     }
 
-    private void validateReview(Long reviewId) {
+    private void checkReviewExist(Long reviewId) {
         if (!reviewRepository.existsById(reviewId)) {
             throw new NotFoundException(ErrorCode.REVIEW_NOT_FOUND);
         }
