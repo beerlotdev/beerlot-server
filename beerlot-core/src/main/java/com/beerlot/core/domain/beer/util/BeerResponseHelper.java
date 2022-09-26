@@ -22,6 +22,7 @@ public class BeerResponseHelper {
         beerResponse.setImageUrl(beer.getImageUrl());
         beerResponse.setCategory(CategoryResponseHelper.of(beer.getCategory()));
         beerResponse.setTags(beer.getTags().stream().map(TagResponseHelper::of).collect(Collectors.toList()));
+        beerResponse.setLikeCount(beer.getLikeCount());
 
         return beerResponse;
     }

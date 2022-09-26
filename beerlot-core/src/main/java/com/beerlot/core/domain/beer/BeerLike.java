@@ -34,6 +34,7 @@ public class BeerLike {
 
     private void setBeer(Beer beer) {
         this.beer = beer;
+        beer.likeBeer();
     }
 
     private void setMember(Member member) {

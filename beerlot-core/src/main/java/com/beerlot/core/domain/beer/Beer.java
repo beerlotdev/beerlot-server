@@ -54,8 +54,15 @@ public class Beer extends BaseEntity {
     @OneToMany(mappedBy = "beer")
     private List<Review> reviews = new ArrayList<>();
 
+    @Column(name = "like_count", columnDefinition = "int default 0")
+    private long likeCount = 0L;
+
     public List<Tag> getTags() {
         return this.beerTags.stream().map(BeerTag::getTag).collect(Collectors.toList());
+    }
+
+    public void likeBeer() {
+        this.likeCount += 1;
     }
 
     @Builder
