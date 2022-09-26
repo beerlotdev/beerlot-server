@@ -1,7 +1,6 @@
 package com.beerlot.core.domain.beer.repository;
 
 import com.beerlot.api.generated.model.BeerResponse;
-import com.beerlot.api.generated.model.FindBeerResDto;
 import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
