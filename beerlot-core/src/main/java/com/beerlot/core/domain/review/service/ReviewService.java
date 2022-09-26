@@ -10,6 +10,7 @@ import com.beerlot.core.domain.review.repository.ReviewRepository;
 import com.beerlot.core.domain.review.util.ReviewResponseHelper;
 import com.beerlot.core.domain.review.util.page.ReviewPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class ReviewService {
             validateBeer(beerId);
             PageCustomRequest pageRequest = new PageCustomRequest(page, size);
 
-            org.springframework.data.domain.Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
+            Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
             List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
             return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
     }

@@ -4,8 +4,8 @@ import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.util.BeerResponseHelper;
-import com.beerlot.core.domain.common.page.Page;
-import com.beerlot.core.domain.common.page.PageCustomImpl;
+import com.beerlot.core.domain.common.page.PageCustom;
+import com.beerlot.core.domain.common.page.PageCustomCustomImpl;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
@@ -27,7 +27,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public Page<BeerResponse> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
+    public PageCustom<BeerResponse> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
         JPAQuery<Beer> query = queryFactory
                 .selectFrom(beer)
                 .innerJoin(beer.beerTags, beerTag)
@@ -46,7 +46,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                 .offset(pageRequest.getOffset())
                 .fetch().stream().map(BeerResponseHelper::of).collect(Collectors.toList());
 
-        return new PageCustomImpl<>(beerResponseList, pageRequest, totalElements);
+        return new PageCustomCustomImpl<>(beerResponseList, pageRequest, totalElements);
     }
 
     private BooleanExpression hasKeyword(String keyword) {

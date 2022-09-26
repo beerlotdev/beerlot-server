@@ -2,10 +2,9 @@ package com.beerlot.core.domain.beer.controller;
 
 import com.beerlot.api.generated.api.BeerApi;
 import com.beerlot.api.generated.model.BeerResponse;
-import com.beerlot.api.generated.model.FindBeerResDto;
 import com.beerlot.core.domain.beer.service.BeerService;
 import com.beerlot.core.domain.beer.util.page.BeerPage;
-import com.beerlot.core.domain.common.page.Page;
+import com.beerlot.core.domain.common.page.PageCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,7 @@ public class BeerController implements BeerApi {
 
     @Override
     public ResponseEntity<BeerPage> findBeersBySearch(Integer page, Integer size, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
-        Page<BeerResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumes, page, size);
+        PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumes, page, size);
         return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getContents().size()), HttpStatus.OK);
     }
 }

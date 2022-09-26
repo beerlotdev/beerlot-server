@@ -5,7 +5,7 @@ import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
 import com.beerlot.core.domain.beer.util.BeerResponseHelper;
 import com.beerlot.core.domain.category.repository.CategoryRepository;
-import com.beerlot.core.domain.common.page.Page;
+import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +29,9 @@ public class BeerService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BeerResponse> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
-        /*TODO: Change the parameter to List<Long> categoryIds*/
-        PageCustomRequest pageCustomRequest = new PageCustomRequest(page, size);
+    public PageCustom<BeerResponse> findBeersBySearch(String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size) {
+        PageCustomRequest pageRequest = new PageCustomRequest(page, size);
         List<Country> parsedCountries = countries == null ? null : Country.valuesOf(countries);
-        return beerRepository.findBySearch(keyword, categoryIds, parsedCountries, volumes, pageCustomRequest);
+        return beerRepository.findBySearch(keyword, categoryIds, parsedCountries, volumes, pageRequest);
     }
 }
