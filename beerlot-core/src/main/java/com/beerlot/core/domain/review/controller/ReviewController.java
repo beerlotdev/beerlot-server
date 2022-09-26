@@ -32,7 +32,12 @@ public class ReviewController implements ReviewApi {
 
     @Override
     public ResponseEntity<Void> deleteReview(Long reviewId) {
-        return ReviewApi.super.deleteReview(reviewId);
+        try {
+            reviewService.deleteReview(reviewId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
+        }
     }
 
     @Override

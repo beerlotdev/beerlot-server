@@ -37,9 +37,9 @@ public class ReviewService {
     private MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public ReviewResponse findById(Long id) {
-        validateReview(id);
-        return ReviewResponseHelper.of(reviewRepository.findById(id).get());
+    public ReviewResponse findById(Long reviewId) {
+        validateReview(reviewId);
+        return ReviewResponseHelper.of(reviewRepository.findById(reviewId).get());
     }
 
     @Transactional(readOnly = true)
@@ -68,6 +68,11 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId).get();
         review.updateModel(reviewUpdateRequest);
         return ReviewResponseHelper.of(review);
+    }
+
+    public void deleteReview(Long reviewId) {
+        validateReview(reviewId);
+        reviewRepository.deleteById(reviewId);
     }
 
     private void validateBeer(Long beerId) {
