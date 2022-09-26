@@ -13,6 +13,7 @@ public class ReviewResponseHelper {
         reviewResponse.setContent(review.getContent());
         reviewResponse.setRate(review.getRate());
         reviewResponse.setCreatedAt(review.getCreatedAt());
+        reviewResponse.setLikeCount(review.getLikeCount());
 
         return reviewResponse;
     }

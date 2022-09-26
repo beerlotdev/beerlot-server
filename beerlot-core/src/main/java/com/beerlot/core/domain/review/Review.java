@@ -44,6 +44,17 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "like_count", columnDefinition = "int default 0")
+    private long likeCount = 0L;
+
+    public void likeReview() {
+        this.likeCount += 1;
+    }
+
+    public void unlikeReview() {
+        this.likeCount -= 1;
+    }
+
     @Builder
     public Review(String content, float rate, String imageUrl, Beer beer, Member member) {
         this.content = content;
