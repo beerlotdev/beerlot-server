@@ -1,5 +1,6 @@
 package com.beerlot.core.domain.review;
 
+import com.beerlot.api.generated.model.ReviewUpdateRequest;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.common.BaseEntity;
 import com.beerlot.core.domain.member.Member;
@@ -50,5 +51,11 @@ public class Review extends BaseEntity {
         this.imageUrl = imageUrl;
         this.beer = beer;
         this.member = member;
+    }
+
+    public void updateModel(ReviewUpdateRequest reviewUpdateRequest) {
+        this.content = reviewUpdateRequest.getContent();
+        this.rate = reviewUpdateRequest.getRate();
+        this.imageUrl = reviewUpdateRequest.getImageUrl();
     }
 }

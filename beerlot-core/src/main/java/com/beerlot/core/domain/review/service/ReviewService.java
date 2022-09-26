@@ -2,6 +2,7 @@ package com.beerlot.core.domain.review.service;
 
 import com.beerlot.api.generated.model.ReviewCreateRequest;
 import com.beerlot.api.generated.model.ReviewResponse;
+import com.beerlot.api.generated.model.ReviewUpdateRequest;
 import com.beerlot.core.domain.member.repository.MemberRepository;
 import com.beerlot.core.exception.ErrorCode;
 import com.beerlot.core.exception.NotFoundException;
@@ -60,6 +61,13 @@ public class ReviewService {
                 .member(memberRepository.findById(1L).get())
                 .build();
         reviewRepository.save(review);
+    }
+
+    public ReviewResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest) {
+        validateReview(reviewId);
+        Review review = reviewRepository.findById(reviewId).get();
+        review.updateModel(reviewUpdateRequest);
+        return ReviewResponseHelper.of(review);
     }
 
     private void validateBeer(Long beerId) {

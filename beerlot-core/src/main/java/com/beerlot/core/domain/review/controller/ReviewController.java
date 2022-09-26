@@ -55,6 +55,10 @@ public class ReviewController implements ReviewApi {
 
     @Override
     public ResponseEntity<ReviewResponse> updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest) {
-        return ReviewApi.super.updateReview(reviewId, reviewUpdateRequest);
+        try {
+            return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewUpdateRequest), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
+        }
     }
 }
