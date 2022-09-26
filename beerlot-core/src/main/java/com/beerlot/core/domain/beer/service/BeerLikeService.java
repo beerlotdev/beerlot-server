@@ -1,7 +1,6 @@
 package com.beerlot.core.domain.beer.service;
 
 import com.beerlot.core.domain.beer.BeerLike;
-import com.beerlot.core.domain.beer.BeerLikeId;
 import com.beerlot.core.domain.beer.repository.BeerLikeRepository;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
 import com.beerlot.core.domain.member.repository.MemberRepository;
@@ -33,6 +32,15 @@ public class BeerLikeService {
         beerLikeRepository.save(beerLike);
     }
 
+    public void unlikeBeer(Long beerId) {
+        validateBeer(beerId);
+        if (!beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, 1L)) {
+            throw new NotFoundException(ErrorCode.BEER_LIKE_NOT_FOUND);
+        }
+        beerLikeRepository.deleteByBeer_IdAndMember_Id(beerId, 1L);
+        beerRepository.findById(beerId).get().unlikeBeer();
+    }
+
     private void validateBeer(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
             throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);
@@ -40,7 +48,7 @@ public class BeerLikeService {
     }
 
     private void validateBeerLike(Long beerId, Long memberId) {
-        if (beerLikeRepository.existsById(new BeerLikeId(beerId, memberId))) {
+        if (beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
             throw new ConflictException(ErrorCode.BEER_LIKE_CONFLICT);
         }
     }

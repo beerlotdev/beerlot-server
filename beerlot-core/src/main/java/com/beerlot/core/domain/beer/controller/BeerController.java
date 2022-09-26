@@ -8,6 +8,7 @@ import com.beerlot.core.domain.beer.service.BeerService;
 import com.beerlot.core.domain.beer.util.page.BeerPage;
 import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.exception.ConflictException;
+import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,11 @@ public class BeerController implements BeerApi, BeerLikeApi {
 
     @Override
     public ResponseEntity<Void> deleteBeerLike(Long beerId) {
-        return BeerLikeApi.super.deleteBeerLike(beerId);
+        try {
+            beerLikeService.unlikeBeer(beerId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
+        }
     }
 }

@@ -65,6 +65,10 @@ public class Beer extends BaseEntity {
         this.likeCount += 1;
     }
 
+    public void unlikeBeer() {
+        this.likeCount -= 1;
+    }
+
     @Builder
     public Beer(Long id, String nameEn, String nameKo, String description, Float volume, Country country, Category category, String imageUrl) {
         this.id = id;
