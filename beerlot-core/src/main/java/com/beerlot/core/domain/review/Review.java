@@ -2,7 +2,9 @@ package com.beerlot.core.domain.review;
 
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.common.BaseEntity;
+import com.beerlot.core.domain.user.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,11 +22,14 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", length = 1000)
+    @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @Column(name = "rate")
+    @Column(name = "rate", nullable = false)
     private float rate;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @CreationTimestamp
     @Column(name = "create_at")
@@ -33,4 +38,15 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")
     private Beer beer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Builder
+    public Review(String content, float rate, String imageUrl) {
+        this.content = content;
+        this.rate = rate;
+        this.imageUrl = imageUrl;
+    }
 }

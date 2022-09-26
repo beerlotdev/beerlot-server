@@ -2,6 +2,7 @@ package com.beerlot.core.domain.beer;
 
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.common.BaseEntity;
+import com.beerlot.core.domain.review.Review;
 import com.beerlot.core.domain.tag.BeerTag;
 import com.beerlot.core.domain.tag.Tag;
 import lombok.AccessLevel;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @Table(name = "beer")
 public class Beer extends BaseEntity {
     @Id
-    @Column(name = "beer_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -49,6 +50,9 @@ public class Beer extends BaseEntity {
 
     @OneToMany(mappedBy = "beer")
     private List<BeerTag> beerTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "beer")
+    private List<Review> reviews = new ArrayList<>();
 
     public List<Tag> getTags() {
         return this.beerTags.stream().map(BeerTag::getTag).collect(Collectors.toList());
