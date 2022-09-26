@@ -1,8 +1,8 @@
-package com.beerlot.core.domain.common;
+package com.beerlot.core.domain.common.page;
 
 import java.util.List;
 
-public interface Page<T> {
+public interface PageCustom<T> {
 
     int getPage();
 

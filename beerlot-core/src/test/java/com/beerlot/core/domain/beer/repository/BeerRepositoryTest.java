@@ -1,22 +1,21 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.api.generated.model.FindBeerResDto;
+import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
 import com.beerlot.core.domain.category.Category;
-import com.beerlot.core.domain.common.PageCustomRequest;
+import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.beerlot.core.domain.tag.BeerTag;
 import com.beerlot.core.domain.tag.Tag;
-import com.beerlot.core.domain.common.Page;
+import com.beerlot.core.domain.common.page.PageCustom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,76 +104,76 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
 
         @Test
         public void givenOneCategory() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId()), null, null, new PageCustomRequest(1, 2));
-            assertEquals(1, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId()), null, null, new PageCustomRequest(1, 2));
+            assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenTwoCategories() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId(), categoryAmericanBlondeAle.getId()), null, null, new PageCustomRequest(1, 2));
-            assertEquals(2, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId(), categoryAmericanBlondeAle.getId()), null, null, new PageCustomRequest(1, 2));
+            assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenOneCountry() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, List.of(Country.US), null, new PageCustomRequest(1, 2));
-            assertEquals(2, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.US), null, new PageCustomRequest(1, 2));
+            assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenCountryHasNoBeers() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, List.of(Country.AD), null, new PageCustomRequest(1, 2));
-            assertEquals(0, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.AD), null, new PageCustomRequest(1, 2));
+            assertEquals(0, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForBeerDescription() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch("Dinner", null, null, null, new PageCustomRequest(1, 2));
-            assertEquals(1, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Dinner", null, null, null, new PageCustomRequest(1, 2));
+            assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForTagDescription() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch("Citra", null, null, null, new PageCustomRequest(1, 2));
-            assertEquals(2, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Citra", null, null, null, new PageCustomRequest(1, 2));
+            assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForCategoryDescription() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch("IPA", null, null, null, new PageCustomRequest(1, 2));
-            assertEquals(1, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("IPA", null, null, null, new PageCustomRequest(1, 2));
+            assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenOneVolume() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, null, List.of(4), new PageCustomRequest(1, 2));
-            assertEquals(1, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4), new PageCustomRequest(1, 2));
+            assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenTwoVolumes() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, null, List.of(4, 8), new PageCustomRequest(1, 2));
-            assertEquals(2, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4, 8), new PageCustomRequest(1, 2));
+            assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenVolumeHasNoBeer() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, null, List.of(5), new PageCustomRequest(1, 2));
-            assertEquals(0, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(5), new PageCustomRequest(1, 2));
+            assertEquals(0, pageCustom.getContents().size());
         }
 
         @Test
         public void givenNoSearchCondition() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 2));
-            assertEquals(2, page.getContents().size());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 2));
+            assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void pagination() {
-            Page<FindBeerResDto> page = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 1));
-            assertEquals(1, page.getContents().size());
-            assertEquals(2, page.getTotalPages());
-            assertEquals(2, page.getTotalElements());
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 1));
+            assertEquals(1, pageCustom.getContents().size());
+            assertEquals(2, pageCustom.getTotalPages());
+            assertEquals(2, pageCustom.getTotalElements());
         }
     }
 }

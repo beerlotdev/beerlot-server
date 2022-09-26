@@ -1,12 +1,12 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.api.generated.model.FindBeerResDto;
+import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.util.FindBeerResHelper;
-import com.beerlot.core.domain.common.Page;
-import com.beerlot.core.domain.common.PageCustomImpl;
-import com.beerlot.core.domain.common.PageCustomRequest;
+import com.beerlot.core.domain.beer.util.BeerResponseHelper;
+import com.beerlot.core.domain.common.page.PageCustom;
+import com.beerlot.core.domain.common.page.PageCustomCustomImpl;
+import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -27,7 +27,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public Page<FindBeerResDto> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
+    public PageCustom<BeerResponse> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
         JPAQuery<Beer> query = queryFactory
                 .selectFrom(beer)
                 .innerJoin(beer.beerTags, beerTag)
@@ -41,12 +41,12 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
 
         long totalElements = query.fetch().size();
 
-        List<FindBeerResDto> findBeerResDtos = query
+        List<BeerResponse> beerResponseList = query
                 .limit(pageRequest.getSize())
                 .offset(pageRequest.getOffset())
-                .fetch().stream().map(FindBeerResHelper::of).collect(Collectors.toList());
+                .fetch().stream().map(BeerResponseHelper::of).collect(Collectors.toList());
 
-        return new PageCustomImpl<>(findBeerResDtos, pageRequest, totalElements);
+        return new PageCustomCustomImpl<>(beerResponseList, pageRequest, totalElements);
     }
 
     private BooleanExpression hasKeyword(String keyword) {
