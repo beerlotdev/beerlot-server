@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.user.dto;
+package com.beerlot.core.domain.member.dto;
 
 import com.beerlot.core.domain.common.BaseResDto;
 

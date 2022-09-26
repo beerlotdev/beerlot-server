@@ -12,6 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    Optional<Review> findById(Long id);
     Page<Review> findByBeer_Id(Long id, Pageable pageRequest);
 }

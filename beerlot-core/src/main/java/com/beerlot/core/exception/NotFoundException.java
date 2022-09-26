@@ -1,4 +1,4 @@
-package com.beerlot.core.common.exception;
+package com.beerlot.core.exception;
 
 import lombok.Getter;
 

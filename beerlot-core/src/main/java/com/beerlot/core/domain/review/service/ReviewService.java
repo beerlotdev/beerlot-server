@@ -1,8 +1,10 @@
 package com.beerlot.core.domain.review.service;
 
+import com.beerlot.api.generated.model.ReviewCreateRequest;
 import com.beerlot.api.generated.model.ReviewResponse;
-import com.beerlot.core.common.exception.ErrorCode;
-import com.beerlot.core.common.exception.NotFoundException;
+import com.beerlot.core.domain.member.repository.MemberRepository;
+import com.beerlot.core.exception.ErrorCode;
+import com.beerlot.core.exception.NotFoundException;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.beerlot.core.domain.review.Review;
@@ -30,23 +32,45 @@ public class ReviewService {
     @Autowired
     private BeerRepository beerRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Transactional(readOnly = true)
     public ReviewResponse findById(Long id) {
+        validateReview(id);
         return ReviewResponseHelper.of(reviewRepository.findById(id).get());
     }
 
     @Transactional(readOnly = true)
     public ReviewPage findByBeerId(Long beerId, Integer page, Integer size) {
-            validateBeer(beerId);
-            PageCustomRequest pageRequest = new PageCustomRequest(page, size);
+        validateBeer(beerId);
+        PageCustomRequest pageRequest = new PageCustomRequest(page, size);
+        Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
+        List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
+        return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
+    }
 
-            Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
-            List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
-            return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
+    public void createReview(Long beerId, ReviewCreateRequest reviewCreateRequest) {
+        validateBeer(beerId);
+        Review review = Review.builder()
+                .content(reviewCreateRequest.getContent())
+                .rate(reviewCreateRequest.getRate())
+                .imageUrl(reviewCreateRequest.getImageUrl())
+                .beer(beerRepository.findById(beerId).get())
+                .member(memberRepository.findById(1L).get())
+                .build();
+        reviewRepository.save(review);
     }
 
     private void validateBeer(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
             throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);
+        }
+    }
+
+    private void validateReview(Long reviewId) {
+        if (!reviewRepository.existsById(reviewId)) {
+            throw new NotFoundException(ErrorCode.REVIEW_NOT_FOUND);
         }
     }
 }

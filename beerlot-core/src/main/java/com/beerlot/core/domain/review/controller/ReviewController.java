@@ -4,7 +4,7 @@ import com.beerlot.api.generated.api.ReviewApi;
 import com.beerlot.api.generated.model.ReviewCreateRequest;
 import com.beerlot.api.generated.model.ReviewResponse;
 import com.beerlot.api.generated.model.ReviewUpdateRequest;
-import com.beerlot.core.common.exception.NotFoundException;
+import com.beerlot.core.exception.NotFoundException;
 import com.beerlot.core.domain.review.service.ReviewService;
 import com.beerlot.core.domain.review.util.page.ReviewPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,12 @@ public class ReviewController implements ReviewApi {
 
     @Override
     public ResponseEntity<Void> createReview(Long beerId, ReviewCreateRequest reviewCreateRequest) {
-        return ReviewApi.super.createReview(beerId, reviewCreateRequest);
+        try {
+            reviewService.createReview(beerId, reviewCreateRequest);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
+        }
     }
 
     @Override
@@ -35,13 +40,17 @@ public class ReviewController implements ReviewApi {
         try {
             return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size), HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity(e.getErrorCode().getStatus());
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
         }
     }
 
     @Override
     public ResponseEntity<ReviewResponse> findReviewById(Long reviewId) {
-        return new ResponseEntity<>(reviewService.findById(reviewId), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(reviewService.findById(reviewId), HttpStatus.OK);
+        } catch(NotFoundException e) {
+            return new ResponseEntity<>(e.getErrorCode().getStatus());
+        }
     }
 
     @Override

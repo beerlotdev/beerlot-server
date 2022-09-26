@@ -1,11 +1,12 @@
-package com.beerlot.core.common.exception;
+package com.beerlot.core.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
-    BEER_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "Beer does not exist.");
+    BEER_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "Beer does not exist."),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "R001", "Review does not exist.");
 
     private HttpStatus status;
     private String code;

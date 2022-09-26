@@ -2,7 +2,7 @@ package com.beerlot.core.domain.review;
 
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.common.BaseEntity;
-import com.beerlot.core.domain.user.Member;
+import com.beerlot.core.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,9 +44,11 @@ public class Review extends BaseEntity {
     private Member member;
 
     @Builder
-    public Review(String content, float rate, String imageUrl) {
+    public Review(String content, float rate, String imageUrl, Beer beer, Member member) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
+        this.beer = beer;
+        this.member = member;
     }
 }
