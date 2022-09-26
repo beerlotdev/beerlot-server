@@ -63,7 +63,8 @@ openApiGenerate {
             useBeanValidation: 'false'
     ]
     importMappings = [
-            'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage'
+            'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage',
+            'ReviewPage': 'com.beerlot.core.domain.review.util.page.ReviewPage',
     ]
 }
 
