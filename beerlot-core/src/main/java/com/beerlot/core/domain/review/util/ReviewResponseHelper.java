@@ -3,8 +3,6 @@ package com.beerlot.core.domain.review.util;
 import com.beerlot.api.generated.model.ReviewResponse;
 import com.beerlot.core.domain.review.Review;
 
-import java.util.Date;
-
 public class ReviewResponseHelper {
 
     public static ReviewResponse of(Review review) {
