@@ -3,6 +3,7 @@ package com.beerlot.core.domain.review.service;
 import com.beerlot.api.generated.model.ReviewCreateRequest;
 import com.beerlot.api.generated.model.ReviewResponse;
 import com.beerlot.api.generated.model.ReviewUpdateRequest;
+import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.beerlot.core.domain.member.repository.MemberRepository;
@@ -53,13 +54,16 @@ public class ReviewService {
 
     public void createReview(Long beerId, ReviewCreateRequest reviewCreateRequest) {
         checkBeerExist(beerId);
+        Beer beer = beerRepository.findById(beerId).get();
         Review review = Review.builder()
                 .content(reviewCreateRequest.getContent())
                 .rate(reviewCreateRequest.getRate())
                 .imageUrl(reviewCreateRequest.getImageUrl())
-                .beer(beerRepository.findById(beerId).get())
+                .beer(beer)
                 .member(memberRepository.findById(1L).get())
                 .build();
+        beer.addReview();
+        beer.calculateRate(review.getRate());
         reviewRepository.save(review);
     }
 
@@ -67,12 +71,16 @@ public class ReviewService {
         checkReviewExist(reviewId);
         Review review = reviewRepository.findById(reviewId).get();
         review.updateModel(reviewUpdateRequest);
+        review.getBeer().calculateRate(review.getRate());
         return ReviewResponseHelper.of(review);
     }
 
     public void deleteReview(Long reviewId) {
         checkReviewExist(reviewId);
-        reviewRepository.deleteById(reviewId);
+        Review review = reviewRepository.findById(reviewId).get();
+        review.getBeer().removeReview();
+        review.getBeer().calculateRate(0 - review.getRate());
+        reviewRepository.delete(review);
     }
 
     private void checkBeerExist(Long beerId) {

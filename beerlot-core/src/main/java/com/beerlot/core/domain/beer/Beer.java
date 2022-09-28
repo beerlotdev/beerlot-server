@@ -57,6 +57,12 @@ public class Beer extends BaseEntity {
     @Column(name = "like_count", columnDefinition = "int default 0")
     private long likeCount = 0L;
 
+    @Column(name = "review_count", columnDefinition = "int default 0")
+    private long reviewCount = 0L;
+
+    @Column(name = "rate", columnDefinition = "float default 0.0")
+    private float rate = 0F;
+
     public List<Tag> getTags() {
         return this.beerTags.stream().map(BeerTag::getTag).collect(Collectors.toList());
     }
@@ -67,6 +73,18 @@ public class Beer extends BaseEntity {
 
     public void unlikeBeer() {
         this.likeCount -= 1;
+    }
+
+    public void addReview() {
+        this.reviewCount += 1;
+    }
+
+    public void removeReview() {
+        this.reviewCount -= 1;
+    }
+
+    public void calculateRate(float rate) {
+        this.rate = rate > 0 ? (this.rate * (reviewCount - 1) + rate) / reviewCount : (this.rate * (reviewCount + 1) + rate) / reviewCount;
     }
 
     @Builder
