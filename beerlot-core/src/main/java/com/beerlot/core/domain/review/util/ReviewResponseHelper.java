@@ -15,6 +15,7 @@ public class ReviewResponseHelper {
         reviewResponse.setCreatedAt(review.getCreatedAt());
         reviewResponse.setUpdatedAt(review.getUpdatedAt());
         reviewResponse.setLikeCount(review.getLikeCount());
+        reviewResponse.setBeerId(review.getBeer().getId());
 
         return reviewResponse;
     }
