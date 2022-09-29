@@ -5,6 +5,7 @@ import com.beerlot.api.generated.api.BeerLikeApi;
 import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.domain.beer.service.BeerLikeService;
 import com.beerlot.core.domain.beer.service.BeerService;
+import com.beerlot.core.domain.beer.util.sort.BeerSortType;
 import com.beerlot.core.domain.beer.util.page.BeerPage;
 import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.exception.ConflictException;
@@ -40,9 +41,9 @@ public class BeerController implements BeerApi, BeerLikeApi {
     }
 
     @Override
-    public ResponseEntity<BeerPage> findBeersBySearch(Integer page, Integer size, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
-        PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumes, page, size);
-        return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getContents().size()), HttpStatus.OK);
+    public ResponseEntity<BeerPage> findBeersBySearch(Integer page, Integer size, BeerSortType sort, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
+        PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumes, page, size, sort);
+        return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getTotalElements()), HttpStatus.OK);
     }
 
     @Override

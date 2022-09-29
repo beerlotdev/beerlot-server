@@ -30,8 +30,8 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
     public PageCustom<BeerResponse> findBySearch (String keyword, List<Long> categoryIds, List<Country> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
         JPAQuery<Beer> query = queryFactory
                 .selectFrom(beer)
-                .innerJoin(beer.beerTags, beerTag)
-                .innerJoin(beer.category, category)
+                .leftJoin(beer.beerTags, beerTag)
+                .leftJoin(beer.category, category)
                 .where(
                         hasKeyword(keyword),
                         hasCategories(categoryIds),
@@ -44,6 +44,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         List<BeerResponse> beerResponseList = query
                 .limit(pageRequest.getSize())
                 .offset(pageRequest.getOffset())
+                .orderBy(pageRequest.getSort().orderBy())
                 .fetch().stream().map(BeerResponseHelper::of).collect(Collectors.toList());
 
         return new PageCustomCustomImpl<>(beerResponseList, pageRequest, totalElements);

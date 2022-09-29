@@ -23,6 +23,8 @@ public class BeerResponseHelper {
         beerResponse.setCategory(CategoryResponseHelper.of(beer.getCategory()));
         beerResponse.setTags(beer.getTags().stream().map(TagResponseHelper::of).collect(Collectors.toList()));
         beerResponse.setLikeCount(beer.getLikeCount());
+        beerResponse.setReviewCount(beer.getReviewCount());
+        beerResponse.setRate(beer.getRate());
 
         return beerResponse;
     }

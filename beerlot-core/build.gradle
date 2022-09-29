@@ -67,6 +67,7 @@ openApiGenerate {
     importMappings = [
             'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage',
             'ReviewPage': 'com.beerlot.core.domain.review.util.page.ReviewPage',
+            'BeerSortType': 'com.beerlot.core.domain.beer.util.sort.BeerSortType'
     ]
 }
 
@@ -75,7 +76,9 @@ openApiValidate {
     recommend = true
 }
 
-sourceSets.main.java { srcDir "${buildDir}/generated/src/main/java" }
+sourceSets.main.java {
+    srcDir "${buildDir}/generated/src/main/java"
+}
 
 tasks.openApiGenerate.dependsOn tasks.openApiValidate
 compileJava.dependsOn tasks.openApiGenerate
