@@ -55,6 +55,7 @@ openApiGenerate {
     generatorName = 'spring'
     inputSpec = openApiSpecFile.toString()
     outputDir = openApiOutputDir.toString()
+    templateDir = "$projectDir/spec/templates"
     apiPackage = 'com.beerlot.api.generated.api'
     modelPackage = 'com.beerlot.api.generated.model'
     configOptions = [
@@ -67,6 +68,7 @@ openApiGenerate {
     importMappings = [
             'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage',
             'ReviewPage': 'com.beerlot.core.domain.review.util.page.ReviewPage',
+            'BeerSortType': 'com.beerlot.core.domain.beer.util.sort.BeerSortType'
     ]
 }
 
