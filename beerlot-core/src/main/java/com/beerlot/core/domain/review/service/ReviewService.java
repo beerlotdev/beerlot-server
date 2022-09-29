@@ -84,6 +84,13 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
+    public ReviewPage findAllReviews(Integer page, Integer size, ReviewSortType sort) {
+        PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
+        Page<Review> reviewPage = reviewRepository.findAll((Pageable) PageRequest.of(page-1, size, sort.sortBy(true)));
+        List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
+        return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
+    }
+
     private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
             throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);

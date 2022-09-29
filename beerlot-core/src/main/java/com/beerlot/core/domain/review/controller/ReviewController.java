@@ -101,4 +101,13 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
             return new ResponseEntity<>(e.getErrorCode().getStatus());
         }
     }
+
+    @Override
+    public ResponseEntity<ReviewPage> findAllReviews(Integer page, Integer size, ReviewSortType sort) {
+        try {
+            return new ResponseEntity<>(reviewService.findAllReviews(page, size, sort), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
