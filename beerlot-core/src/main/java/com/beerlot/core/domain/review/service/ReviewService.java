@@ -11,6 +11,7 @@ import com.beerlot.core.domain.review.Review;
 import com.beerlot.core.domain.review.repository.ReviewRepository;
 import com.beerlot.core.domain.review.util.ReviewResponseHelper;
 import com.beerlot.core.domain.review.util.page.ReviewPage;
+import com.beerlot.core.domain.review.util.sort.ReviewSortType;
 import com.beerlot.core.exception.ErrorCode;
 import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,10 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewPage findByBeerId(Long beerId, Integer page, Integer size) {
+    public ReviewPage findByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
         checkBeerExist(beerId);
-        PageCustomRequest pageRequest = new PageCustomRequest(page, size);
-        Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size));
+        PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
+        Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size, sort.sortBy(true)));
         List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponseHelper::of).collect(Collectors.toList());
         return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
     }

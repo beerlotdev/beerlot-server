@@ -8,6 +8,6 @@ public interface SortType {
 
     String getProperty();
     Direction getDirection();
-    Sort sortBy();
+    Sort sortBy(boolean isCamelCase);
     OrderSpecifier[] orderBy();
 }
