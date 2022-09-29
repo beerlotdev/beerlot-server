@@ -55,7 +55,6 @@ openApiGenerate {
     generatorName = 'spring'
     inputSpec = openApiSpecFile.toString()
     outputDir = openApiOutputDir.toString()
-    templateDir = "$projectDir/spec/templates"
     apiPackage = 'com.beerlot.api.generated.api'
     modelPackage = 'com.beerlot.api.generated.model'
     configOptions = [
