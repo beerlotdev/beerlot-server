@@ -1,27 +1,28 @@
-package com.beerlot.core.domain.beer.util.sort;
+package com.beerlot.core.domain.review.util.sort;
 
-import com.beerlot.core.domain.beer.QBeer;
 import com.beerlot.core.domain.common.SortType;
+import com.beerlot.core.domain.review.QReview;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
+import jnr.ffi.Struct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 
 @AllArgsConstructor
 @Getter
-public enum BeerSortType implements SortType {
-    
-    MOST_LIKES("like_count", Direction.DESC),
-    MOST_REVIEWS("review_count", Direction.DESC),
-    HIGH_RATE("rate", Direction.DESC)
+public enum ReviewSortType implements SortType {
+
+    RECENTLY_UPDATED("updated_at", Sort.Direction.DESC),
+    MOST_LIKES("like_count", Sort.Direction.DESC),
+    HIGH_RATE("rate", Sort.Direction.DESC),
+    LOW_RATE("rate", Sort.Direction.ASC)
     ;
 
     private String property;
-    private Direction direction;
+    private Sort.Direction direction;
 
     @Override
     public Sort sortBy(boolean isCamelCase) {
@@ -34,7 +35,7 @@ public enum BeerSortType implements SortType {
     }
 
     @Override
-    public Direction getDirection() {
+    public Sort.Direction getDirection() {
         return this.direction;
     }
 
@@ -42,7 +43,7 @@ public enum BeerSortType implements SortType {
         return sortBy(false).stream().filter(sortBy -> !sortBy.getProperty().isBlank())
                 .map(sortBy -> {
                     Order direction = sortBy.getDirection().isDescending() ? Order.DESC : Order.ASC;
-                    Path<QBeer> postPath = Expressions.path(QBeer.class, sortBy.getProperty());
+                    Path<QReview> postPath = Expressions.path(QReview.class, sortBy.getProperty());
                     return new OrderSpecifier(direction, postPath);
                 }).toArray(OrderSpecifier[]::new);
     }

@@ -8,6 +8,7 @@ import com.beerlot.api.generated.model.ReviewUpdateRequest;
 import com.beerlot.core.domain.review.service.ReviewLikeService;
 import com.beerlot.core.domain.review.service.ReviewService;
 import com.beerlot.core.domain.review.util.page.ReviewPage;
+import com.beerlot.core.domain.review.util.sort.ReviewSortType;
 import com.beerlot.core.exception.ConflictException;
 import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +76,9 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     }
 
     @Override
-    public ResponseEntity<ReviewPage> findReviewsByBeerId(Long beerId, Integer page, Integer size) {
+    public ResponseEntity<ReviewPage> findReviewsByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
         try {
-            return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size), HttpStatus.OK);
+            return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size, sort), HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getErrorCode().getStatus());
         }
