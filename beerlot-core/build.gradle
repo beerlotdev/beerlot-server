@@ -76,7 +76,9 @@ openApiValidate {
     recommend = true
 }
 
-sourceSets.main.java { srcDir "${buildDir}/generated/src/main/java" }
+sourceSets.main.java {
+    srcDir "${buildDir}/generated/src/main/java"
+}
 
 tasks.openApiGenerate.dependsOn tasks.openApiValidate
 compileJava.dependsOn tasks.openApiGenerate

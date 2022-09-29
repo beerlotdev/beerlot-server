@@ -5,6 +5,7 @@ import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.Country;
+import com.beerlot.core.domain.beer.util.sort.BeerSortType;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
 import com.beerlot.core.domain.tag.BeerTag;
@@ -104,73 +105,73 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
 
         @Test
         public void givenOneCategory() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId()), null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId()), null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenTwoCategories() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId(), categoryAmericanBlondeAle.getId()), null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, List.of(categoryImperialIPA.getId(), categoryAmericanBlondeAle.getId()), null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenOneCountry() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.US), null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.US), null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenCountryHasNoBeers() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.AD), null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, List.of(Country.AD), null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(0, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForBeerDescription() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Dinner", null, null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Dinner", null, null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForTagDescription() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Citra", null, null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("Citra", null, null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenKeywordForCategoryDescription() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("IPA", null, null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch("IPA", null, null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenOneVolume() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4), new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4), new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(1, pageCustom.getContents().size());
         }
 
         @Test
         public void givenTwoVolumes() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4, 8), new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(4, 8), new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void givenVolumeHasNoBeer() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(5), new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, List.of(5), new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(0, pageCustom.getContents().size());
         }
 
         @Test
         public void givenNoSearchCondition() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 2));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 2, BeerSortType.MOST_LIKES));
             assertEquals(2, pageCustom.getContents().size());
         }
 
         @Test
         public void pagination() {
-            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 1));
+            PageCustom<BeerResponse> pageCustom = beerRepository.findBySearch(null, null, null, null, new PageCustomRequest(1, 1, BeerSortType.MOST_LIKES));
             assertEquals(1, pageCustom.getContents().size());
             assertEquals(2, pageCustom.getTotalPages());
             assertEquals(2, pageCustom.getTotalElements());
