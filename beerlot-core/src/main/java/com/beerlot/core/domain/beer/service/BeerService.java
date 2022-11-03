@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,5 +35,10 @@ public class BeerService {
         PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
         List<Country> parsedCountries = countries == null ? null : Country.valuesOf(countries);
         return beerRepository.findBySearch(keyword, categoryIds, parsedCountries, volumes, pageRequest);
+    }
+
+    public List<BeerResponse> findTop10Beers() {
+        List<BeerResponse> beerResponseList = beerRepository.findTop10ByOrderByLikeCountDesc().stream().map(BeerResponseHelper::of).collect(Collectors.toList());
+        return beerResponseList;
     }
 }

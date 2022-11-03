@@ -1,4 +1,4 @@
-buildscript {
+/*buildscript {
 	repositories {
 		mavenCentral()
 	}
@@ -37,4 +37,4 @@ subprojects {
 	test {
 		useJUnitPlatform()
 	}
-}
+}*/

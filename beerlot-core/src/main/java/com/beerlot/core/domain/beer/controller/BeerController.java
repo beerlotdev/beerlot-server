@@ -65,4 +65,9 @@ public class BeerController implements BeerApi, BeerLikeApi {
             return new ResponseEntity<>(e.getErrorCode().getStatus());
         }
     }
+
+    @Override
+    public ResponseEntity<List<BeerResponse>> findTop10Beers() {
+        return new ResponseEntity<>(beerService.findTop10Beers(), HttpStatus.OK);
+    }
 }

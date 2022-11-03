@@ -83,5 +83,4 @@ sourceSets.main.java {
 
 tasks.openApiGenerate.dependsOn tasks.openApiValidate
 compileJava.dependsOn tasks.openApiGenerate
-bootRun.dependsOn tasks.openApiGenerate
 
