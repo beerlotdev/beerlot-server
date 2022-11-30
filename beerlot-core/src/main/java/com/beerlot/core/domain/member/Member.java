@@ -1,7 +1,10 @@
 package com.beerlot.core.domain.member;
 
+import com.beerlot.api.generated.model.MemberCreateRequest;
+import com.beerlot.core.domain.auth.ProviderType;
 import com.beerlot.core.domain.common.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +19,7 @@ public class Member extends BaseEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -38,5 +41,15 @@ public class Member extends BaseEntity {
 
     @Column(name = "status_message")
     private String statusMessage;
+
+    @Builder
+    public Member(String email, String username, ProviderType providerType, RoleType roleType, String imageUrl, String statusMessage) {
+        this.email = email;
+        this.username = username;
+        this.providerType = providerType;
+        this.roleType = roleType;
+        this.imageUrl = imageUrl;
+        this.statusMessage = statusMessage;
+    }
 }
 
