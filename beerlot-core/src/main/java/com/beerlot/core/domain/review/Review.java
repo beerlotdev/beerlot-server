@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "review")
 public class Review extends BaseEntity {
     @Id
-    @Column(name = "review_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
