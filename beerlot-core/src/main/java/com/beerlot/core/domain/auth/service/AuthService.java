@@ -1,12 +1,10 @@
 package com.beerlot.core.domain.auth.service;
 
 import com.beerlot.api.generated.model.MemberCreateRequest;
-import com.beerlot.core.domain.auth.RefreshToken;
 import com.beerlot.core.domain.auth.jwt.TokenService;
 import com.beerlot.core.domain.auth.oauth.GoogleOAuthTokenResponse;
 import com.beerlot.core.domain.auth.oauth.OAuthProvider;
 import com.beerlot.core.domain.auth.oauth.OAuthUser;
-import com.beerlot.core.domain.common.CookieUtil;
 import com.beerlot.core.domain.member.Member;
 import com.beerlot.core.domain.member.service.MemberService;
 import com.beerlot.core.exception.ConflictException;

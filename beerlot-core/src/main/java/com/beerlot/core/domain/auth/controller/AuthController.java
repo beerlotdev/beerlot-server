@@ -28,11 +28,11 @@ public class AuthController implements AuthApi {
     private Map<String, OAuthProvider> oAuthProviders;
 
     @Override
-    public ResponseEntity<Void> authorize(String providerType) {
-        ProviderType _providerType = ProviderType.valueOf(providerType.toUpperCase());
+    public ResponseEntity<Void> authorize(ProviderType providerType) {
+        //ProviderType _providerType = ProviderType.valueOf(providerType.toUpperCase());
         String location = null;
 
-        switch(_providerType) {
+        switch(providerType) {
             case GOOGLE:
                 location = authService.redirect(oAuthProviders.get("GoogleOAuthProvider"));
         }
@@ -44,9 +44,9 @@ public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<Void> login(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      String providerType, String code) {
-        ProviderType _providerType = ProviderType.valueOf(providerType.toUpperCase());
+                                                   HttpServletResponse response,
+                                                   String providerType, String code) {
+        ProviderType _providerType = ProviderType.valueOf(providerType.toString().toUpperCase());
 
         String location = null;
 
@@ -57,6 +57,7 @@ public class AuthController implements AuthApi {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", location);
+
         return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
     }
 
@@ -65,7 +66,13 @@ public class AuthController implements AuthApi {
                                        HttpServletResponse response,
                                        MemberCreateRequest memberCreateRequest) {
         try {
-            String location = authService.signUp(request, response, memberCreateRequest);
+            ProviderType providerType = memberCreateRequest.getProviderType();
+
+            String location = null;
+            switch(providerType) {
+                case GOOGLE:
+                    location = authService.signUp(request, response, memberCreateRequest);
+            }
 
             HttpHeaders headers = new HttpHeaders();
             headers.add("Location", location);

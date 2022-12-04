@@ -25,7 +25,7 @@ public class MemberService {
                 .email(memberCreateRequest.getEmail())
                 .username(memberCreateRequest.getUsername())
                 .imageUrl(memberCreateRequest.getImageUrl())
-                .providerType(ProviderType.valueOf(memberCreateRequest.getProviderType()))
+                .providerType(memberCreateRequest.getProviderType())
                 .roleType(RoleType.GENERAL)
                 .statusMessage(memberCreateRequest.getStatusMessage())
                 .build();
