@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.auth;
+package com.beerlot.core.domain.auth.security.jwt;
 
 import com.beerlot.core.domain.common.BaseEntity;
 import lombok.AccessLevel;
@@ -18,15 +18,15 @@ import java.util.Date;
 @Table(name = "refresh_token")
 public class RefreshToken extends BaseEntity {
     @Id
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "oauth_id", nullable = false, unique = true)
+    private String oauthId;
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
     @Builder
-    public RefreshToken(String email, String token) {
-        this.email = email;
+    public RefreshToken(String oauthId, String token) {
+        this.oauthId = oauthId;
         this.token = token;
         setCreatedAt(new Date());
     }

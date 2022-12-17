@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.auth;
+package com.beerlot.core.domain.auth.security.jwt;
 
 import lombok.Getter;
 
