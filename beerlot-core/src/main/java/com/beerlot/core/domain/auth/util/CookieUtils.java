@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.common;
+package com.beerlot.core.domain.auth.util;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

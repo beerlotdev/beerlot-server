@@ -48,22 +48,14 @@ public class BeerController implements BeerApi, BeerLikeApi {
 
     @Override
     public ResponseEntity<Void> createBeerLike(Long beerId) {
-        try {
-            beerLikeService.likeBeer(beerId);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (ConflictException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        beerLikeService.likeBeer(beerId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Void> deleteBeerLike(Long beerId) {
-        try {
-            beerLikeService.unlikeBeer(beerId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        beerLikeService.unlikeBeer(beerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override

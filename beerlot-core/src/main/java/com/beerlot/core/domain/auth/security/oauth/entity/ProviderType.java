@@ -1,6 +1,5 @@
-package com.beerlot.core.domain.auth.security.oauth;
+package com.beerlot.core.domain.auth.security.oauth.entity;
 
-import com.beerlot.core.domain.auth.security.oauth.OAuthUserPrincipal;
 import com.beerlot.core.domain.member.RoleType;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.auth.security.jwt.util;
+package com.beerlot.core.domain.auth.security.jwt.service;
 
 import com.beerlot.core.config.JwtConfig;
 import com.beerlot.core.domain.member.RoleType;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Component
 @Getter
 @Slf4j
-public class JwtUtils {
+public class JwtService {
 
     private final JwtConfig jwtConfig;
 
@@ -31,7 +31,7 @@ public class JwtUtils {
 
     private Key key;
 
-    public JwtUtils(JwtConfig jwtConfig) {
+    public JwtService(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
         this.issuer = jwtConfig.getIssuer();
         this.key = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes());
@@ -66,24 +66,7 @@ public class JwtUtils {
     }
 
     public Claims getClaims(String jwt) {
-        try {
-            return getJwtParser().parseClaimsJws(jwt).getBody();
-        } catch (SecurityException e) {
-            log.debug("Invalid JWT Signature.");
-            throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
-        } catch (MalformedJwtException e) {
-            log.debug("Invalid JWT token.");
-            throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
-        } catch (ExpiredJwtException e) {
-            log.debug("Expired JWT token.");
-            throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
-        } catch (UnsupportedJwtException e) {
-            log.debug("Unsupported JWT token.");
-            throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
-        } catch (IllegalArgumentException e) {
-            log.debug("JWT token compact of handler are invalid.");
-            throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
-        }
+        return getJwtParser().parseClaimsJws(jwt).getBody();
     }
 
     private JwtParser getJwtParser() {

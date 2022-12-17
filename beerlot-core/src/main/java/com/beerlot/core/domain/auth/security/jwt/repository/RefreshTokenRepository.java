@@ -1,6 +1,6 @@
-package com.beerlot.core.domain.auth.jwt.repository;
+package com.beerlot.core.domain.auth.security.jwt.repository;
 
-import com.beerlot.core.domain.auth.RefreshToken;
+import com.beerlot.core.domain.auth.security.jwt.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

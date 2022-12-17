@@ -1,37 +1,32 @@
 package com.beerlot.core.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-public enum ErrorCode {
-    BEER_NOT_FOUND(HttpStatus.NOT_FOUND, "BR001", "Beer does not exist."),
+@RequiredArgsConstructor
+public enum ErrorMessage {
+    BEER_NOT_FOUND("Beer does not exist."),
 
-    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "RV001", "Review does not exist."),
+    REVIEW_NOT_FOUND("Review does not exist."),
 
-    BEER_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "BL001", "User has not liked Beer."),
-    BEER_LIKE_CONFLICT(HttpStatus.CONFLICT, "BL002", "User already liked Beer."),
+    BEER_LIKE_NOT_FOUND("User has not liked Beer."),
+    BEER_LIKE_CONFLICT("User already liked Beer."),
 
-    REVIEW_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "RL001", "User has not liked Review."),
-    REVIEW_LIKE_CONFLICT(HttpStatus.CONFLICT, "RL002", "User already liked Review."),
+    REVIEW_LIKE_NOT_FOUND("User has not liked Review."),
+    REVIEW_LIKE_CONFLICT("User already liked Review."),
 
-    TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "TG001", "Tag does not exist."),
+    TAG_NOT_FOUND("Tag does not exist."),
 
-    MEMBER_ALREADY_EXIST(HttpStatus.CONFLICT, "MB001", "Member already exist."),
-    MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MB002", "Member does not exist."),
+    MEMBER__ALREADY_SIGNED_UP("Member already signed up."),
+    MEMBER__NOT_EXIST("Member does not exist."),
 
-    MEMBER_REFRESH_TOKEN_NOT_EXIST(HttpStatus.NOT_FOUND, "MR001", "Member refresh token does not exist."),
+    MEMBER_REFRESH_TOKEN_NOT_EXIST("Member refresh token does not exist."),
+    TOKEN__INVALID("Invalid token."),
+    TOKEN__NOT_EXPIRED_YET("Token is not expired yet."),
+    TOKEN__EXPIRED("Token is expired."),
 
-    UNAUTHORIZED_REDIRECT_URI(HttpStatus.UNAUTHORIZED, "OA001", "Redirect URI is authorized.");
+    UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized.");
 
-
-    private HttpStatus status;
-    private String code;
-    private String message;
-
-    ErrorCode(HttpStatus status, String code, String message) {
-        this.status = status;
-        this.code = code;
-        this.message = message;
-    }
+    private final String message;
 }

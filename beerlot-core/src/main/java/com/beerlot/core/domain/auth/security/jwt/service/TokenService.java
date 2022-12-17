@@ -1,12 +1,11 @@
-package com.beerlot.core.domain.auth.jwt.service;
+package com.beerlot.core.domain.auth.security.jwt.service;
 
 import com.beerlot.api.generated.model.AccessTokenResponse;
-import com.beerlot.core.domain.auth.AccessTokenResponseHelper;
-import com.beerlot.core.domain.auth.jwt.util.JwtUtils;
-import com.beerlot.core.domain.auth.jwt.TokenResponse;
-import com.beerlot.core.domain.auth.oauth.OAuthUserPrincipal;
-import com.beerlot.core.domain.auth.RefreshToken;
-import com.beerlot.core.domain.auth.jwt.repository.RefreshTokenRepository;
+import com.beerlot.core.domain.auth.dto.helper.AccessTokenResponseHelper;
+import com.beerlot.core.domain.auth.security.jwt.repository.RefreshTokenRepository;
+import com.beerlot.core.domain.auth.security.jwt.dto.TokenResponse;
+import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.core.domain.auth.security.jwt.entity.RefreshToken;
 import com.beerlot.core.domain.auth.util.CookieUtils;
 import com.beerlot.core.domain.member.Member;
 import com.beerlot.core.domain.member.RoleType;
@@ -37,10 +36,9 @@ public class TokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberService memberService;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtService;
 
     private final long THREE_DAYS_IN_MILLISECOND = 259200000;
-    private final int REFRESH_TOKEN_COOKIE_EXPIRY_IN_SECOND = (int) jwtUtils.getRefreshTokenExpiryInMillisecond() / 60000;
 
     public TokenResponse generateToken(Authentication authentication) {
         OAuthUserPrincipal userPrincipal = (OAuthUserPrincipal) authentication.getPrincipal();
@@ -53,11 +51,11 @@ public class TokenService {
     }
 
     public String generateRefreshToken(String oauthId, String email, Set<RoleType> roles) {
-        return jwtUtils.createJwt(oauthId, email, roles);
+        return jwtService.createJwt(oauthId, email, roles);
     }
 
     public String generateAccessToken(String email, Set<RoleType> roles) {
-        return jwtUtils.createJwt(null, email, roles);
+        return jwtService.createJwt(null, email, roles);
     }
 
     public void createRefreshToken(RefreshToken refreshToken) {
@@ -73,7 +71,7 @@ public class TokenService {
                                             String name,
                                             String refreshToken) {
         CookieUtils.deleteCookie(request, response, name);
-        CookieUtils.addCookie(response, name, refreshToken, REFRESH_TOKEN_COOKIE_EXPIRY_IN_SECOND);
+        CookieUtils.addCookie(response, name, refreshToken, (int) jwtService.getRefreshTokenExpiryInMillisecond() / 60000);
     }
 
     public AccessTokenResponse refreshTokens(HttpServletRequest request, HttpServletResponse response, String accessToken) {
@@ -89,7 +87,7 @@ public class TokenService {
             throw new IllegalArgumentException(ErrorMessage.TOKEN__NOT_EXPIRED_YET.getMessage());
         }
 
-        String oauthId = jwtUtils.getClaims(accessToken).get("oauthId").toString();
+        String oauthId = jwtService.getClaims(accessToken).get("oauthId").toString();
         Member member = memberService.findMemberByOauthId(oauthId)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
 
@@ -107,7 +105,7 @@ public class TokenService {
             throw new IllegalArgumentException(ErrorMessage.TOKEN__INVALID.getMessage());
         }
 
-        Claims claims = jwtUtils.getClaims(refreshToken);
+        Claims claims = jwtService.getClaims(refreshToken);
         String oauthId = claims.get("oauthId").toString();
 
         RefreshToken refreshTokenFromDb = refreshTokenRepository.findByOauthId(oauthId).get();
@@ -120,13 +118,13 @@ public class TokenService {
             refreshTokenFromDb.updateRefreshToken(newRefreshToken);
 
             CookieUtils.deleteCookie(request, response, COOKIE_NAME_REDIRECT_URL);
-            CookieUtils.addCookie(response, COOKIE_NAME_REDIRECT_URL, refreshTokenFromDb.getToken(), REFRESH_TOKEN_COOKIE_EXPIRY_IN_SECOND);
+            CookieUtils.addCookie(response, COOKIE_NAME_REDIRECT_URL, refreshTokenFromDb.getToken(), (int) jwtService.getRefreshTokenExpiryInMillisecond() / 60000);
         }
     }
 
     private boolean isAccessTokenValidated(String accessToken) {
         try {
-            Claims claims = jwtUtils.getClaims(accessToken);
+            Claims claims = jwtService.getClaims(accessToken);
             return claims.getExpiration().after(new Date());
         } catch (MalformedJwtException e) {
             throw new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage());
@@ -137,7 +135,7 @@ public class TokenService {
 
     private boolean isRefreshTokenValidated(String refreshTokenFromCookie) {
         try {
-            Claims claims = jwtUtils.getClaims(refreshTokenFromCookie);
+            Claims claims = jwtService.getClaims(refreshTokenFromCookie);
             String oauthId = claims.get("oauthId").toString();
             RefreshToken refreshTokenFromDb = refreshTokenRepository.findByOauthId(oauthId)
                     .orElseThrow(() -> new MalformedJwtException(ErrorMessage.TOKEN__INVALID.getMessage()));
