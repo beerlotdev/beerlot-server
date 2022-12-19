@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "review")
 public class Review extends BaseEntity {
     @Id
-    @Column(name = "review_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -32,14 +32,6 @@ public class Review extends BaseEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private Date createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")

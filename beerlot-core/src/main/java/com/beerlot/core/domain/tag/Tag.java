@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tag_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name_en", nullable = false, unique = true)

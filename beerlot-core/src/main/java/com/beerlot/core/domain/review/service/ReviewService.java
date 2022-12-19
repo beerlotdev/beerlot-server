@@ -12,7 +12,7 @@ import com.beerlot.core.domain.review.repository.ReviewRepository;
 import com.beerlot.core.domain.review.util.ReviewResponseHelper;
 import com.beerlot.core.domain.review.util.page.ReviewPage;
 import com.beerlot.core.domain.review.util.sort.ReviewSortType;
-import com.beerlot.core.exception.ErrorCode;
+import com.beerlot.core.exception.ErrorMessage;
 import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -93,13 +93,13 @@ public class ReviewService {
 
     private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
-            throw new NotFoundException(ErrorCode.BEER_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.BEER_NOT_FOUND);
         }
     }
 
     private void checkReviewExist(Long reviewId) {
         if (!reviewRepository.existsById(reviewId)) {
-            throw new NotFoundException(ErrorCode.REVIEW_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
         }
     }
 }

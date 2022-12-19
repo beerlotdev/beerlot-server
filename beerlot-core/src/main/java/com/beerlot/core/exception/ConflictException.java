@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class ConflictException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ErrorMessage errorMessage;
 
-    public ConflictException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public ConflictException(ErrorMessage errorMessage) {
+        super(errorMessage.getMessage());
+        this.errorMessage = errorMessage;
     }
 }

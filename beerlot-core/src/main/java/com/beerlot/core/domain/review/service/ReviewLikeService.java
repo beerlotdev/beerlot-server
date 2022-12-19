@@ -1,12 +1,11 @@
 package com.beerlot.core.domain.review.service;
 
-import com.beerlot.core.domain.beer.BeerLike;
 import com.beerlot.core.domain.member.repository.MemberRepository;
 import com.beerlot.core.domain.review.ReviewLike;
 import com.beerlot.core.domain.review.repository.ReviewLikeRepository;
 import com.beerlot.core.domain.review.repository.ReviewRepository;
 import com.beerlot.core.exception.ConflictException;
-import com.beerlot.core.exception.ErrorCode;
+import com.beerlot.core.exception.ErrorMessage;
 import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,15 +42,15 @@ public class ReviewLikeService {
 
     public void checkReviewExist(Long reviewId) {
         if (!reviewRepository.existsById(reviewId)) {
-            throw new NotFoundException(ErrorCode.REVIEW_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
         }
     }
 
     private void checkReviewLikeExist(Long reviewId, Long memberId, boolean isPositive) {
         if (isPositive && reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
-            throw new ConflictException(ErrorCode.REVIEW_LIKE_CONFLICT);
+            throw new ConflictException(ErrorMessage.REVIEW_LIKE_CONFLICT);
         } else if (!isPositive && !reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
-            throw new NotFoundException(ErrorCode.REVIEW_LIKE_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.REVIEW_LIKE_NOT_FOUND);
         }
     }
 }

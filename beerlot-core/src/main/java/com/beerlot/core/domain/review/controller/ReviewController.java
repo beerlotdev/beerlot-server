@@ -37,69 +37,42 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
 
     @Override
     public ResponseEntity<Void> createReviewLike(Long reviewId) {
-        try {
-            reviewLikeService.likeReview(reviewId);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (ConflictException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        reviewLikeService.likeReview(reviewId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Void> deleteReviewLike(Long reviewId) {
-        try {
-            reviewLikeService.unlikeReview(reviewId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        reviewLikeService.unlikeReview(reviewId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
     @Override
     public ResponseEntity<Void> createReview(Long beerId, ReviewCreateRequest reviewCreateRequest) {
-        try {
-            reviewService.createReview(beerId, reviewCreateRequest);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        reviewService.createReview(beerId, reviewCreateRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Void> deleteReview(Long reviewId) {
-        try {
-            reviewService.deleteReview(reviewId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        reviewService.deleteReview(reviewId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
     public ResponseEntity<ReviewPage> findReviewsByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
-        try {
-            return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size, sort), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size, sort), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReviewResponse> findReviewById(Long reviewId) {
-        try {
-            return new ResponseEntity<>(reviewService.findById(reviewId), HttpStatus.OK);
-        } catch(NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        return new ResponseEntity<>(reviewService.findById(reviewId), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReviewResponse> updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest) {
-        try {
-            return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewUpdateRequest), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getErrorCode().getStatus());
-        }
+        return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewUpdateRequest), HttpStatus.OK);
     }
 
     @Override

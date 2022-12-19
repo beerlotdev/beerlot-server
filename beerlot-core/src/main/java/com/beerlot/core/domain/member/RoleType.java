@@ -1,6 +1,11 @@
 package com.beerlot.core.domain.member;
 
+import lombok.Getter;
+
+@Getter
 public enum RoleType {
-    GENERAL,
-    ADMIN;
+    ROLE_GUEST,
+    ROLE_MEMBER,
+    ROLE_ADMIN;
+
 }

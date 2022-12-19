@@ -33,8 +33,12 @@ dependencies {
     implementation 'org.openapitools:openapi-generator-gradle-plugin:6.1.0'
     implementation 'org.jasypt:jasypt:1.9.3'
     implementation 'org.springframework.cloud:spring-cloud-gcp-starter-sql-postgresql:1.2.8.RELEASE'
-    implementation 'org.springframework.security:spring-security-config:5.7.3'
-    implementation 'org.springframework.security:spring-security-web:5.7.3'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
     annotationProcessor (
@@ -57,6 +61,7 @@ openApiGenerate {
     outputDir = openApiOutputDir.toString()
     apiPackage = 'com.beerlot.api.generated.api'
     modelPackage = 'com.beerlot.api.generated.model'
+    templateDir = "$projectDir/spec/template"
     configOptions = [
             dateLibrary: 'java11',
             useTags: 'true',
@@ -68,7 +73,8 @@ openApiGenerate {
             'BeerPage': 'com.beerlot.core.domain.beer.util.page.BeerPage',
             'ReviewPage': 'com.beerlot.core.domain.review.util.page.ReviewPage',
             'BeerSortType': 'com.beerlot.core.domain.beer.util.sort.BeerSortType',
-            'ReviewSortType': 'com.beerlot.core.domain.review.util.sort.ReviewSortType'
+            'ReviewSortType': 'com.beerlot.core.domain.review.util.sort.ReviewSortType',
+            'ProviderType': 'com.beerlot.core.domain.auth.security.oauth.entity.ProviderType'
     ]
 }
 

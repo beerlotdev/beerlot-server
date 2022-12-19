@@ -1,3 +1,6 @@
 [submodule "beerlot-core/spec"]
 	path = beerlot-core/spec
 	url = git@github.com:beerlot/beerlot-spec.git
+[submodule "beerlot-core/src/main/resources/secret"]
+	path = beerlot-core/src/main/resources/secret
+	url = git@github.com:beerlot/beerlot-server-secret.git
