@@ -20,6 +20,18 @@ public enum ProviderType {
                 .roles(Set.of(RoleType.ROLE_GUEST))
                 .build();
         return userPrincipal;
+    }),
+
+    NAVER("naver", (attributes) -> {
+        OAuthUserPrincipal userPrincipal = OAuthUserPrincipal.builder()
+                .id(attributes.get("id").toString())
+                .email(attributes.get("email").toString())
+                .username(attributes.get("name").toString())
+                .imageUrl(attributes.get("profile_image").toString())
+                .provider("naver")
+                .roles(Set.of(RoleType.ROLE_GUEST))
+                .build();
+        return userPrincipal;
     });
 
     private final String registrationId;
@@ -30,7 +42,11 @@ public enum ProviderType {
         this.oAuthUserPrincipal = oAuthUserPrincipal;
     }
 
-    public static OAuthUserPrincipal getOAuthUser(String registrationId, Map<String, Object> attributes) {
+    public static OAuthUserPrincipal getOAuthUser(String registrationId, Map<String, Object> attributes, String nameAttributeKey) {
+        if (registrationId.equals("naver")) {
+            attributes = (Map<String, Object>) attributes.get(nameAttributeKey);
+        }
+
         return Arrays.stream(values())
                 .filter(provider -> registrationId.equals(provider.registrationId))
                 .findFirst()

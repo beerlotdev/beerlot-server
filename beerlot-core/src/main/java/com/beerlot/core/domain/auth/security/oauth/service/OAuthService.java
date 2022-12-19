@@ -28,9 +28,10 @@ public class OAuthService extends DefaultOAuth2UserService {
         // 2: Get oauth user information attributes
         OAuth2User oAuth2User = super.loadUser(userRequest);
         Map<String, Object> attributes = oAuth2User.getAttributes();
+        String nameAttributeKey = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         // 3: Get member profile out of attributes
-        OAuthUserPrincipal oAuthUserPrincipal = ProviderType.getOAuthUser(registrationId, attributes);
+        OAuthUserPrincipal oAuthUserPrincipal = ProviderType.getOAuthUser(registrationId, attributes, nameAttributeKey);
 
         // 4: Check if registered user
         Optional<Member> memberOptional = memberService.findMemberByOauthId(oAuthUserPrincipal.getId());
