@@ -3,4 +3,4 @@
 	url = git@github.com:beerlot/beerlot-spec.git
 [submodule "beerlot-core/src/main/resources/secret"]
 	path = beerlot-core/src/main/resources/secret
-	url = git@github.com-devujin:beerlot/beerlot-server-secret.git
+	url = git@github.com:beerlot/beerlot-server-secret.git
