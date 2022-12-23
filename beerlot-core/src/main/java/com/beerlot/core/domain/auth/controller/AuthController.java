@@ -1,11 +1,11 @@
 package com.beerlot.core.domain.auth.controller;
 
-import com.beerlot.api.generated.model.MemberCreateRequest;
 import com.beerlot.core.domain.auth.dto.response.AccessTokenResponse;
 import com.beerlot.core.domain.auth.security.jwt.service.TokenService;
 import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.util.HeaderUtils;
 import com.beerlot.core.domain.member.Member;
+import com.beerlot.core.domain.member.dto.request.MemberRequest;
 import com.beerlot.core.domain.member.service.MemberService;
 import com.beerlot.core.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +41,11 @@ public class AuthController implements AuthApi {
 
     @Override
     @PreAuthorize("hasRole('ROLE_GUEST')")
-    public ResponseEntity<Void> signUp(MemberCreateRequest memberCreateRequest) {
+    public ResponseEntity<Void> signUp(MemberRequest memberRequest) {
 
         Member member = getAuthenticatedMember();
         try {
-            memberService.signUpMember(member, memberCreateRequest);
+            memberService.signUpMember(member, memberRequest);
         } catch (NoSuchElementException e) {
             log.debug(e.getMessage());
         }

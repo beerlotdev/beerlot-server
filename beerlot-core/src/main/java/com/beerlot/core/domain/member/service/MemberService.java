@@ -1,9 +1,9 @@
 package com.beerlot.core.domain.member.service;
 
-import com.beerlot.api.generated.model.MemberCreateRequest;
 import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.member.Member;
 import com.beerlot.core.domain.member.RoleType;
+import com.beerlot.core.domain.member.dto.request.MemberRequest;
 import com.beerlot.core.domain.member.repository.MemberRepository;
 import com.beerlot.core.exception.ErrorMessage;
 import com.beerlot.core.exception.NotFoundException;
@@ -53,14 +53,14 @@ public class MemberService {
         return memberRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.MEMBER__NOT_EXIST));
     }
 
-    public void signUpMember(Member member, MemberCreateRequest memberCreateRequest) {
+    public void signUpMember(Member member, MemberRequest memberRequest) {
         if (member.getRoles().contains(RoleType.ROLE_MEMBER)) {
             throw new IllegalStateException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
         }
 
-        member.updateUsername(memberCreateRequest.getUsername());
-        member.updateStatusMessage(memberCreateRequest.getStatusMessage());
-        member.updateImageUrl(memberCreateRequest.getImageUrl());
+        member.updateUsername(memberRequest.getUsername());
+        member.updateStatusMessage(memberRequest.getStatusMessage());
+        member.updateImageUrl(memberRequest.getImageUrl());
         member.addRole(RoleType.ROLE_MEMBER);
     }
 }

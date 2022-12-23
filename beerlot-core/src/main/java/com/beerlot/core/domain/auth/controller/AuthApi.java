@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.auth.controller;
 
-import com.beerlot.api.generated.model.MemberCreateRequest;
 import com.beerlot.core.domain.auth.dto.response.AccessTokenResponse;
+import com.beerlot.core.domain.member.dto.request.MemberRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface AuthApi {
 
     @PatchMapping("/signup")
-    ResponseEntity<Void> signUp(@RequestBody MemberCreateRequest memberCreateRequest);
+    ResponseEntity<Void> signUp(@RequestBody MemberRequest memberRequest);
 
     @GetMapping("/refresh")
     ResponseEntity<AccessTokenResponse> refreshToken(HttpServletRequest request,
