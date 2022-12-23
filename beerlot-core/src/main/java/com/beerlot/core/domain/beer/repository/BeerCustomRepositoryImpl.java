@@ -1,6 +1,7 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.api.generated.model.BeerResponse;
+import com.beerlot.core.domain.beer.QBeer;
+import com.beerlot.core.domain.beer.dto.response.BeerResponse;
 import com.beerlot.core.domain.common.entity.LanguageType;
 import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.domain.common.page.PageCustomCustomImpl;
@@ -18,7 +19,6 @@ import java.util.List;
 import static com.beerlot.core.domain.beer.QBeer.beer;
 import static com.beerlot.core.domain.beer.QBeerInternational.beerInternational;
 import static com.beerlot.core.domain.category.QCategory.category;
-import static com.beerlot.core.domain.tag.QBeerTag.beerTag;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,7 +35,6 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                         ))
                 .from(beer)
                 .innerJoin(beer.beerInternationals, beerInternational)
-                .innerJoin(beer.beerTags, beerTag)
                 .innerJoin(beer.category, category)
                 .where(
                         matchLanguage(language),
@@ -50,14 +49,14 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         List<BeerResponse> beerResponseList = query
                 .limit(pageRequest.getSize())
                 .offset(pageRequest.getOffset())
-                .orderBy(pageRequest.getSort().orderBy())
+                .orderBy(pageRequest.getSort().orderBy(QBeer.class))
                 .fetch();
 
         return new PageCustomCustomImpl<>(beerResponseList, pageRequest, totalElements);
     }
 
     private BooleanExpression matchLanguage(LanguageType language) {
-        return beerInternational.language.stringValue().eq(language.toString());
+        return beerInternational.id.language.stringValue().eq(language.toString());
     }
 
     private BooleanExpression hasKeyword(String keyword) {

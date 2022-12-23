@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.common;
+package com.beerlot.core.domain.common.entity;
 
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;

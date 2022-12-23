@@ -1,34 +1,43 @@
 package com.beerlot.core.domain.beer.service;
 
-import com.beerlot.api.generated.model.BeerResponse;
+import com.beerlot.core.domain.beer.Beer;
+import com.beerlot.core.domain.beer.BeerInternational;
+import com.beerlot.core.domain.beer.BeerInternationalId;
+import com.beerlot.core.domain.beer.BeerSortType;
+import com.beerlot.core.domain.beer.dto.response.BeerResponse;
+import com.beerlot.core.domain.beer.repository.BeerInternationalRepository;
 import com.beerlot.core.domain.beer.repository.BeerRepository;
-import com.beerlot.core.domain.beer.util.BeerResponseHelper;
-import com.beerlot.core.domain.beer.util.sort.BeerSortType;
-import com.beerlot.core.domain.category.repository.CategoryRepository;
 import com.beerlot.core.domain.common.entity.LanguageType;
 import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.beerlot.core.exception.ErrorMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BeerService {
 
-    @Autowired
-    private BeerRepository beerRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final BeerRepository beerRepository;
+    private final BeerInternationalRepository beerInternationalRepository;
 
     @Transactional(readOnly = true)
-    public BeerResponse findBeerById(Long id) {
-        return BeerResponseHelper.of(beerRepository.findById(id).get());
+    public BeerResponse findBeerByIdAndLanguage(Long id, LanguageType language) {
+        Beer beer = findBeerById(id);
+        BeerInternational beerInternational = findBeerInternationalByKey(id, language);
+        return BeerResponse.of(beer, beerInternational);
     }
+
+    // TODO: Implement BeerSimpleResponse.of and map
+    /*public List<BeerSimpleResponse> findTop10Beers() {
+        List<BeerSimpleResponse> beerResponseList = beerRepository.findTop10ByOrderByLikeCountDesc().stream().map(BeerResponse::of).collect(Collectors.toList());
+        return beerResponseList;
+    }*/
 
     @Transactional(readOnly = true)
     public PageCustom<BeerResponse> findBeersBySearch(LanguageType language, String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size, BeerSortType sort) {
@@ -36,8 +45,15 @@ public class BeerService {
         return beerRepository.findBySearch(language, keyword, categoryIds, countries, volumes, pageRequest);
     }
 
-    public List<BeerResponse> findTop10Beers() {
-        List<BeerResponse> beerResponseList = beerRepository.findTop10ByOrderByLikeCountDesc().stream().map(BeerResponseHelper::of).collect(Collectors.toList());
-        return beerResponseList;
+    @Transactional(readOnly = true)
+    private Beer findBeerById(Long id) {
+        return beerRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.BEER__NOT_EXIST.getMessage()));
+    }
+
+    @Transactional(readOnly = true)
+    private BeerInternational findBeerInternationalByKey(Long id, LanguageType language) {
+        return beerInternationalRepository.findById(new BeerInternationalId(id, language))
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.BEER_INTERNATIONAL__NOT_EXIST.getMessage()));
     }
 }

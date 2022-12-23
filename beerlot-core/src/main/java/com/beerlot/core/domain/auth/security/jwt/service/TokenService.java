@@ -1,11 +1,10 @@
 package com.beerlot.core.domain.auth.security.jwt.service;
 
-import com.beerlot.api.generated.model.AccessTokenResponse;
-import com.beerlot.core.domain.auth.dto.helper.AccessTokenResponseHelper;
-import com.beerlot.core.domain.auth.security.jwt.repository.RefreshTokenRepository;
+import com.beerlot.core.domain.auth.dto.response.AccessTokenResponse;
 import com.beerlot.core.domain.auth.security.jwt.dto.TokenResponse;
-import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.security.jwt.entity.RefreshToken;
+import com.beerlot.core.domain.auth.security.jwt.repository.RefreshTokenRepository;
+import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.util.CookieUtils;
 import com.beerlot.core.domain.member.Member;
 import com.beerlot.core.domain.member.RoleType;
@@ -79,7 +78,7 @@ public class TokenService {
 
         validateAndGenerateNewRefreshToken(request, response);
 
-        return AccessTokenResponseHelper.of(newAccessToken);
+        return AccessTokenResponse.of(newAccessToken);
         }
 
     private String validateAndGenerateNewAccessToken(String accessToken) {

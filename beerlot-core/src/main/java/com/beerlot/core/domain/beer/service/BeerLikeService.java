@@ -42,7 +42,7 @@ public class BeerLikeService {
 
     private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
-            throw new NotFoundException(ErrorMessage.BEER_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.BEER__NOT_EXIST);
         }
     }
 

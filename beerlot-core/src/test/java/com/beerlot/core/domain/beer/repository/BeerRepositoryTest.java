@@ -1,15 +1,11 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.api.generated.model.BeerResponse;
 import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.core.config.QueryDslConfig;
 import com.beerlot.core.domain.beer.Beer;
-import com.beerlot.core.domain.beer.Country;
-import com.beerlot.core.domain.beer.util.sort.BeerSortType;
+import com.beerlot.core.domain.beer.BeerSortType;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
-import com.beerlot.core.domain.tag.BeerTag;
-import com.beerlot.core.domain.tag.Tag;
 import com.beerlot.core.domain.common.page.PageCustom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,16 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Import(QueryDslConfig.class)
 public class BeerRepositoryTest extends BaseRepositoryTest {
-    @Autowired
+    /*@Autowired
     BeerRepository beerRepository;
 
     Beer beerBigwave;
     Beer beerMaineBeerDinner;
     Category categoryAmericanBlondeAle;
     Category categoryImperialIPA;
-    Tag tagCitra;
-    BeerTag beerTagBigwaveCitra;
-    BeerTag beerTagMaineBeerDinnerCitra;
 
     @BeforeEach
     public void setUp() {
@@ -50,12 +43,6 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
                 .nameEn("Imperial IPA")
                 .description("Imperial IPA is bla bla.")
                 .parent(null)
-                .build());
-
-        tagCitra = save(Tag.builder()
-                .nameKo("시트라")
-                .nameEn("Citra")
-                .description("Citra is blah blah.")
                 .build());
 
         beerBigwave = save(Beer.builder()
@@ -176,6 +163,6 @@ public class BeerRepositoryTest extends BaseRepositoryTest {
             assertEquals(2, pageCustom.getTotalPages());
             assertEquals(2, pageCustom.getTotalElements());
         }
-    }
+    }*/
 }
 

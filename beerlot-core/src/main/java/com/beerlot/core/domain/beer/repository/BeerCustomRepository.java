@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.api.generated.model.BeerResponse;
+import com.beerlot.core.domain.beer.dto.response.BeerResponse;
 import com.beerlot.core.domain.common.entity.LanguageType;
 import com.beerlot.core.domain.common.page.PageCustom;
 import com.beerlot.core.domain.common.page.PageCustomRequest;
