@@ -1,8 +1,8 @@
 package com.beerlot.core.domain.beer.dto.response;
 
-import com.beerlot.api.generated.model.CategorySupResponse;
 import com.beerlot.core.domain.beer.Beer;
 import com.beerlot.core.domain.beer.BeerInternational;
+import com.beerlot.core.domain.category.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
@@ -33,14 +33,13 @@ public class BeerResponse {
 
     @Builder
     public BeerResponse(Long id, String name, String description, String originCountry, String originCity,
-                        Float volume, String imageUrl, CategorySupResponse category, Long likeCount, Long reviewCount,
+                        Float volume, String imageUrl, Long likeCount, Long reviewCount,
                         Float rate) {
         this.beerSimpleResponse = BeerSimpleResponse.builder()
                 .id(id)
                 .name(name)
                 .originCountry(originCountry)
                 .imageUrl(imageUrl)
-                .category(category.getName())
                 .build();
         this.description = description;
         this.originCity = originCity;

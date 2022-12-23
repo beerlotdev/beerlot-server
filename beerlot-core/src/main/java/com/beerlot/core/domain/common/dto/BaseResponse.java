@@ -1,12 +1,13 @@
 package com.beerlot.core.domain.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.DateTime;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Date;
 
 @Embeddable
 @Getter
@@ -14,8 +15,8 @@ import java.io.Serializable;
 public class BaseResponse implements Serializable {
 
     @JsonProperty("created_at")
-    private DateTime createdAt;
+    private Date createdAt;
 
     @JsonProperty("updated_at")
-    private DateTime updatedAt;
+    private Date updatedAt;
 }

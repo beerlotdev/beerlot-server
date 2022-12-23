@@ -3,8 +3,6 @@ package com.beerlot.core.domain.beer;
 import com.beerlot.core.domain.category.Category;
 import com.beerlot.core.domain.common.entity.BaseEntity;
 import com.beerlot.core.domain.review.Review;
-import com.beerlot.core.domain.tag.BeerTag;
-import com.beerlot.core.domain.tag.Tag;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,9 +34,6 @@ public class Beer extends BaseEntity {
     private Category category;
 
     @OneToMany(mappedBy = "beer")
-    private List<BeerTag> beerTags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "beer")
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "beer")
@@ -52,10 +47,6 @@ public class Beer extends BaseEntity {
 
     @Column(name = "rate", columnDefinition = "float default 0.0")
     private float rate = 0F;
-
-    public List<Tag> getTags() {
-        return this.beerTags.stream().map(BeerTag::getTag).collect(Collectors.toList());
-    }
 
     public void likeBeer() {
         this.likeCount += 1;

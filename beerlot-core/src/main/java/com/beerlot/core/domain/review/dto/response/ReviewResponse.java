@@ -3,8 +3,10 @@ package com.beerlot.core.domain.review.dto.response;
 import com.beerlot.core.domain.common.dto.BaseResponse;
 import com.beerlot.core.domain.review.Review;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
-import org.joda.time.DateTime;
+
+import java.util.Date;
 
 public class ReviewResponse extends BaseResponse {
 
@@ -28,7 +30,7 @@ public class ReviewResponse extends BaseResponse {
 
     @Builder
     public ReviewResponse(Long id, String content, String imageUrl, Float rate, Long likeCount, Long beerId,
-                          DateTime createdAt, DateTime updatedAt) {
+                          Date createdAt, Date updatedAt) {
         this.id = id;
         this.content = content;
         this.imageUrl = imageUrl;
@@ -47,8 +49,8 @@ public class ReviewResponse extends BaseResponse {
                 .rate(review.getRate())
                 .likeCount(review.getLikeCount())
                 .beerId(review.getBeer().getId())
-                .createdAt(getCreatedAt())
-                .updatedAt(getUpdatedAt())
+                .createdAt(review.getCreatedAt())
+                .updatedAt(review.getUpdatedAt())
                 .build();
     }
 }

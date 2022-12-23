@@ -3,8 +3,8 @@
 
 ### Gradle ###
 .gradle
-**/build/
-!src/**/build/
-!gradle-wrapper.jar
-!gradle-wrapper.properties
-.gradletasknamecache
+!gradle/wrapper
+**/gradle/wrapper
+
+!**/src/main/**/build/
+!**/src/test/**/build/
