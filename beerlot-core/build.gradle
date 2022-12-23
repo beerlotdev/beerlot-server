@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-    id "org.openapi.generator" version "6.1.0"
 }
 
 group = 'com.beerlot'
@@ -30,7 +29,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.3'
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.openapitools:openapi-generator-gradle-plugin:6.1.0'
     implementation 'org.jasypt:jasypt:1.9.3'
     implementation 'org.springframework.cloud:spring-cloud-gcp-starter-sql-postgresql:1.2.8.RELEASE'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -52,34 +50,4 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-def openApiSpecFile = "$projectDir/spec/beerlot-api-spec.yaml"
-def openApiOutputDir = "$buildDir/generated"
-
-openApiGenerate {
-    generatorName = 'spring'
-    inputSpec = openApiSpecFile.toString()
-    outputDir = openApiOutputDir.toString()
-    apiPackage = 'com.beerlot.api.generated.api'
-    modelPackage = 'com.beerlot.api.generated.model'
-    templateDir = "$projectDir/spec/template"
-    configOptions = [
-            dateLibrary: 'java11',
-            useTags: 'true',
-            interfaceOnly: 'true',
-            hideGenerationTimestamp: 'true',
-            useBeanValidation: 'false'
-    ]
-}
-
-openApiValidate {
-    inputSpec = openApiSpecFile.toString()
-    recommend = true
-}
-
-sourceSets.main.java {
-    srcDir "${buildDir}/generated/src/main/java"
-}
-
-tasks.openApiGenerate.dependsOn tasks.openApiValidate
-compileJava.dependsOn tasks.openApiGenerate
 
