@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.beer.util.sort;
 
 import com.beerlot.core.domain.beer.QBeer;
-import com.beerlot.core.domain.common.SortType;
+import com.beerlot.core.domain.common.entity.SortType;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;

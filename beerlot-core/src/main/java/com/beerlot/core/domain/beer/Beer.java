@@ -25,19 +25,6 @@ public class Beer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_en", nullable = false, unique = true)
-    private String nameEn;
-
-    @Column(name = "name_ko", nullable = false, unique = true)
-    private String nameKo;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "country", nullable = false)
-    private Country country;
-
     @Column(name = "volume", nullable = false)
     private Float volume;
 
@@ -53,6 +40,9 @@ public class Beer extends BaseEntity {
 
     @OneToMany(mappedBy = "beer")
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "beer")
+    private List<BeerInternational> beerInternationals = new ArrayList<>();
 
     @Column(name = "like_count", columnDefinition = "int default 0")
     private long likeCount = 0L;
@@ -88,13 +78,9 @@ public class Beer extends BaseEntity {
     }
 
     @Builder
-    public Beer(Long id, String nameEn, String nameKo, String description, Float volume, Country country, Category category, String imageUrl) {
+    public Beer(Long id, Float volume, Category category, String imageUrl) {
         this.id = id;
-        this.nameEn = nameEn;
-        this.nameKo = nameKo;
-        this.description = description;
         this.volume = volume;
-        this.country = country;
         this.category = category;
         this.imageUrl = imageUrl;
     }

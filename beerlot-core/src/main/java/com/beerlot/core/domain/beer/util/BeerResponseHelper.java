@@ -14,10 +14,6 @@ public class BeerResponseHelper {
         BeerResponse beerResponse = new BeerResponse();
 
         beerResponse.setId(beer.getId());
-        beerResponse.setNameEn(beer.getNameEn());
-        beerResponse.setNameKo(beer.getNameKo());
-        beerResponse.setDescription(beer.getDescription());
-        beerResponse.setCountry(CountryResponseHelper.of(beer.getCountry()));
         beerResponse.setVolume(beer.getVolume());
         beerResponse.setImageUrl(beer.getImageUrl());
         beerResponse.setCategory(CategoryResponseHelper.of(beer.getCategory()));

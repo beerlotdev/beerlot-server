@@ -1,4 +1,4 @@
-package com.beerlot.core.domain.common;
+package com.beerlot.core.domain.common.entity;
 
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.data.domain.Sort;

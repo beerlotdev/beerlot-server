@@ -74,7 +74,8 @@ openApiGenerate {
             'ReviewPage': 'com.beerlot.core.domain.review.util.page.ReviewPage',
             'BeerSortType': 'com.beerlot.core.domain.beer.util.sort.BeerSortType',
             'ReviewSortType': 'com.beerlot.core.domain.review.util.sort.ReviewSortType',
-            'ProviderType': 'com.beerlot.core.domain.auth.security.oauth.entity.ProviderType'
+            'ProviderType': 'com.beerlot.core.domain.auth.security.oauth.entity.ProviderType',
+            'LanguageCode': 'com.beerlot.core.domain.common.entity.LanguageCode'
     ]
 }
 

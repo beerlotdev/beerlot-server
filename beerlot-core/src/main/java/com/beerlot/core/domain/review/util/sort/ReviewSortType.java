@@ -1,12 +1,11 @@
 package com.beerlot.core.domain.review.util.sort;
 
-import com.beerlot.core.domain.common.SortType;
+import com.beerlot.core.domain.common.entity.SortType;
 import com.beerlot.core.domain.review.QReview;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
-import jnr.ffi.Struct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;

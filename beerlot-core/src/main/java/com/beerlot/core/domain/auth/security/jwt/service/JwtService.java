@@ -2,10 +2,8 @@ package com.beerlot.core.domain.auth.security.jwt.service;
 
 import com.beerlot.core.config.JwtConfig;
 import com.beerlot.core.domain.member.RoleType;
-import com.beerlot.core.exception.ErrorMessage;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

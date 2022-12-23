@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.common.page;
 
-import com.beerlot.core.domain.common.SortType;
+import com.beerlot.core.domain.common.entity.SortType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -26,7 +26,9 @@ public enum ErrorMessage {
     TOKEN__NOT_EXPIRED_YET("Token is not expired yet."),
     TOKEN__EXPIRED("Token is expired."),
 
-    UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized.");
+    UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized."),
+
+    LANGUAGE_INVALID("Language code is invalid or not supported.");
 
     private final String message;
 }

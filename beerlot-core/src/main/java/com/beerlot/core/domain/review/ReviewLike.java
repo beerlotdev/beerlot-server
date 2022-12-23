@@ -1,7 +1,5 @@
 package com.beerlot.core.domain.review;
 
-import com.beerlot.core.domain.beer.Beer;
-import com.beerlot.core.domain.beer.BeerLikeId;
 import com.beerlot.core.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;

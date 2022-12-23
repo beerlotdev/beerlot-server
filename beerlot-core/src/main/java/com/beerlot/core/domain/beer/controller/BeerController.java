@@ -7,9 +7,8 @@ import com.beerlot.core.domain.beer.service.BeerLikeService;
 import com.beerlot.core.domain.beer.service.BeerService;
 import com.beerlot.core.domain.beer.util.sort.BeerSortType;
 import com.beerlot.core.domain.beer.util.page.BeerPage;
+import com.beerlot.core.domain.common.entity.LanguageType;
 import com.beerlot.core.domain.common.page.PageCustom;
-import com.beerlot.core.exception.ConflictException;
-import com.beerlot.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +35,18 @@ public class BeerController implements BeerApi, BeerLikeApi {
     }
 
     @Override
-    public ResponseEntity<BeerResponse> findBeerById(Long beerId) {
+    public ResponseEntity<BeerResponse> findBeerById(LanguageType language, Long beerId) {
+        LanguageType.validate(language);
         return new ResponseEntity<>(beerService.findBeerById(beerId), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<BeerPage> findBeersBySearch(Integer page, Integer size, BeerSortType sort, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
-        PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumes, page, size, sort);
+    public ResponseEntity<BeerPage> findBeersBySearch(LanguageType language, Integer page, Integer size, BeerSortType sort, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
+        LanguageType.validate(language);
+        PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(language, keyword, categories, countries, volumes, page, size, sort);
+        if (beerResponsePage.getContents().size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getTotalElements()), HttpStatus.OK);
     }
 
@@ -59,7 +63,7 @@ public class BeerController implements BeerApi, BeerLikeApi {
     }
 
     @Override
-    public ResponseEntity<List<BeerResponse>> findTop10Beers() {
+    public ResponseEntity<List<BeerResponse>> findTop10Beers(LanguageType language) {
         return new ResponseEntity<>(beerService.findTop10Beers(), HttpStatus.OK);
     }
 }
