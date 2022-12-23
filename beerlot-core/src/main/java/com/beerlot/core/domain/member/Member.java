@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.member;
 
 import com.beerlot.core.domain.auth.security.oauth.entity.ProviderType;
-import com.beerlot.core.domain.common.BaseEntity;
+import com.beerlot.core.domain.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

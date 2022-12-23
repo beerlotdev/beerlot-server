@@ -65,7 +65,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/api/v1/members/signup").hasAnyAuthority(String.valueOf(RoleType.ROLE_GUEST))
-                    .antMatchers(HttpMethod.GET, "/api/v1/beers/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/**/beers/**").permitAll()
                     .anyRequest().authenticated();
                 //.and()
                 //.oauth2ResourceServer().jwt()

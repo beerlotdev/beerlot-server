@@ -1,7 +1,7 @@
 package com.beerlot.core.domain.auth.security.oauth.filter;
 
-import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.security.jwt.service.JwtService;
+import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.util.HeaderUtils;
 import com.beerlot.core.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;

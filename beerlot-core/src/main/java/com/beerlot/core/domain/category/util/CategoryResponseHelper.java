@@ -10,8 +10,7 @@ public class CategoryResponseHelper {
         CategorySupResponse categorySupResponse = new CategorySupResponse();
 
         categorySupResponse.setId(category.getId());
-        categorySupResponse.setNameKo(category.getNameKo());
-        categorySupResponse.setNameEn(category.getNameEn());
+        categorySupResponse.setName(category.getNameEn());
         categorySupResponse.setDescription(category.getDescription());
         categorySupResponse.setParent(category.getParent() == null ? null : CategoryResponseHelper.of(category.getParent()));
 

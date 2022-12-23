@@ -7,7 +7,7 @@ import com.beerlot.core.domain.member.RoleType;
 import com.beerlot.core.domain.member.repository.MemberRepository;
 import com.beerlot.core.exception.ErrorMessage;
 import com.beerlot.core.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +16,10 @@ import java.util.Set;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);

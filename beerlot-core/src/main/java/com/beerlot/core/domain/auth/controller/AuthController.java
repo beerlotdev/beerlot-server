@@ -1,8 +1,7 @@
 package com.beerlot.core.domain.auth.controller;
 
-import com.beerlot.api.generated.api.AuthApi;
-import com.beerlot.api.generated.model.AccessTokenResponse;
 import com.beerlot.api.generated.model.MemberCreateRequest;
+import com.beerlot.core.domain.auth.dto.response.AccessTokenResponse;
 import com.beerlot.core.domain.auth.security.jwt.service.TokenService;
 import com.beerlot.core.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.core.domain.auth.util.HeaderUtils;
@@ -27,6 +26,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController implements AuthApi {
+
     private final MemberService memberService;
     private final TokenService tokenService;
 

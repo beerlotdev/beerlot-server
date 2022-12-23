@@ -1,18 +1,15 @@
 package com.beerlot.core.domain.review;
 
-import com.beerlot.api.generated.model.ReviewUpdateRequest;
 import com.beerlot.core.domain.beer.Beer;
-import com.beerlot.core.domain.common.BaseEntity;
+import com.beerlot.core.domain.common.entity.BaseEntity;
 import com.beerlot.core.domain.member.Member;
+import com.beerlot.core.domain.review.dto.request.ReviewRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -61,9 +58,9 @@ public class Review extends BaseEntity {
         this.member = member;
     }
 
-    public void updateModel(ReviewUpdateRequest reviewUpdateRequest) {
-        this.content = reviewUpdateRequest.getContent();
-        this.rate = reviewUpdateRequest.getRate();
-        this.imageUrl = reviewUpdateRequest.getImageUrl();
+    public void updateModel(ReviewRequest reviewURequest) {
+        this.content = reviewURequest.getContent();
+        this.rate = reviewURequest.getRate();
+        this.imageUrl = reviewURequest.getImageUrl();
     }
 }

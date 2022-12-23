@@ -1,6 +1,6 @@
 package com.beerlot.core.domain.auth.security.jwt.entity;
 
-import com.beerlot.core.domain.common.BaseEntity;
+import com.beerlot.core.domain.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
