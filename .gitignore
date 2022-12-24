@@ -1,10 +1,11 @@
 ### Intellij ###
-.idea/
+.idea
 
 ### Gradle ###
-.gradle
-!gradle/wrapper
-**/gradle/wrapper
+**/.gradle
+**/build
 
-!**/src/main/**/build/
-!**/src/test/**/build/
+### GCP ###
+**/beerlot-dev-363211.json
+
+beerlot-core/init.sql

@@ -1,1 +1,0 @@
-# beerlot-server-secret
