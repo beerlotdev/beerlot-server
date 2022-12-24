@@ -1,21 +1,8 @@
 package com.beerlot.core.domain.beer.repository;
 
 import com.beerlot.core.common.BaseRepositoryTest;
-import com.beerlot.core.config.QueryDslConfig;
-import com.beerlot.core.domain.beer.Beer;
-import com.beerlot.core.domain.beer.BeerSortType;
-import com.beerlot.core.domain.category.Category;
-import com.beerlot.core.domain.common.page.PageCustomRequest;
-import com.beerlot.core.domain.common.page.PageCustom;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.beerlot.config.QueryDslConfig;
 import org.springframework.context.annotation.Import;
-
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
