@@ -3,7 +3,7 @@
 
 ### Gradle ###
 **/.gradle
-**/build
+/**/build
 
 ### GCP ###
 **/beerlot-dev-363211.json
