@@ -58,7 +58,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd beerlot-api
-          docker build -t asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/beerlot-api-image:${{ github.sha }} .
+          docker build -t asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/beerlot-api-image:${{ github.sha }} -f Dockerfile-dev .
 
       - name: Push to Artifact Repository
         run:
