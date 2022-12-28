@@ -69,5 +69,5 @@ jobs:
           gcloud run deploy beerlot-api \
             --region ${{ secrets.GCP_REGION }} \
             --image asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/beerlot-api-image:${{ github.sha }} \
-            --cpu 1
+            --cpu 1 \
             --memory 1024Mi
