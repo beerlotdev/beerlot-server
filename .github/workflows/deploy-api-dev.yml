@@ -3,8 +3,8 @@ name: Deploy API on DEV
 on:
   push:
     branches:
-      - dev
-      -
+      - develop
+      
   workflow_dispatch:
     inputs:
       environment:
