@@ -5,13 +5,6 @@ on:
     branches:
       - develop
       - fix
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment'
-        type: environment
-        default: 'dev'
-        required: true
 
 permissions:
   id-token: 'write'
@@ -31,7 +24,7 @@ jobs:
   deploy:
     name: 'Build Docker Image & Deploy'
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: dev
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
