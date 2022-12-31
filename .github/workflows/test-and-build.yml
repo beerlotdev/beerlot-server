@@ -15,35 +15,26 @@ permissions:
   contents: read
 
 jobs:
-  job_information:
-    name: 'Job Information'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Start Job Information'
-        run: |
-          echo "CI workflow"
-          echo "Selected branch: " ${{ github.ref_name }}
-
-  build:
+  test_and_build:
     name: 'Gradle Test & Build'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
         with:
+          submodules: true
           token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }}
-          submodules: recursive
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
       - name: Gradle Test and Build
         run: |
-          cd beerlot-core
+          cd beerlot-api
           ./gradlew clean build

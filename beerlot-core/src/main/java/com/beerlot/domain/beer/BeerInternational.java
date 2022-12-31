@@ -37,10 +37,15 @@ public class BeerInternational {
     @Builder
     public BeerInternational(Beer beer, LanguageType language, String name, String description, String originCountry, String originCity) {
         this.id = new BeerInternationalId(beer.getId(), language);
-        this.beer = beer;
         this.name = name;
         this.description = description;
         this.originCountry = originCountry;
         this.originCity = originCity;
+        setBeer(beer);
+    }
+
+    public void setBeer(Beer beer) {
+        this.beer = beer;
+        beer.getBeerInternationals().add(this);
     }
 }

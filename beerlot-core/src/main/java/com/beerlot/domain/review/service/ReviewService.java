@@ -12,7 +12,6 @@ import com.beerlot.domain.review.dto.response.ReviewPage;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.repository.ReviewRepository;
 import com.beerlot.exception.ErrorMessage;
-import com.beerlot.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -38,9 +38,8 @@ public class ReviewService {
     private MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public ReviewResponse findById(Long reviewId) {
-        checkReviewExist(reviewId);
-        return ReviewResponse.of(reviewRepository.findById(reviewId).get());
+    public ReviewResponse findReviewById(Long reviewId) {
+        return ReviewResponse.of(findById(reviewId));
     }
 
     @Transactional(readOnly = true)
@@ -68,21 +67,20 @@ public class ReviewService {
     }
 
     public ReviewResponse updateReview(Long reviewId, ReviewRequest reviewRequest) {
-        checkReviewExist(reviewId);
-        Review review = reviewRepository.findById(reviewId).get();
+        Review review = findById(reviewId);
         review.updateModel(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
         return ReviewResponse.of(review);
     }
 
     public void deleteReview(Long reviewId) {
-        checkReviewExist(reviewId);
-        Review review = reviewRepository.findById(reviewId).get();
+        Review review = findById(reviewId);
         review.getBeer().removeReview();
         review.getBeer().calculateRate(0 - review.getRate());
         reviewRepository.delete(review);
     }
 
+    @Transactional(readOnly = true)
     public ReviewPage findAllReviews(Integer page, Integer size, ReviewSortType sort) {
         PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
         Page<Review> reviewPage = reviewRepository.findAll((Pageable) PageRequest.of(page-1, size, SortTypeHelper.sortBy(true, sort)));
@@ -90,15 +88,15 @@ public class ReviewService {
         return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
     private void checkBeerExist(Long beerId) {
         if (!beerRepository.existsById(beerId)) {
-            throw new NotFoundException(ErrorMessage.BEER__NOT_EXIST);
+            throw new NoSuchElementException(ErrorMessage.BEER__NOT_EXIST.getMessage());
         }
     }
 
-    private void checkReviewExist(Long reviewId) {
-        if (!reviewRepository.existsById(reviewId)) {
-            throw new NotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
-        }
+    @Transactional(readOnly = true)
+    public Review findById(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(NoSuchElementException::new);
     }
 }

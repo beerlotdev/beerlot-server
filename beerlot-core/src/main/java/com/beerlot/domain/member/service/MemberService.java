@@ -36,7 +36,7 @@ public class MemberService {
                 .username(oAuthUser.getUsername())
                 .imageUrl(oAuthUser.getImageUrl())
                 .provider(oAuthUser.getProvider())
-                .roles(Set.of(RoleType.ROLE_GUEST))
+                .roles(Set.of(RoleType.GUEST))
                 .build();
         return memberRepository.save(member);
     }
@@ -54,13 +54,13 @@ public class MemberService {
     }
 
     public void signUpMember(Member member, MemberRequest memberRequest) {
-        if (member.getRoles().contains(RoleType.ROLE_MEMBER)) {
+        if (member.getRoles().contains(RoleType.MEMBER)) {
             throw new IllegalStateException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
         }
 
         member.updateUsername(memberRequest.getUsername());
         member.updateStatusMessage(memberRequest.getStatusMessage());
         member.updateImageUrl(memberRequest.getImageUrl());
-        member.addRole(RoleType.ROLE_MEMBER);
+        member.addRole(RoleType.MEMBER);
     }
 }

@@ -37,7 +37,7 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
 
     @Override
     public ResponseEntity<ReviewResponse> findReviewById(Long reviewId) {
-        return new ResponseEntity<>(reviewService.findById(reviewId), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.findReviewById(reviewId), HttpStatus.OK);
     }
 
     @Override

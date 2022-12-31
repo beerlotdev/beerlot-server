@@ -6,11 +6,11 @@ import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationSuccess
 import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.repository.OAuthAuthorizationRequestCookieRepository;
 import com.beerlot.domain.auth.security.oauth.service.OAuthService;
-import com.beerlot.domain.member.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -64,8 +65,10 @@ public class SecurityConfig {
 
         http
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/v1/members/signup").hasAnyAuthority(String.valueOf(RoleType.ROLE_GUEST))
-                    .antMatchers(HttpMethod.GET, "/api/v1/**/beers/**").permitAll()
+                    .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
+                    .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
+                    .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
+                    .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
                     .anyRequest().authenticated();
                 //.and()
                 //.oauth2ResourceServer().jwt()

@@ -8,6 +8,8 @@ import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +25,12 @@ public class BeerController implements BeerApi, BeerLikeApi {
 
 
     @Override
-    public ResponseEntity<BeerResponse> findBeerById(Long beerId, LanguageType language) {
-        LanguageType.validate(language);
-        return new ResponseEntity<>(beerService.findBeerByIdAndLanguage(beerId, language), HttpStatus.OK);
+    public ResponseEntity<BeerResponse> findBeerById(Long beerId, String language) {
+        LanguageType _language = LanguageType.toEnum(language);
+        return new ResponseEntity<>(beerService.findBeerByIdAndLanguage(beerId, _language), HttpStatus.OK);
     }
 
+    /*TODO: Implement*/
     @Override
     public ResponseEntity<List<BeerResponse>> findTop10Beers(LanguageType language) {
         return new ResponseEntity<>(HttpStatus.OK);
@@ -37,7 +40,7 @@ public class BeerController implements BeerApi, BeerLikeApi {
     public ResponseEntity<BeerPage> findBeersBySearch(LanguageType language, Integer page, Integer size, BeerSortType sort, String keyword, List<Long> categories, List<String> countries, List<Integer> volumes) {
         LanguageType.validate(language);
         PageCustom<BeerResponse> beerResponsePage = beerService.findBeersBySearch(language, keyword, categories, countries, volumes, page, size, sort);
-        if (beerResponsePage.getContents().size() == 0) {
+        if (beerResponsePage.getContents().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getTotalElements()), HttpStatus.OK);

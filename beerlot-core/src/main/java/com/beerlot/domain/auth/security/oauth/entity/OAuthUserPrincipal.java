@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-public class OAuthUserPrincipal implements OAuth2User {
+public class OAuthUserPrincipal implements OAuth2User, UserDetails {
     private String id;
     private String email;
     private String username;
@@ -42,7 +43,32 @@ public class OAuthUserPrincipal implements OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(x -> new SimpleGrantedAuthority(x.toString())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString())).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     @Override

@@ -17,7 +17,7 @@ public enum ProviderType {
                 .username(attributes.get("name").toString())
                 .imageUrl(attributes.get("picture").toString())
                 .provider("google")
-                .roles(Set.of(RoleType.ROLE_GUEST))
+                .roles(Set.of(RoleType.GUEST))
                 .build();
         return userPrincipal;
     }),
@@ -29,7 +29,7 @@ public enum ProviderType {
                 .username(attributes.get("name").toString())
                 .imageUrl(attributes.get("profile_image").toString())
                 .provider("naver")
-                .roles(Set.of(RoleType.ROLE_GUEST))
+                .roles(Set.of(RoleType.GUEST))
                 .build();
         return userPrincipal;
     });
