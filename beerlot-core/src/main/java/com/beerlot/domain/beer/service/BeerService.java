@@ -46,7 +46,7 @@ public class BeerService {
     }
 
     @Transactional(readOnly = true)
-    private Beer findBeerById(Long id) {
+    public Beer findBeerById(Long id) {
         return beerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.BEER__NOT_EXIST.getMessage()));
     }

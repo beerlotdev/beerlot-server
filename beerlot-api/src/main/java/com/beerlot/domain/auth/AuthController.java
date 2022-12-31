@@ -1,5 +1,6 @@
 package com.beerlot.domain.auth;
 
+import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.dto.response.AccessTokenResponse;
 import com.beerlot.domain.auth.security.jwt.service.TokenService;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
@@ -33,22 +34,17 @@ public class AuthController implements AuthApi {
     @PreAuthorize("hasRole('ROLE_GENERAL')")
     public ResponseEntity<AccessTokenResponse> refreshToken(HttpServletRequest request,
                                                             HttpServletResponse response,
+                                                            Member member,
                                                             String bearerToken) {
         String accessToken = HeaderUtils.getAccessToken(bearerToken);
         return new ResponseEntity<>(tokenService.refreshTokens(request, response, accessToken), HttpStatus.OK);
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_GUEST')")
-    public ResponseEntity<Void> signUp(MemberRequest memberRequest) {
-
-        Member member = getAuthenticatedMember();
-        try {
-            memberService.signUpMember(member, memberRequest);
-        } catch (NoSuchElementException e) {
-            log.debug(e.getMessage());
-        }
+    public ResponseEntity<Void> signUp(Member member, MemberRequest memberRequest) {
+        memberService.signUpMember(member, memberRequest);
         return new ResponseEntity(HttpStatus.OK);
+
     }
 
     private Member getAuthenticatedMember() {

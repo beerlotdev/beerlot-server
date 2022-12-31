@@ -17,7 +17,7 @@ public interface BeerApi {
 
     @GetMapping("/{beerId}")
     ResponseEntity<BeerResponse> findBeerById(@PathVariable("beerId") Long beerId,
-                                              @RequestParam("language") LanguageType language);
+                                              @RequestParam("language") String language);
 
     @GetMapping("/top")
     ResponseEntity<List<BeerResponse>> findTop10Beers(@RequestParam("language") LanguageType language);

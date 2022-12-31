@@ -67,7 +67,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 
         Boolean isSignedUp = null;
 
-        if (userPrincipal.getRoles().contains(RoleType.ROLE_MEMBER)) {
+        if (userPrincipal.getRoles().contains(RoleType.MEMBER)) {
             refreshTokenOptional.get().updateRefreshToken(tokenResponse.getRefreshToken());
             isSignedUp = true;
         } else {

@@ -1,5 +1,6 @@
 package com.beerlot.domain.category;
 
+import com.beerlot.domain.beer.BeerInternational;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,15 +21,6 @@ public class Category {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name_en", nullable = false, unique = true)
-    private String nameEn;
-
-    @Column(name = "name_ko", nullable = false, unique = true)
-    private String nameKo;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
@@ -36,11 +28,11 @@ public class Category {
     @OneToMany(mappedBy = "parent")
     private List<Category> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category")
+    private List<CategoryInternational> categoryInternationals = new ArrayList<>();
+
     @Builder
-    public Category(String nameEn, String nameKo, String description, Category parent) {
-        this.nameEn = nameEn;
-        this.nameKo = nameKo;
-        this.description = description == null ? "" : description;
+    public Category(Category parent) {
         setParent(parent);
     }
 

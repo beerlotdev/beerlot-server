@@ -27,6 +27,7 @@ public enum ErrorMessage {
     // ===== Member ===== //
     MEMBER__ALREADY_SIGNED_UP("Member already signed up."),
     MEMBER__NOT_EXIST("Member does not exist."),
+    MEMBER__ACCESS_DENIED("Member does not have rights to access."),
 
     // ===== Token ===== //
     MEMBER_REFRESH_TOKEN_NOT_EXIST("Member refresh token does not exist."),

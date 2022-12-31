@@ -4,7 +4,11 @@ import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.service.MemberService;
+import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,11 +16,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class OAuthService extends DefaultOAuth2UserService {
+public class OAuthService extends DefaultOAuth2UserService implements UserDetailsService {
 
     private final MemberService memberService;
 
@@ -48,5 +53,12 @@ public class OAuthService extends DefaultOAuth2UserService {
             memberService.createMember(oAuthUserPrincipal);
             return oAuthUserPrincipal;
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberService.findMemberByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
+        return OAuthUserPrincipal.of(member);
     }
 }

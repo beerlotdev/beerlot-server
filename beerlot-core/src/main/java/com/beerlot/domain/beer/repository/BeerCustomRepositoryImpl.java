@@ -64,8 +64,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
             return null;
         }
         return beerInternational.description.contains(keyword)
-                .or(beerInternational.originCountry.contains(keyword))
-                .or(beer.category.description.contains(keyword));
+                .or(beerInternational.originCountry.contains(keyword));
     }
 
     private BooleanExpression hasCategories(List<Long> categoryIds) {
