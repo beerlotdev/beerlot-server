@@ -55,7 +55,7 @@ public class ReviewLikeService {
     @Transactional(readOnly = true)
     private void checkReviewLikeExist(Long reviewId, Long memberId, boolean isPositive) {
         if (isPositive && reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
-            throw new ConflictException(ErrorMessage.REVIEW_LIKE_CONFLICT);
+            throw new ConflictException(ErrorMessage.REVIEW_LIKE_CONFLICT.getMessage());
         } else if (!isPositive && !reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
             throw new NotFoundException(ErrorMessage.REVIEW_LIKE_NOT_FOUND);
         }

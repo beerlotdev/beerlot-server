@@ -1,9 +1,9 @@
 package com.beerlot.config;
 
+import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.filter.TokenAuthenticationEntryPoint;
 import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationFailureHandler;
 import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationSuccessHandler;
-import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.repository.OAuthAuthorizationRequestCookieRepository;
 import com.beerlot.domain.auth.security.oauth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +65,7 @@ public class SecurityConfig {
 
         http
                 .authorizeRequests()
+                    .antMatchers("swagger/**","/swagger-ui/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/configuration/**","/v3/api-docs/**", "/docs").permitAll()
                     .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
@@ -76,5 +77,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }

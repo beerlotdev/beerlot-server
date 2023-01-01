@@ -54,7 +54,7 @@ public class BeerLikeService {
 
     private void checkBeerLikeExist(Long beerId, Long memberId, boolean isPositive) {
         if (isPositive && beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
-            throw new ConflictException(ErrorMessage.BEER_LIKE_CONFLICT);
+            throw new ConflictException(ErrorMessage.BEER_LIKE_CONFLICT.getMessage());
         } else if (!isPositive && !beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
             throw new NoSuchElementException(ErrorMessage.BEER_LIKE_NOT_FOUND.getMessage());
         }

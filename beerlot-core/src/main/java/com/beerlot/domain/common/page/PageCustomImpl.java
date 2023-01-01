@@ -2,7 +2,7 @@ package com.beerlot.domain.common.page;
 
 import java.util.List;
 
-public class PageCustomCustomImpl<T> extends ChunkCustom<T> implements PageCustom<T> {
+public class PageCustomImpl<T> extends ChunkCustom<T> implements PageCustom<T> {
 
     private int size;
 
@@ -35,7 +35,7 @@ public class PageCustomCustomImpl<T> extends ChunkCustom<T> implements PageCusto
         return pageRequest;
     }
 
-    public PageCustomCustomImpl(List<T> contents, PageCustomRequest pageRequest, long totalElements) {
+    public PageCustomImpl(List<T> contents, PageCustomRequest pageRequest, long totalElements) {
         super(contents, pageRequest);
 
         this.size = pageRequest.getSize();

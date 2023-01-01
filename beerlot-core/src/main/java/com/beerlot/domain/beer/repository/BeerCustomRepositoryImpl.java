@@ -1,10 +1,11 @@
 package com.beerlot.domain.beer.repository;
 
 import com.beerlot.domain.beer.QBeer;
+import com.beerlot.domain.beer.dto.request.BeerSearchParam;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
-import com.beerlot.domain.common.page.PageCustomCustomImpl;
+import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -24,7 +25,7 @@ import static com.beerlot.domain.category.QCategory.category;
 @RequiredArgsConstructor
 public class BeerCustomRepositoryImpl implements BeerCustomRepository {
     private final JPAQueryFactory queryFactory;
-    public PageCustom<BeerResponse> findBySearch (LanguageType language, String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, PageCustomRequest pageRequest) {
+    public PageCustom<BeerResponse> findBySearch (BeerSearchParam beerSearchParam, LanguageType language, PageCustomRequest pageRequest) {
         JPAQuery<BeerResponse> query = queryFactory
                 .select(Projections.fields(BeerResponse.class,
                         beer.id,
@@ -38,10 +39,10 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                 .innerJoin(beer.category, category)
                 .where(
                         matchLanguage(language),
-                        hasKeyword(keyword),
-                        hasCategories(categoryIds),
-                        hasCountries(countries),
-                        hasVolumes(volumes)
+                        hasKeyword(beerSearchParam.getKeyword()),
+                        hasCategories(beerSearchParam.getCategories()),
+                        hasCountries(beerSearchParam.getCountries()),
+                        betweenVolumes(beerSearchParam.getVolumeMin(), beerSearchParam.getVolumeMax())
                 );
 
         long totalElements = query.fetch().size();
@@ -52,7 +53,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
                 .orderBy(pageRequest.getSort().orderBy(QBeer.class))
                 .fetch();
 
-        return new PageCustomCustomImpl<>(beerResponseList, pageRequest, totalElements);
+        return new PageCustomImpl<>(beerResponseList, pageRequest, totalElements);
     }
 
     private BooleanExpression matchLanguage(LanguageType language) {
@@ -77,8 +78,10 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         return beerInternational.originCountry.in(countries);
     }
 
-    private BooleanExpression hasVolumes(List<Integer> volumes) {
-        if (volumes == null) return null;
-        return beer.volume.castToNum(Integer.class).in(volumes);
+    private BooleanExpression betweenVolumes(Integer volumeMin, Integer volumeMax) {
+        if (volumeMin == null && volumeMax == null) return null;
+        Integer _volumeMin = volumeMin == null ? 0 : volumeMin;
+        Integer _volumeMax = volumeMax == null ? 100 : volumeMin;
+        return beer.volume.castToNum(Integer.class).between(_volumeMin, _volumeMax);
     }
 }

@@ -1,8 +1,5 @@
 package com.beerlot.domain.beer.controller;
 
-import com.beerlot.config.JwtConfig;
-import com.beerlot.config.SecurityConfig;
-import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.BeerInternational;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
@@ -10,10 +7,7 @@ import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.exception.ConflictException;
-import com.beerlot.exception.ErrorMessage;
 import com.beerlot.tool.fixture.Fixture;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

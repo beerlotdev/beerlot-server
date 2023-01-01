@@ -1,5 +1,6 @@
 package com.beerlot.annotation;
 
+import org.hibernate.annotations.Parameter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.lang.annotation.*;
