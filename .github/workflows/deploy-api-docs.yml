@@ -1,0 +1,36 @@
+name: Deploy API Documentation
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - feat/99-API-Documentation
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  deploy:
+
+    environments:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    name: Deploy API Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Upload Static Files as Artifact
+        uses: actions/upload-pages-artifact@v1
+        working-directory: beerlot-api
+        with:
+          path: './docs/'
+
+      - name: Deploy with GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@main
