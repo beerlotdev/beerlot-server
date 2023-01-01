@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,7 +68,6 @@ public class BeerControllerTest {
 
                 mockMvc.perform(get("/api/v1/beers/{beerId}", 1)
                                 .param("language", String.valueOf(LanguageType.KR))
-                                .with(csrf())
                         )
                         .andExpect(status().isOk());
             }
@@ -81,7 +79,6 @@ public class BeerControllerTest {
 
                 mockMvc.perform(get("/api/v1/beers/{beerId}", 2)
                                 .param("language", String.valueOf(LanguageType.KR))
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -111,7 +108,6 @@ public class BeerControllerTest {
                 doNothing().when(beerLikeService).likeBeer(isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 1)
-                                .with(csrf())
                         )
                         .andExpect(status().isCreated());
             }
@@ -122,7 +118,6 @@ public class BeerControllerTest {
                 doThrow(NoSuchElementException.class).when(beerLikeService).likeBeer(2L);
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 2)
-                            .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -133,7 +128,6 @@ public class BeerControllerTest {
                 doThrow(ConflictException.class).when(beerLikeService).likeBeer(1L);
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 1)
-                                .with(csrf())
                         )
                         .andExpect(status().isConflict());
             }
@@ -148,7 +142,6 @@ public class BeerControllerTest {
                 doNothing().when(beerLikeService).unlikeBeer(1L);
 
                 mockMvc.perform(delete("/api/v1/beers/{beerId}/likes", 1)
-                                .with(csrf())
                         )
                         .andExpect(status().isNoContent());
             }
@@ -159,7 +152,6 @@ public class BeerControllerTest {
                 doThrow(NoSuchElementException.class).when(beerLikeService).unlikeBeer(2L);
 
                 mockMvc.perform(delete("/api/v1/beers/{beerId}/likes", 2)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }

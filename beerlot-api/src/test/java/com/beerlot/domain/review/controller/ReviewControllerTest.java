@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,7 +80,6 @@ public class ReviewControllerTest {
                 mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
-                                .with(csrf())
                         )
                         .andExpect(status().isCreated());
             }
@@ -94,7 +92,6 @@ public class ReviewControllerTest {
                 mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -113,7 +110,6 @@ public class ReviewControllerTest {
                 mockMvc.perform(patch("/api/v1/reviews/{reviewId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
-                                .with(csrf())
                         )
                         .andExpect(status().isOk());
             }
@@ -127,7 +123,6 @@ public class ReviewControllerTest {
                 mockMvc.perform(patch("/api/v1/reviews/{reviewId}", 2)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -144,7 +139,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNoContent());
             }
@@ -156,7 +150,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}", 2)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -173,7 +166,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(get("/api/v1/reviews/{reviewId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isOk());
             }
@@ -185,7 +177,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(get("/api/v1/reviews/{reviewId}", 2)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -208,7 +199,6 @@ public class ReviewControllerTest {
                                 .param("size", "10")
                                 .param("sort", "MOST_LIKES")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isOk());
             }
@@ -224,7 +214,6 @@ public class ReviewControllerTest {
                                 .param("size", "10")
                                 .param("sort", "MOST_LIKES")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -247,7 +236,6 @@ public class ReviewControllerTest {
                                 .param("size", "10")
                                 .param("sort", "MOST_LIKES")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isOk());
             }
@@ -273,7 +261,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(post("/api/v1/reviews/1/likes")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isCreated());
             }
@@ -285,7 +272,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(post("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
@@ -297,7 +283,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(post("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isConflict());
             }
@@ -313,7 +298,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNoContent());
             }
@@ -325,7 +309,6 @@ public class ReviewControllerTest {
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf())
                         )
                         .andExpect(status().isNotFound());
             }
