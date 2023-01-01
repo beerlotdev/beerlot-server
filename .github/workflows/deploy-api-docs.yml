@@ -26,11 +26,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Upload Static Files as Artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Deploy to Github Pages
+        uses: manoelcampos/asciidoctor-ghpages-action@v2
         with:
-          path: 'beerlot-api/docs/'
-
-      - name: Deploy with GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@main
+          pdf_build: true
