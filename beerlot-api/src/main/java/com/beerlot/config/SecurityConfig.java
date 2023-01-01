@@ -65,6 +65,7 @@ public class SecurityConfig {
 
         http
                 .authorizeRequests()
+                    .antMatchers("swagger/**","/swagger-ui/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/configuration/**","/v3/api-docs/**", "/docs").permitAll()
                     .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
@@ -76,5 +77,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }

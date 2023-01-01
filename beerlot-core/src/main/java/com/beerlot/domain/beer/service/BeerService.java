@@ -4,6 +4,7 @@ import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.BeerInternational;
 import com.beerlot.domain.beer.BeerInternationalId;
 import com.beerlot.domain.beer.BeerSortType;
+import com.beerlot.domain.beer.dto.request.BeerSearchParam;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.repository.BeerInternationalRepository;
 import com.beerlot.domain.beer.repository.BeerRepository;
@@ -40,9 +41,8 @@ public class BeerService {
     }*/
 
     @Transactional(readOnly = true)
-    public PageCustom<BeerResponse> findBeersBySearch(LanguageType language, String keyword, List<Long> categoryIds, List<String> countries, List<Integer> volumes, int page, int size, BeerSortType sort) {
-        PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
-        return beerRepository.findBySearch(language, keyword, categoryIds, countries, volumes, pageRequest);
+    public PageCustom<BeerResponse> findBeersBySearch(BeerSearchParam beerSearchParam, LanguageType language, PageCustomRequest pageRequest) {
+        return beerRepository.findBySearch(beerSearchParam, language, pageRequest);
     }
 
     @Transactional(readOnly = true)

@@ -29,8 +29,8 @@ public class AuthController implements AuthApi {
     private final TokenService tokenService;
 
     @Override
-    @PreAuthorize("hasRole('ROLE_GENERAL')")
-    public ResponseEntity<AccessTokenResponse> refreshToken(HttpServletRequest request,
+    @PreAuthorize("hasRole('MEMBER')")
+    public ResponseEntity<AccessTokenResponse> refreshToken (HttpServletRequest request,
                                                             HttpServletResponse response,
                                                             Member member,
                                                             String bearerToken) {
@@ -39,7 +39,8 @@ public class AuthController implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<Void> signUp(Member member, MemberRequest memberRequest) {
+    @PreAuthorize("hasRole('GUEST')")
+    public ResponseEntity<Void> signUp (Member member, MemberRequest memberRequest) {
         memberService.signUpMember(member, memberRequest);
         return new ResponseEntity(HttpStatus.OK);
 

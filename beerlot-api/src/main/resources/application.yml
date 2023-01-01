@@ -1,0 +1,6 @@
+springdoc:
+  packagesToScan: com.beerlot
+  pathsToMatch: /api/v1/**
+  override-with-generic-response: false
+
+

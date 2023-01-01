@@ -5,6 +5,7 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.repository.MemberRepository;
+import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
 import com.beerlot.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class MemberService {
 
     public void signUpMember(Member member, MemberRequest memberRequest) {
         if (member.getRoles().contains(RoleType.MEMBER)) {
-            throw new IllegalStateException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
+            throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
         }
 
         member.updateUsername(memberRequest.getUsername());
