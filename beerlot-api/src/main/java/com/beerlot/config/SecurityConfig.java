@@ -1,9 +1,9 @@
 package com.beerlot.config;
 
+import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.filter.TokenAuthenticationEntryPoint;
 import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationFailureHandler;
 import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationSuccessHandler;
-import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.repository.OAuthAuthorizationRequestCookieRepository;
 import com.beerlot.domain.auth.security.oauth.service.OAuthService;
 import lombok.RequiredArgsConstructor;

@@ -2,12 +2,10 @@ package com.beerlot.domain.auth;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.dto.response.AccessTokenResponse;
-import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
