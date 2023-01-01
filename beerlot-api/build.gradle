@@ -65,5 +65,23 @@ test {
 asciidoctor {
 	inputs.dir snippetsDir
 	configurations 'asciidoctorExt'
+	sources {
+		include("**/index.adoc")
+	}
+	sourceDir 'docs'
 	dependsOn test
+}
+
+asciidoctor.doFirst {
+	delete file('docs/index.html')
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("docs")
+}
+
+build {
+	dependsOn copyDocument
 }
