@@ -65,9 +65,6 @@ test {
 asciidoctor {
 	inputs.dir snippetsDir
 	configurations 'asciidoctorExt'
-	sources {
-		include("**/index.adoc")
-	}
 	sourceDir 'docs'
 	dependsOn test
 }
