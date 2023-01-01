@@ -29,4 +29,5 @@ jobs:
       - name: Deploy to Github Pages
         uses: manoelcampos/asciidoctor-ghpages-action@v2
         with:
+          source_dir: ./beerlot-api/docs
           pdf_build: true
