@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class UnauthorizedException extends RuntimeException {
 
-    private final ErrorMessage errorMessage;
+    private final String message;
 
-    public UnauthorizedException(ErrorMessage errorMessage) {
-        super(errorMessage.getMessage());
-        this.errorMessage = errorMessage;
+    public UnauthorizedException(String message) {
+        super(message);
+        this.message = message;
     }
 }
