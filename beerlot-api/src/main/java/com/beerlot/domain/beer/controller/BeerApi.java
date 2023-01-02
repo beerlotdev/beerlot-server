@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Tag(name = "Beer API", description = "The Beer API.")
 @RequestMapping("/api/v1/beers")
 public interface BeerApi {
 
+    @Tag(name = "Beer API", description = "The Beer API.")
     @Operation(description = "Get one beer by ID")
     @ApiResponses(
             value = {
@@ -36,6 +36,7 @@ public interface BeerApi {
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
     );
 
+    @Tag(name = "Beer API", description = "The Beer API.")
     @Operation(description = "Get top 10 beers")
     @ApiResponses(
             value = {
@@ -47,6 +48,7 @@ public interface BeerApi {
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
     );
 
+    @Tag(name = "Beer API", description = "The Beer API.")
     @Operation(description = "Get beers filtered by search parameters")
     @ApiResponses(
             value = {
