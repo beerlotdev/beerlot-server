@@ -54,7 +54,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
                 .map(Cookie::getValue);
 
         if (redirectUrl.isPresent() && !isAuthorized(redirectUrl.get())) {
-            throw new UnauthorizedException(ErrorMessage.UNAUTHORIZED_REDIRECT_URI);
+            throw new UnauthorizedException(ErrorMessage.UNAUTHORIZED_REDIRECT_URI.getMessage());
         }
 
         String targetUrl = redirectUrl.orElse(getDefaultTargetUrl());

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @SecurityRequirement(name = "Bearer Authentication")
-@Tag(name = "Beer Like API", description = "The Beer Like API.")
 @RequestMapping("/api/v1/beers")
 public interface BeerLikeApi {
 
+    @Tag(name = "Beer Like API", description = "The Beer Like API.")
     @Operation(description = "Like the beer")
     @ApiResponses(
             value = {
@@ -32,6 +32,7 @@ public interface BeerLikeApi {
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId
     );
 
+    @Tag(name = "Beer Like API", description = "The Beer Like API.")
     @Operation(description = "Unlike the beer")
     @ApiResponses(
             value = {

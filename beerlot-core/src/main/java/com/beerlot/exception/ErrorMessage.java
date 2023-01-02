@@ -37,6 +37,7 @@ public enum ErrorMessage {
 
     // ===== Auth ===== //
     UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized."),
+    NO_AUTHORIZATION("No Authorization was found."),
 
     // ===== Etc ===== //
     LANGUAGE_INVALID("Language code is invalid or not supported.");
