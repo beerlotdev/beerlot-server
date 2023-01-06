@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,8 +27,9 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
-    public Optional<Member> findMemberByOauthId(String oauthId) {
-        return memberRepository.findByOauthId(oauthId);
+    public Member findMemberByOauthId(String oauthId) {
+        return memberRepository.findByOauthId(oauthId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
     }
 
     public Member createMember(OAuthUserPrincipal oAuthUser) {

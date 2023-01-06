@@ -85,8 +85,7 @@ public class TokenService {
         }
 
         String oauthId = jwtService.getClaims(accessToken).get("oauthId").toString();
-        Member member = memberService.findMemberByOauthId(oauthId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
+        Member member = memberService.findMemberByOauthId(oauthId);
 
         String newAccessToken = generateAccessToken(member.getEmail(), member.getRoles());
         return newAccessToken;
@@ -107,8 +106,7 @@ public class TokenService {
 
         RefreshToken refreshTokenFromDb = refreshTokenRepository.findByOauthId(oauthId).get();
 
-        Member member = memberService.findMemberByOauthId(oauthId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
+        Member member = memberService.findMemberByOauthId(oauthId);
 
         if (claims.getExpiration().getTime() - new Date().getTime() <= THREE_DAYS_IN_MILLISECOND) {
             String newRefreshToken = generateRefreshToken(member.getOauthId(), member.getEmail(), member.getRoles());
