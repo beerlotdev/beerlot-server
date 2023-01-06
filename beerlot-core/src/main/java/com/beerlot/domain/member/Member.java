@@ -2,6 +2,9 @@ package com.beerlot.domain.member;
 
 import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
 import com.beerlot.domain.common.entity.BaseEntity;
+import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.policy.PolicyType;
+import com.beerlot.domain.policy.PolicyTypeConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +42,10 @@ public class Member extends BaseEntity {
     @Column(name = "roles", nullable = false)
     private Set<RoleType> roles;
 
+    @Convert(converter = PolicyTypeConverter.class)
+    @Column(name = "agreed_policies")
+    private Set<PolicyType> agreedPolicies;
+
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -59,16 +66,15 @@ public class Member extends BaseEntity {
     public void updateEmail(String email) {
         this.email = email;
     }
-    public void updateUsername(String username) {
-        this.username = username;
+
+    public void updateAgreedPolicies(Set<PolicyType> agreedPolicies) {
+        this.agreedPolicies = agreedPolicies;
     }
 
-    public void updateStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
-    public void updateImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void updateMemberProfile (MemberRequest memberRequest) {
+        this.username = memberRequest.getUsername();
+        this.statusMessage = memberRequest.getStatusMessage();
+        this.imageUrl = memberRequest.getImageUrl();
     }
 
     public void addRole(RoleType role) {

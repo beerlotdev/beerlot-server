@@ -5,6 +5,7 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.repository.MemberRepository;
+import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
 import com.beerlot.exception.NotFoundException;
@@ -61,9 +62,10 @@ public class MemberService {
             throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
         }
 
-        member.updateUsername(memberRequest.getUsername());
-        member.updateStatusMessage(memberRequest.getStatusMessage());
-        member.updateImageUrl(memberRequest.getImageUrl());
+        PolicyType.validateAgreeOnRequiredPolicies(memberRequest.getAgreedPolicies());
+
+        member.updateMemberProfile(memberRequest);
+        member.updateAgreedPolicies(memberRequest.getAgreedPolicies());
         member.addRole(RoleType.MEMBER);
     }
 }
