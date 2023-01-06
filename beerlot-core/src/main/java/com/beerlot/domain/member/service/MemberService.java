@@ -5,6 +5,7 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.repository.MemberRepository;
+import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
 import com.beerlot.exception.NotFoundException;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,8 +28,9 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
-    public Optional<Member> findMemberByOauthId(String oauthId) {
-        return memberRepository.findByOauthId(oauthId);
+    public Member findMemberByOauthId(String oauthId) {
+        return memberRepository.findByOauthId(oauthId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
     }
 
     public Member createMember(OAuthUserPrincipal oAuthUser) {
@@ -59,9 +62,10 @@ public class MemberService {
             throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
         }
 
-        member.updateUsername(memberRequest.getUsername());
-        member.updateStatusMessage(memberRequest.getStatusMessage());
-        member.updateImageUrl(memberRequest.getImageUrl());
+        PolicyType.validateAgreeOnRequiredPolicies(memberRequest.getAgreedPolicies());
+
+        member.updateMemberProfile(memberRequest);
+        member.updateAgreedPolicies(memberRequest.getAgreedPolicies());
         member.addRole(RoleType.MEMBER);
     }
 }

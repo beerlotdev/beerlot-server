@@ -1,8 +1,12 @@
 package com.beerlot.domain.auth.controller;
 
 import com.beerlot.domain.auth.security.jwt.service.TokenService;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.service.MemberService;
+import com.beerlot.domain.policy.PolicyType;
+import com.beerlot.tool.fixture.Fixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -13,9 +17,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,6 +55,8 @@ public class AuthControllerTest {
     class SignUpTest {
 
         MemberRequest request;
+        Member guestMember;
+        Member member;
 
         @BeforeEach
         public void setUp() {
@@ -53,17 +64,23 @@ public class AuthControllerTest {
                     .username("beerlot")
                     .statusMessage("Never late to open a new beer.")
                     .imageUrl("https://beerlot.com/image_url")
+                    .agreedPolicies(Set.of(PolicyType.TERMS_OF_SERVICE, PolicyType.PERSONAL_INFORMATION_POLICY))
                     .build();
+
+            guestMember = Fixture.createGuestMember();
+            member = Fixture.createMember();
         }
 
         @Test
-        @WithMockUser(roles = {"GUEST"})
         public void signup_success() throws Exception {
+            when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(guestMember);
             doNothing().when(memberService).signUpMember(any(), isA(MemberRequest.class));
 
             mockMvc.perform(patch("/api/v1/auth/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request))
+                            .with(user(OAuthUserPrincipal.of(Fixture.createMember())))
                     )
                     .andExpect(status().isOk());
         }
@@ -80,13 +97,15 @@ public class AuthControllerTest {
         }
 
         @Test
-        @WithMockUser(roles = {"GUEST", "MEMBER"})
         public void signup_memberAlreadySignedUp() throws Exception {
+            when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(member);
             doThrow(IllegalStateException.class).when(memberService).signUpMember(any(), isA(MemberRequest.class));
 
             mockMvc.perform(patch("/api/v1/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .with(user(OAuthUserPrincipal.of(member)))
                     )
                     .andExpect(status().isBadRequest());
         }

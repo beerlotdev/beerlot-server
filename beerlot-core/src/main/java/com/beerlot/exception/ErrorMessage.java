@@ -40,7 +40,8 @@ public enum ErrorMessage {
     NO_AUTHORIZATION("No Authorization was found."),
 
     // ===== Etc ===== //
-    LANGUAGE_INVALID("Language code is invalid or not supported.");
+    LANGUAGE__INVALID("Language code is invalid or not supported."),
+    POLICY__REQUIRED_NOT_AGREED("Required policies have not agreed yet.");
 
     private final String message;
 }

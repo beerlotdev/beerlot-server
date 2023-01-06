@@ -39,15 +39,11 @@ public class OAuthService extends DefaultOAuth2UserService implements UserDetail
         OAuthUserPrincipal oAuthUserPrincipal = ProviderType.getOAuthUser(registrationId, attributes, nameAttributeKey);
 
         // 4: Check if registered user
-        Optional<Member> memberOptional = memberService.findMemberByOauthId(oAuthUserPrincipal.getId());
-
-        // 5-1: If yes, update email return user info
-        if (memberOptional.isPresent()) {
-            memberService.updateEmail(memberOptional.get(), oAuthUserPrincipal.getEmail());
-            return OAuthUserPrincipal.of(memberOptional.get());
-
-        // 5-2: If not, return user info with role_guest
-        } else {
+        try {
+            Member member = memberService.findMemberByOauthId(oAuthUserPrincipal.getId());
+            memberService.updateEmail(member, oAuthUserPrincipal.getEmail());
+            return OAuthUserPrincipal.of(member);
+        } catch (NoSuchElementException e) {
             long count = memberService.countByUsername(oAuthUserPrincipal.getUsername());
             oAuthUserPrincipal.setUsername(oAuthUserPrincipal.getUsername() + String.valueOf(count + 1));
             memberService.createMember(oAuthUserPrincipal);

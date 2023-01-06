@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class AuthController implements AuthApi {
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<AccessTokenResponse> refreshToken (HttpServletRequest request,
                                                             HttpServletResponse response,
-                                                            Member member,
+                                                             OAuthUserPrincipal member,
                                                             String bearerToken) {
         String accessToken = HeaderUtils.getAccessToken(bearerToken);
         return new ResponseEntity<>(tokenService.refreshTokens(request, response, accessToken), HttpStatus.OK);
@@ -40,7 +41,8 @@ public class AuthController implements AuthApi {
 
     @Override
     @PreAuthorize("hasRole('GUEST')")
-    public ResponseEntity<Void> signUp (Member member, MemberRequest memberRequest) {
+    public ResponseEntity<Void> signUp (OAuthUserPrincipal userPrincipal, MemberRequest memberRequest) {
+        Member member= memberService.findMemberByOauthId(userPrincipal.getOauthId());
         memberService.signUpMember(member, memberRequest);
         return new ResponseEntity(HttpStatus.OK);
 
@@ -50,7 +52,6 @@ public class AuthController implements AuthApi {
         String oauthId = ((OAuthUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getOauthId();
 
-        return memberService.findMemberByOauthId(oauthId).orElseThrow
-                (() -> new NoSuchElementException(ErrorMessage.MEMBER__NOT_EXIST.getMessage()));
+        return memberService.findMemberByOauthId(oauthId);
     }
 }

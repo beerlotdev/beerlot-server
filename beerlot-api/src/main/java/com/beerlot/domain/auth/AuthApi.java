@@ -2,6 +2,7 @@ package com.beerlot.domain.auth;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.dto.response.AccessTokenResponse;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +34,7 @@ public interface AuthApi {
     )
     @PatchMapping("/signup")
     ResponseEntity<Void> signUp (
-            @Parameter(hidden = true) @CurrentUser Member member,
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for creating member")
             @RequestBody MemberRequest memberRequest
     );
@@ -52,6 +53,6 @@ public interface AuthApi {
     ResponseEntity<AccessTokenResponse> refreshToken (
             @Parameter(hidden = true) HttpServletRequest request,
             @Parameter(hidden = true) HttpServletResponse response,
-            @Parameter(hidden = true) @CurrentUser Member member,
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(hidden = true) @RequestHeader("Authorization") String bearerToken);
 }
