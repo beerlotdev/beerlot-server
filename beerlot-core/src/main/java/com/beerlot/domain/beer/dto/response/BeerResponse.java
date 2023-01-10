@@ -5,6 +5,7 @@ import com.beerlot.domain.beer.BeerInternational;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 
 public class BeerResponse {
@@ -15,11 +16,20 @@ public class BeerResponse {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("brewery")
+    private String brewery;
+
     @JsonProperty("origin_city")
     private String originCity;
 
     @JsonProperty("volume")
     private Float volume;
+
+    @Column(name = "calorie")
+    private Integer calorie;
+
+    @Column(name = "calorie_unit")
+    private Integer calorieUnit;
 
     @JsonProperty("like_count")
     private Long likeCount;
