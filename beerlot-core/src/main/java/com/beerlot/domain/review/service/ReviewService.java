@@ -2,6 +2,7 @@ package com.beerlot.domain.review.service;
 
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.repository.BeerRepository;
+import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.common.util.SortTypeHelper;
 import com.beerlot.domain.member.Member;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class ReviewService {
 
     private final MemberService memberService;
+    private final BeerService beerService;
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -51,7 +53,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewPage findByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
-        checkBeerExist(beerId);
+        Beer beer = beerService.findBeerById(beerId);
         PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
         Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size, SortTypeHelper.sortBy(true, sort)));
         List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponse::of).collect(Collectors.toList());
@@ -59,9 +61,7 @@ public class ReviewService {
     }
 
     public void createReview(String oauthId, Long beerId, ReviewRequest reviewRequest) {
-        checkBeerExist(beerId);
-
-        Beer beer = beerRepository.findById(beerId).get();
+        Beer beer = beerService.findBeerById(beerId);
         Member member = memberService.findMemberByOauthId(oauthId);
 
         Review review = ReviewRequest.to(reviewRequest, beer, member);
@@ -100,13 +100,6 @@ public class ReviewService {
         Page<Review> reviewPage = reviewRepository.findAll((Pageable) PageRequest.of(page-1, size, SortTypeHelper.sortBy(true, sort)));
         List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponse::of).collect(Collectors.toList());
         return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
-    }
-
-    @Transactional(readOnly = true)
-    private void checkBeerExist(Long beerId) {
-        if (!beerRepository.existsById(beerId)) {
-            throw new NoSuchElementException(ErrorMessage.BEER__NOT_EXIST.getMessage());
-        }
     }
 
     @Transactional(readOnly = true)
