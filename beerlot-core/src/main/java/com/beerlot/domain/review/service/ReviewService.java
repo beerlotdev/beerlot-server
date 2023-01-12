@@ -75,9 +75,7 @@ public class ReviewService {
     public ReviewResponse updateReview(String oauthId, Long reviewId, ReviewRequest reviewRequest) {
         Review review = findById(reviewId);
 
-        if (!review.getMember().equals(memberService.findMemberByOauthId(oauthId))) {
-            throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
-        }
+        isReviewOwner(oauthId, review);
 
         review.update(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
@@ -88,9 +86,7 @@ public class ReviewService {
     public void deleteReview(String oauthId, Long reviewId) {
         Review review = findById(reviewId);
 
-        if (!review.getMember().equals(memberService.findMemberByOauthId(oauthId))) {
-            throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
-        }
+        isReviewOwner(oauthId, review);
 
         review.getBeer().removeReview();
         review.getBeer().calculateRate(0 - review.getRate());
@@ -117,5 +113,12 @@ public class ReviewService {
     public Review findById(Long reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.REVIEW__NOT_FOUND.getMessage()));
+    }
+
+    @Transactional(readOnly = true)
+    public void isReviewOwner(String oauthId, Review review) {
+        if (!review.getMember().getOauthId().equals(oauthId)) {
+            throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
+        }
     }
 }
