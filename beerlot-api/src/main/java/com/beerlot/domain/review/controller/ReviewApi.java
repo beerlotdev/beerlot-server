@@ -45,8 +45,6 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "204", description = "Empty result."),
-                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
                     @ApiResponse(responseCode = "404", description = "Beer does not exist.")
             }
     )
@@ -92,7 +90,7 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "204", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role. / Member has no proper rights."),
                     @ApiResponse(responseCode = "404", description = "Review does not exist."),
             }
     )
@@ -110,7 +108,7 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role. / Member has no proper rights."),
                     @ApiResponse(responseCode = "404", description = "Review does not exist."),
             }
     )
