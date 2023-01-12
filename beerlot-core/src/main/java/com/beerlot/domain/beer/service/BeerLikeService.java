@@ -9,7 +9,6 @@ import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
-import com.beerlot.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,9 +61,9 @@ public class BeerLikeService {
 
     private void checkBeerLikeExist(Long beerId, Long memberId, boolean isPositive) {
         if (isPositive && beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
-            throw new ConflictException(ErrorMessage.BEER_LIKE_CONFLICT.getMessage());
+            throw new ConflictException(ErrorMessage.BEER_LIKE__CONFLICT.getMessage());
         } else if (!isPositive && !beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
-            throw new NoSuchElementException(ErrorMessage.BEER_LIKE_NOT_FOUND.getMessage());
+            throw new NoSuchElementException(ErrorMessage.BEER_LIKE__NOT_FOUND.getMessage());
         }
     }
 }

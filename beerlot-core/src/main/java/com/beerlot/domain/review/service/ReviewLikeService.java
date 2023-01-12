@@ -48,16 +48,16 @@ public class ReviewLikeService {
     @Transactional(readOnly = true)
     private void checkReviewExist(Long reviewId) {
         if (!reviewRepository.existsById(reviewId)) {
-            throw new NotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.REVIEW__NOT_FOUND);
         }
     }
 
     @Transactional(readOnly = true)
     private void checkReviewLikeExist(Long reviewId, Long memberId, boolean isPositive) {
         if (isPositive && reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
-            throw new ConflictException(ErrorMessage.REVIEW_LIKE_CONFLICT.getMessage());
+            throw new ConflictException(ErrorMessage.REVIEW_LIKE__CONFLICT.getMessage());
         } else if (!isPositive && !reviewLikeRepository.existsByReview_IdAndMember_Id(reviewId, memberId)) {
-            throw new NotFoundException(ErrorMessage.REVIEW_LIKE_NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.REVIEW_LIKE__NOT_FOUND);
         }
     }
 }

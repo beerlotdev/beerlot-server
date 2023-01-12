@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
-    
+
     private final MemberService memberService;
 
     @Autowired
@@ -110,6 +110,6 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Review findById(Long reviewId) {
         return reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.REVIEW_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.REVIEW__NOT_FOUND.getMessage()));
     }
 }
