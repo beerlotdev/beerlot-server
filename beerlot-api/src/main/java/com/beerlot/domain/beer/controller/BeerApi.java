@@ -1,16 +1,15 @@
 package com.beerlot.domain.beer.controller;
 
 import com.beerlot.domain.beer.BeerSortType;
-import com.beerlot.domain.beer.dto.request.BeerSearchParam;
 import com.beerlot.domain.beer.dto.response.BeerPage;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
+import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +31,8 @@ public interface BeerApi {
     )
     @GetMapping("/{beerId}")
     ResponseEntity<BeerResponse> findBeerById (
-            @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
-            @Parameter(description = "Language code") @RequestParam("language") LanguageType language
+            @Parameter(description = "Language code") @RequestParam("language") LanguageType language,
+            @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId
     );
 
     @Tag(name = "Beer API", description = "The Beer API.")
@@ -44,7 +43,7 @@ public interface BeerApi {
             }
     )
     @GetMapping("/top")
-    ResponseEntity<List<BeerResponse>> findTop10Beers (
+    ResponseEntity<List<BeerSimpleResponse>> findTop10Beers (
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
     );
 
@@ -58,7 +57,11 @@ public interface BeerApi {
     )
     @GetMapping
     ResponseEntity<BeerPage> findBeersBySearch (
-            @ParameterObject BeerSearchParam beerSearchParam,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categories", required = false) List<Long> categories,
+            @RequestParam(value = "countries", required = false) List<String> countries,
+            @RequestParam(value = "volume_min", required = false) Integer volumeMin,
+            @RequestParam(value = "volume_max", required = false) Integer volumeMax,
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam("sort") BeerSortType sort,

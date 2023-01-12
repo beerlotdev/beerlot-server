@@ -28,6 +28,15 @@ public class Beer extends BaseEntity {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @Column(name = "brewery", nullable = false)
+    private String brewery;
+
+    @Column(name = "calorie")
+    private Integer calorie;
+
+    @Column(name = "calorie_unit", nullable = false)
+    private Integer calorieUnit;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

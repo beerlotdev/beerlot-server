@@ -1,15 +1,15 @@
 package com.beerlot.domain.category;
 
 import com.beerlot.domain.beer.BeerInternational;
+import com.beerlot.domain.glassware.Glassware;
+import com.beerlot.domain.glassware.GlasswareInternational;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,8 +31,26 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<CategoryInternational> categoryInternationals = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "category_glassware",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "glassware_id")
+    )
+    private Set<Glassware> glasswares = new HashSet<>();
+
+    public void addGlassware(Glassware glassware) {
+        glasswares.add(glassware);
+        glassware.getCategories().add(this);
+    }
+
+    public void removeGlassware(Glassware glassware) {
+        glasswares.remove(glassware);
+        glassware.getCategories().remove(this);
+    }
+
     @Builder
-    public Category(Category parent) {
+    public Category(Long id, Category parent) {
+        this.id = id;
         setParent(parent);
     }
 
