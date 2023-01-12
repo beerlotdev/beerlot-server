@@ -29,7 +29,7 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
 
     @Override
     public ResponseEntity<ReviewResponse> updateReview(OAuthUserPrincipal userPrincipal, Long reviewId, ReviewRequest reviewRequest) {
-        return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewRequest), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.updateReview(userPrincipal.getOauthId(), reviewId, reviewRequest), HttpStatus.OK);
     }
 
     @Override

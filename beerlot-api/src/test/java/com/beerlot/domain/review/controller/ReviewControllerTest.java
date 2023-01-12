@@ -1,6 +1,8 @@
 package com.beerlot.domain.review.controller;
 
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.common.page.PageCustomRequest;
+import com.beerlot.domain.member.Member;
 import com.beerlot.domain.review.Review;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,27 +71,34 @@ public class ReviewControllerTest {
         @Nested
         class CreateReviewTest {
 
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
 
-                doNothing().when(reviewService).createReview(1L, reviewRequest);
+                doNothing().when(reviewService).createReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class));
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isCreated());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void beerNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(reviewService).createReview(isA(Long.class), isA(ReviewRequest.class));
+                doThrow(NoSuchElementException.class).when(reviewService).createReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class));
 
-                mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 1)
+                mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 100)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }
@@ -97,16 +107,23 @@ public class ReviewControllerTest {
         @Nested
         class UpdateReviewTest {
 
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
 
-                when(reviewService.updateReview(isA(Long.class), isA(ReviewRequest.class)))
+                when(reviewService.updateReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class)))
                         .thenReturn(ReviewResponse.of(review));
 
                 mockMvc.perform(patch("/api/v1/reviews/{reviewId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isOk());
             }
@@ -114,12 +131,13 @@ public class ReviewControllerTest {
             @Test
             @WithMockUser(roles = {"MEMBER"})
             public void reviewNotExist() throws Exception {
-                when(reviewService.updateReview(isA(Long.class), isA(ReviewRequest.class)))
+                when(reviewService.updateReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class)))
                         .thenThrow(NoSuchElementException.class);
 
                 mockMvc.perform(patch("/api/v1/reviews/{reviewId}", 2)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(reviewRequest))
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }

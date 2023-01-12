@@ -97,7 +97,9 @@ public interface ReviewApi {
             }
     )
     @DeleteMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> deleteReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
     );
 
@@ -113,7 +115,9 @@ public interface ReviewApi {
             }
     )
     @PatchMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<ReviewResponse> updateReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for updating review")
             @RequestBody ReviewRequest reviewRequest

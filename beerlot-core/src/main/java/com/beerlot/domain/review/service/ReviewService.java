@@ -19,8 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,10 +72,16 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public ReviewResponse updateReview(Long reviewId, ReviewRequest reviewRequest) {
+    public ReviewResponse updateReview(String oauthId, Long reviewId, ReviewRequest reviewRequest) {
         Review review = findById(reviewId);
+
+        if (!review.getMember().equals(memberService.findMemberByOauthId(oauthId))) {
+            throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
+        }
+
         review.updateModel(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
+
         return ReviewResponse.of(review);
     }
 
@@ -104,6 +109,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public Review findById(Long reviewId) {
-        return reviewRepository.findById(reviewId).orElseThrow(NoSuchElementException::new);
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.REVIEW_NOT_FOUND.getMessage()));
     }
 }
