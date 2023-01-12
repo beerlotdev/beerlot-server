@@ -34,7 +34,7 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
 
     @Override
     public ResponseEntity<Void> deleteReview(OAuthUserPrincipal userPrincipal, Long reviewId) {
-        reviewService.deleteReview(reviewId);
+        reviewService.deleteReview(userPrincipal.getOauthId(), reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

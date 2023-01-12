@@ -85,10 +85,16 @@ public class ReviewService {
         return ReviewResponse.of(review);
     }
 
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(String oauthId, Long reviewId) {
         Review review = findById(reviewId);
+
+        if (!review.getMember().equals(memberService.findMemberByOauthId(oauthId))) {
+            throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
+        }
+
         review.getBeer().removeReview();
         review.getBeer().calculateRate(0 - review.getRate());
+
         reviewRepository.delete(review);
     }
 

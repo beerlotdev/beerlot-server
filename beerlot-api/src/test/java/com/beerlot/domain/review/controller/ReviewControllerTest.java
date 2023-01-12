@@ -146,25 +146,32 @@ public class ReviewControllerTest {
         @Nested
         class DeleteReviewTest {
 
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
 
-                doNothing().when(reviewService).deleteReview(isA(Long.class));
+                doNothing().when(reviewService).deleteReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNoContent());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void reviewNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(reviewService).deleteReview(isA(Long.class));
+                doThrow(NoSuchElementException.class).when(reviewService).deleteReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}", 2)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }
