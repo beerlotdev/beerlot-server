@@ -1,11 +1,14 @@
 package com.beerlot.domain.review.controller;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewPage;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +22,18 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     private final ReviewLikeService reviewLikeService;
 
     @Override
-    public ResponseEntity<Void> createReview(Long beerId, ReviewRequest reviewRequest) {
-        reviewService.createReview(beerId, reviewRequest);
+    public ResponseEntity<Void> createReview(OAuthUserPrincipal userPrincipal, Long beerId, ReviewRequest reviewRequest) {
+        reviewService.createReview(userPrincipal.getOauthId(), beerId, reviewRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<ReviewResponse> updateReview(Long reviewId, ReviewRequest reviewRequest) {
+    public ResponseEntity<ReviewResponse> updateReview(OAuthUserPrincipal userPrincipal, Long reviewId, ReviewRequest reviewRequest) {
         return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewRequest), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> deleteReview(Long reviewId) {
+    public ResponseEntity<Void> deleteReview(OAuthUserPrincipal userPrincipal, Long reviewId) {
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -55,13 +58,13 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     }
 
     @Override
-    public ResponseEntity<Void> createReviewLike(Long reviewId) {
+    public ResponseEntity<Void> createReviewLike(OAuthUserPrincipal userPrincipal, Long reviewId) {
         reviewLikeService.likeReview(reviewId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteReviewLike(Long reviewId) {
+    public ResponseEntity<Void> deleteReviewLike(OAuthUserPrincipal userPrincipal, Long reviewId) {
         reviewLikeService.unlikeReview(reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

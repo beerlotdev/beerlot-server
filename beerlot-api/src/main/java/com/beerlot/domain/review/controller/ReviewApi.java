@@ -1,5 +1,7 @@
 package com.beerlot.domain.review.controller;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewPage;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1")
@@ -28,7 +31,9 @@ public interface ReviewApi {
             }
     )
     @PostMapping("/beers/{beerId}/reviews")
+    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> createReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for creating review")
             @RequestBody ReviewRequest reviewRequest
