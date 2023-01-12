@@ -31,7 +31,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<CategoryInternational> categoryInternationals = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany
     @JoinTable(name = "category_glassware",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "glassware_id")
@@ -49,7 +49,8 @@ public class Category {
     }
 
     @Builder
-    public Category(Category parent) {
+    public Category(Long id, Category parent) {
+        this.id = id;
         setParent(parent);
     }
 

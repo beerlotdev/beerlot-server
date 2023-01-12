@@ -5,6 +5,9 @@ import com.beerlot.domain.beer.BeerInternational;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
+import com.beerlot.domain.category.CategoryInternational;
+import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
+import com.beerlot.domain.category.service.CategoryService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.tool.fixture.Fixture;
@@ -19,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.isA;
@@ -42,7 +46,6 @@ public class BeerControllerTest {
     BeerLikeService beerLikeService;
 
     Beer beer;
-    BeerInternational beerInternational;
 
     @Nested
     class BeerTest {
@@ -52,13 +55,12 @@ public class BeerControllerTest {
             @BeforeEach
             public void setUp() {
                 beer = Fixture.createBeer();
-                beerInternational = Fixture.createBeerInternational();
             }
 
             @Test
             public void success() throws Exception {
-                Mockito.when(beerService.findBeerByIdAndLanguage(1L, LanguageType.KR))
-                        .thenReturn(BeerResponse.of(beer, beerInternational));
+                Mockito.when(beerService.findBeerById(isA(Long.class)))
+                                .thenReturn(beer);
 
                 mockMvc.perform(get("/api/v1/beers/{beerId}", 1)
                                 .param("language", String.valueOf(LanguageType.KR))
@@ -80,12 +82,20 @@ public class BeerControllerTest {
 
         @Nested
         class FindBySearchTest {
-
         }
 
         @Nested
         class FindTop10Test {
+            @Test
+            public void success() throws Exception {
+                Mockito.when(beerService.findTop10Beers(isA(LanguageType.class)))
+                        .thenReturn(List.of());
 
+                mockMvc.perform(get("/api/v1/beers/top")
+                                .param("language", String.valueOf(LanguageType.KR))
+                        )
+                        .andExpect(status().isOk());
+            }
         }
     }
 

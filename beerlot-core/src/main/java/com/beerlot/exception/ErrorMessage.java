@@ -21,6 +21,10 @@ public enum ErrorMessage {
     REVIEW_LIKE_NOT_FOUND("Member has not liked the review yet."),
     REVIEW_LIKE_CONFLICT("Member already liked the review."),
 
+    // ===== Category ===== //
+    CATEGORY__NOT_EXIST("Category does not exist."),
+    CATEGORY_INTERNATIONAL__NOT_EXIST("Category international does not exist."),
+
     // ===== Tag ===== //
     TAG_NOT_FOUND("Tag does not exist."),
 

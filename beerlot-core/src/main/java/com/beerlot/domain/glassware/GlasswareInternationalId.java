@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 @Getter
-public class GlasswareInternationalId {
+public class GlasswareInternationalId implements Serializable {
 
     private Long glasswareId;
 

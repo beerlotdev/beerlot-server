@@ -1,8 +1,8 @@
 package com.beerlot.domain.beer.repository;
 
 import com.beerlot.domain.beer.QBeer;
-import com.beerlot.domain.beer.dto.request.BeerSearchParam;
-import com.beerlot.domain.beer.dto.response.BeerResponse;
+import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
+import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
@@ -19,35 +19,43 @@ import java.util.List;
 
 import static com.beerlot.domain.beer.QBeer.beer;
 import static com.beerlot.domain.beer.QBeerInternational.beerInternational;
-import static com.beerlot.domain.category.QCategory.category;
+import static com.beerlot.domain.category.QCategoryInternational.categoryInternational;
 
 @Repository
 @RequiredArgsConstructor
 public class BeerCustomRepositoryImpl implements BeerCustomRepository {
     private final JPAQueryFactory queryFactory;
-    public PageCustom<BeerResponse> findBySearch (BeerSearchParam beerSearchParam, LanguageType language, PageCustomRequest pageRequest) {
-        JPAQuery<BeerResponse> query = queryFactory
-                .select(Projections.fields(BeerResponse.class,
+    public PageCustom<BeerSimpleResponse> findBySearch (String keyword,
+                                                        List<Long> categories,
+                                                        List<String> countries,
+                                                        Integer volumeMin,
+                                                        Integer volumeMax,
+                                                        LanguageType language, PageCustomRequest pageRequest) {
+        JPAQuery<BeerSimpleResponse> query = queryFactory
+                .select(Projections.fields(BeerSimpleResponse.class,
                         beer.id,
                         beerInternational.name,
                         beerInternational.originCountry,
-                        beer.volume,
-                        beer.imageUrl
+                        beer.imageUrl,
+                        Projections.fields(CategorySimpleResponse.class,
+                                    beer.category.id,
+                                    categoryInternational.name
+                                ).as("category")
                         ))
                 .from(beer)
                 .innerJoin(beer.beerInternationals, beerInternational)
-                .innerJoin(beer.category, category)
+                .innerJoin(beer.category.categoryInternationals, categoryInternational)
                 .where(
                         matchLanguage(language),
-                        hasKeyword(beerSearchParam.getKeyword()),
-                        hasCategories(beerSearchParam.getCategories()),
-                        hasCountries(beerSearchParam.getCountries()),
-                        betweenVolumes(beerSearchParam.getVolumeMin(), beerSearchParam.getVolumeMax())
+                        hasKeyword(keyword),
+                        hasCategories(categories),
+                        hasCountries(countries),
+                        betweenVolumes(volumeMin, volumeMax)
                 );
 
         long totalElements = query.fetch().size();
 
-        List<BeerResponse> beerResponseList = query
+        List<BeerSimpleResponse> beerResponseList = query
                 .limit(pageRequest.getSize())
                 .offset(pageRequest.getOffset())
                 .orderBy(pageRequest.getSort().orderBy(QBeer.class))
@@ -64,8 +72,11 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         if (StringUtils.isNullOrEmpty(keyword)) {
             return null;
         }
-        return beerInternational.description.contains(keyword)
-                .or(beerInternational.originCountry.contains(keyword));
+        return beerInternational.name.contains(keyword)
+                .or(beerInternational.description.contains(keyword))
+                .or(beerInternational.originCountry.contains(keyword))
+                .or(categoryInternational.name.contains(keyword))
+                .or(categoryInternational.description.contains(keyword));
     }
 
     private BooleanExpression hasCategories(List<Long> categoryIds) {
