@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
-
+    
     private final MemberService memberService;
 
     @Autowired
@@ -79,7 +79,7 @@ public class ReviewService {
             throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
         }
 
-        review.updateModel(reviewRequest);
+        review.update(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
 
         return ReviewResponse.of(review);
