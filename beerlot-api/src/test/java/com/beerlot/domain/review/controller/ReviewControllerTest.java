@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -130,7 +131,6 @@ public class ReviewControllerTest {
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void reviewNotExist() throws Exception {
                 when(reviewService.updateReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class)))
                         .thenThrow(NoSuchElementException.class);
@@ -180,8 +180,16 @@ public class ReviewControllerTest {
 
         @Nested
         class FindReviewByIdTest {
+
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser
+            @WithAnonymousUser
             public void success() throws Exception {
 
                 when(reviewService.findReviewById(isA(Long.class)))
@@ -194,7 +202,7 @@ public class ReviewControllerTest {
             }
 
             @Test
-            @WithMockUser
+            @WithAnonymousUser
             public void reviewNotExist() throws Exception {
                 doThrow(NoSuchElementException.class).when(reviewService).findReviewById(isA(Long.class));
 
@@ -208,7 +216,7 @@ public class ReviewControllerTest {
         @Nested
         class FindReviewsByBeerIdTest {
             @Test
-            @WithMockUser
+            @WithAnonymousUser
             public void success() throws Exception {
 
                 when(reviewService.findByBeerId(isA(Long.class), isA(PageCustomRequest.class)))
@@ -227,7 +235,7 @@ public class ReviewControllerTest {
             }
 
             @Test
-            @WithMockUser
+            @WithAnonymousUser
             public void beerNotExist() throws Exception {
                 when(reviewService.findByBeerId(isA(Long.class), isA(PageCustomRequest.class)))
                         .thenThrow(NoSuchElementException.class);
@@ -246,7 +254,7 @@ public class ReviewControllerTest {
         class FindAllReviewsTest {
 
             @Test
-            @WithMockUser
+            @WithAnonymousUser
             public void success() throws Exception {
                 when(reviewService.findAllReviews(isA(PageCustomRequest.class)))
                         .thenReturn(new PageCustomImpl<>(
@@ -276,36 +284,42 @@ public class ReviewControllerTest {
         @Nested
         class CreateReviewLikeTest {
 
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
-                doNothing().when(reviewLikeService).likeReview(isA(Long.class));
-                //when(reviewService.findById(isA(Long.class))).thenReturn(review);
+                doNothing().when(reviewLikeService).likeReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/reviews/1/likes")
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isCreated());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void reviewNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(reviewLikeService).likeReview(isA(Long.class));
+                doThrow(NoSuchElementException.class).when(reviewLikeService).likeReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void reviewLikeAlreadyExist() throws Exception {
-                doThrow(ConflictException.class).when(reviewLikeService).likeReview(isA(Long.class));
+                doThrow(ConflictException.class).when(reviewLikeService).likeReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isConflict());
             }
@@ -314,24 +328,31 @@ public class ReviewControllerTest {
         @Nested
         class DeleteReviewLikeTest {
 
+            Member member;
+
+            @BeforeEach
+            public void setUp() {
+                member = Fixture.createMember();
+            }
+
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
-                doNothing().when(reviewLikeService).unlikeReview(isA(Long.class));
+                doNothing().when(reviewLikeService).unlikeReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNoContent());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void reviewOrReviewLikeNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(reviewLikeService).unlikeReview(isA(Long.class));
+                doThrow(NoSuchElementException.class).when(reviewLikeService).unlikeReview(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/reviews/{reviewId}/likes", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }

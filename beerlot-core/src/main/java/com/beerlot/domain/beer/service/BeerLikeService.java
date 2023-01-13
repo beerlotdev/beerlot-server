@@ -35,7 +35,6 @@ public class BeerLikeService {
     @Autowired
     private MemberRepository memberRepository;
 
-    /* TODO: Include memberId and validateMember*/
     public void likeBeer(String oauthId, Long beerId) {
         Beer beer = beerService.findBeerById(beerId);
         Member member = memberService.findMemberByOauthId(oauthId);
@@ -44,7 +43,6 @@ public class BeerLikeService {
         beerLikeRepository.save(beerLike);
     }
 
-    /* TODO: Include memberId and validateMember*/
     public void unlikeBeer(String oauthId, Long beerId) {
         Beer beer = beerService.findBeerById(beerId);
         Member member = memberService.findMemberByOauthId(oauthId);

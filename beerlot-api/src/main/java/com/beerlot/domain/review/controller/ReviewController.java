@@ -62,13 +62,13 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
 
     @Override
     public ResponseEntity<Void> createReviewLike(OAuthUserPrincipal userPrincipal, Long reviewId) {
-        reviewLikeService.likeReview(reviewId);
+        reviewLikeService.likeReview(userPrincipal.getOauthId(), reviewId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Void> deleteReviewLike(OAuthUserPrincipal userPrincipal, Long reviewId) {
-        reviewLikeService.unlikeReview(reviewId);
+        reviewLikeService.unlikeReview(userPrincipal.getOauthId(), reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
