@@ -1,11 +1,8 @@
 package com.beerlot.domain.category.service;
 
-import com.beerlot.domain.beer.BeerInternational;
-import com.beerlot.domain.beer.BeerInternationalId;
 import com.beerlot.domain.category.Category;
 import com.beerlot.domain.category.CategoryInternational;
 import com.beerlot.domain.category.CategoryInternationalId;
-import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
 import com.beerlot.domain.category.repository.CategoryInternationalRepository;
 import com.beerlot.domain.category.repository.CategoryRepository;
 import com.beerlot.domain.common.entity.LanguageType;

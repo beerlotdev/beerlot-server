@@ -2,7 +2,6 @@ package com.beerlot.domain.auth.security.oauth.entity;
 
 import com.beerlot.domain.member.RoleType;
 import lombok.Getter;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Map;

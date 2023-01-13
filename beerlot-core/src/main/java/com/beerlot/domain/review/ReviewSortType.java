@@ -5,8 +5,6 @@ import com.beerlot.domain.common.util.SortTypeHelper;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 @AllArgsConstructor

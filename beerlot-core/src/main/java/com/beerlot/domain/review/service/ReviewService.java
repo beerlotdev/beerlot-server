@@ -5,30 +5,21 @@ import com.beerlot.domain.beer.repository.BeerRepository;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
-import com.beerlot.domain.common.util.SortTypeHelper;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.domain.review.Review;
-import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
-import com.beerlot.domain.review.dto.response.ReviewPage;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.repository.ReviewRepository;
 import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 
 @Service

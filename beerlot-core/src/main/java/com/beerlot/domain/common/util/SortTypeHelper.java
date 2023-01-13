@@ -1,15 +1,10 @@
 package com.beerlot.domain.common.util;
 
-import com.beerlot.domain.beer.QBeer;
 import com.beerlot.domain.common.entity.SortType;
-import com.beerlot.domain.review.QReview;
-import com.beerlot.domain.review.Review;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.SimplePath;
 import org.springframework.data.domain.Sort;
 
 public class SortTypeHelper {

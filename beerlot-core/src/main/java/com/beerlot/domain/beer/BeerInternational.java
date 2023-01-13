@@ -1,7 +1,6 @@
 package com.beerlot.domain.beer;
 
 import com.beerlot.domain.common.entity.LanguageType;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

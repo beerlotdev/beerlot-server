@@ -1,6 +1,5 @@
 package com.beerlot.domain.category;
 
-import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.common.entity.LanguageType;
 import lombok.AccessLevel;
 import lombok.Builder;
