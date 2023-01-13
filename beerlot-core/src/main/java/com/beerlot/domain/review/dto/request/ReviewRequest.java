@@ -7,6 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Getter
 public class ReviewRequest {
 
@@ -19,11 +23,15 @@ public class ReviewRequest {
     @JsonProperty("image_url")
     private String imageUrl;
 
+    @JsonProperty("buy_from")
+    private Set<String> buyFrom;
+
     @Builder
-    public ReviewRequest(String content, Float rate, String imageUrl) {
+    public ReviewRequest(String content, Float rate, String imageUrl, Set<String> buyFrom) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
+        this.buyFrom = buyFrom;
     }
 
     public static Review to(ReviewRequest reviewRequest, Beer beer, Member member) {
@@ -31,6 +39,7 @@ public class ReviewRequest {
                 .content(reviewRequest.getContent())
                 .rate(reviewRequest.getRate())
                 .imageUrl(reviewRequest.getImageUrl())
+                .buyFrom(reviewRequest.getBuyFrom())
                 .beer(beer)
                 .member(member)
                 .build();

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,6 +30,10 @@ public class Review extends BaseEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Convert(converter = BuyFromConverter.class)
+    @Column(name = "buy_from")
+    private Set<String> buyFrom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")
@@ -50,17 +55,19 @@ public class Review extends BaseEntity {
     }
 
     @Builder
-    public Review(String content, float rate, String imageUrl, Beer beer, Member member) {
+    public Review(String content, float rate, String imageUrl, Beer beer, Member member, Set<String> buyFrom) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
+        this.buyFrom = buyFrom;
         this.beer = beer;
         this.member = member;
     }
 
-    public void update(ReviewRequest reviewURequest) {
-        this.content = reviewURequest.getContent();
-        this.rate = reviewURequest.getRate();
-        this.imageUrl = reviewURequest.getImageUrl();
+    public void update(ReviewRequest reviewRequest) {
+        this.content = reviewRequest.getContent();
+        this.rate = reviewRequest.getRate();
+        this.imageUrl = reviewRequest.getImageUrl();
+        this.buyFrom = reviewRequest.getBuyFrom();
     }
 }
