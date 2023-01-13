@@ -1,14 +1,11 @@
 package com.beerlot.domain.review.repository;
 
-import com.beerlot.domain.beer.Beer;
-import com.beerlot.domain.beer.QBeer;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.review.QReview;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
-import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,7 +16,6 @@ import java.util.List;
 
 import static com.beerlot.domain.beer.QBeer.beer;
 import static com.beerlot.domain.review.QReview.review;
-import static com.querydsl.core.alias.Alias.$;
 
 @Repository
 @RequiredArgsConstructor

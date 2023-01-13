@@ -1,10 +1,8 @@
 package com.beerlot.core.domain.beer.repository;
 
-import com.beerlot.core.common.BaseRepositoryTest;
 import com.beerlot.config.QueryDslConfig;
+import com.beerlot.core.common.BaseRepositoryTest;
 import org.springframework.context.annotation.Import;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Import(QueryDslConfig.class)
 public class BeerRepositoryTest extends BaseRepositoryTest {

@@ -1,8 +1,6 @@
 package com.beerlot.domain.category;
 
-import com.beerlot.domain.beer.BeerInternational;
 import com.beerlot.domain.glassware.Glassware;
-import com.beerlot.domain.glassware.GlasswareInternational;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

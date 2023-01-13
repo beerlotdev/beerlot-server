@@ -2,7 +2,6 @@ package com.beerlot.domain.beer.dto.response;
 
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.BeerInternational;
-import com.beerlot.domain.category.Category;
 import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.fasterxml.jackson.annotation.JsonProperty;

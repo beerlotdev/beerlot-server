@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 public class ReviewRequest {

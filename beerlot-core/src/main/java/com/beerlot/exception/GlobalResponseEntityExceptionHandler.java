@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.naming.AuthenticationException;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice

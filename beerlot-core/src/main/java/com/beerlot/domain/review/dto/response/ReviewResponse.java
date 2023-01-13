@@ -1,16 +1,12 @@
 package com.beerlot.domain.review.dto.response;
 
-import com.beerlot.domain.common.dto.BaseResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.review.Review;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor

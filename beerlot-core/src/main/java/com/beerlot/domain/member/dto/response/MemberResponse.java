@@ -2,7 +2,6 @@ package com.beerlot.domain.member.dto.response;
 
 import com.beerlot.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
