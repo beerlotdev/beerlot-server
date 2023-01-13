@@ -2,6 +2,8 @@ package com.beerlot.domain.review.controller;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.page.PageCustom;
+import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewPage;
@@ -10,6 +12,7 @@ import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,14 +47,14 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     }
 
     @Override
-    public ResponseEntity<ReviewPage> findReviewsByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
-        return new ResponseEntity<>(reviewService.findByBeerId(beerId, page, size, sort), HttpStatus.OK);
+    public ResponseEntity<PageCustom<ReviewResponse>> findReviewsByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
+        return new ResponseEntity<>(reviewService.findByBeerId(beerId, new PageCustomRequest(page, size, sort)), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReviewPage> findAllReviews(Integer page, Integer size, ReviewSortType sort) {
+    public ResponseEntity<PageCustom<ReviewResponse>> findAllReviews(Integer page, Integer size, ReviewSortType sort) {
         try {
-            return new ResponseEntity<>(reviewService.findAllReviews(page, size, sort), HttpStatus.OK);
+            return new ResponseEntity<>(reviewService.findAllReviews(new PageCustomRequest(page, size, sort)), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

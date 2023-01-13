@@ -2,6 +2,7 @@ package com.beerlot.domain.review.controller;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewPage;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +51,7 @@ public interface ReviewApi {
             }
     )
     @GetMapping("/beers/{beerId}/reviews")
-    ResponseEntity<ReviewPage> findReviewsByBeerId (
+    ResponseEntity<PageCustom<ReviewResponse>> findReviewsByBeerId (
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
@@ -64,7 +66,7 @@ public interface ReviewApi {
             }
     )
     @GetMapping("/reviews")
-    ResponseEntity<ReviewPage> findAllReviews (
+    ResponseEntity<PageCustom<ReviewResponse>> findAllReviews (
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam("sort") ReviewSortType sort

@@ -3,6 +3,7 @@ package com.beerlot.domain.review.service;
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.repository.BeerRepository;
 import com.beerlot.domain.beer.service.BeerService;
+import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.common.util.SortTypeHelper;
 import com.beerlot.domain.member.Member;
@@ -18,6 +19,7 @@ import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -52,12 +54,12 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewPage findByBeerId(Long beerId, Integer page, Integer size, ReviewSortType sort) {
+    public PageCustom<ReviewResponse> findByBeerId(Long beerId, PageCustomRequest pageRequest) {
         Beer beer = beerService.findBeerById(beerId);
-        PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
-        Page<Review> reviewPage = reviewRepository.findByBeer_Id(beerId, (Pageable) PageRequest.of(page-1, size, SortTypeHelper.sortBy(true, sort)));
-        List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponse::of).collect(Collectors.toList());
-        return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
+
+        PageCustom<ReviewResponse> reviewPage = reviewRepository.findByBeerId(beerId, pageRequest);
+
+        return reviewPage;
     }
 
     public void createReview(String oauthId, Long beerId, ReviewRequest reviewRequest) {
@@ -95,11 +97,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewPage findAllReviews(Integer page, Integer size, ReviewSortType sort) {
-        PageCustomRequest pageRequest = new PageCustomRequest(page, size, sort);
-        Page<Review> reviewPage = reviewRepository.findAll((Pageable) PageRequest.of(page-1, size, SortTypeHelper.sortBy(true, sort)));
-        List<ReviewResponse> reviewResponseList = reviewPage.getContent().stream().map(ReviewResponse::of).collect(Collectors.toList());
-        return new ReviewPage(reviewResponseList, pageRequest, reviewPage.getTotalElements());
+    public PageCustom<ReviewResponse> findAllReviews(PageCustomRequest pageRequest) {
+        return reviewRepository.findAll(pageRequest);
     }
 
     @Transactional(readOnly = true)

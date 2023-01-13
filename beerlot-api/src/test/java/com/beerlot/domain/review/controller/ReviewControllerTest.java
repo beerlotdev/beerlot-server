@@ -1,6 +1,7 @@
 package com.beerlot.domain.review.controller;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.review.Review;
@@ -210,8 +211,8 @@ public class ReviewControllerTest {
             @WithMockUser
             public void success() throws Exception {
 
-                when(reviewService.findByBeerId(isA(Long.class), isA(Integer.class), isA(Integer.class), isA(ReviewSortType.class)))
-                        .thenReturn(new ReviewPage(
+                when(reviewService.findByBeerId(isA(Long.class), isA(PageCustomRequest.class)))
+                        .thenReturn(new PageCustomImpl<>(
                                 List.of(ReviewResponse.of(review)),
                                 new PageCustomRequest(1, 10, ReviewSortType.MOST_LIKES),
                                 1L));
@@ -228,7 +229,7 @@ public class ReviewControllerTest {
             @Test
             @WithMockUser
             public void beerNotExist() throws Exception {
-                when(reviewService.findByBeerId(isA(Long.class), isA(Integer.class), isA(Integer.class), isA(ReviewSortType.class)))
+                when(reviewService.findByBeerId(isA(Long.class), isA(PageCustomRequest.class)))
                         .thenThrow(NoSuchElementException.class);
 
                 mockMvc.perform(get("/api/v1/beers/{beerId}/reviews", 2)
@@ -247,8 +248,8 @@ public class ReviewControllerTest {
             @Test
             @WithMockUser
             public void success() throws Exception {
-                when(reviewService.findAllReviews(isA(Integer.class), isA(Integer.class), isA(ReviewSortType.class)))
-                        .thenReturn(new ReviewPage(
+                when(reviewService.findAllReviews(isA(PageCustomRequest.class)))
+                        .thenReturn(new PageCustomImpl<>(
                                 List.of(ReviewResponse.of(review)),
                                 new PageCustomRequest(1, 10, ReviewSortType.MOST_LIKES),
                                 1L));
