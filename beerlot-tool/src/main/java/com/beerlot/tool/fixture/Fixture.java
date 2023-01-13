@@ -65,6 +65,7 @@ public class Fixture {
                 .content("이 맥주 최고!")
                 .rate(5.0f)
                 .imageUrl("https://beerlot.com/image_url")
+                .buyFrom(Set.of("편의점-GS편의점", "마트-롯데마트"))
                 .member(createMember())
                 .beer(createBeer())
                 .build();
