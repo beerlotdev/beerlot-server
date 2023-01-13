@@ -9,6 +9,7 @@ import lombok.Builder;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import java.util.Set;
 
 public class BeerResponse {
 
@@ -33,6 +34,9 @@ public class BeerResponse {
     @Column(name = "calorie_unit")
     private Integer calorieUnit;
 
+    @JsonProperty("buy_from")
+    private Set<String> buyFrom;
+
     @JsonProperty("like_count")
     private Long likeCount;
 
@@ -43,9 +47,22 @@ public class BeerResponse {
     private Float rate;
 
     @Builder
-    public BeerResponse(Long id, String name, String description, String originCountry, String originCity,
-                        Float volume, String imageUrl, Long likeCount, Long reviewCount,
-                        Float rate, CategorySimpleResponse categorySimpleResponse) {
+    public BeerResponse(Long id,
+                        String name,
+                        String originCountry,
+                        String imageUrl,
+                        CategorySimpleResponse categorySimpleResponse,
+                        String description,
+                        String originCity,
+                        Float volume,
+                        String brewery,
+                        Integer calorie,
+                        Integer calorieUnit,
+                        Set<String> buyFrom,
+                        Long likeCount,
+                        Long reviewCount,
+                        Float rate
+                        ) {
 
         this.beerSimpleResponse = BeerSimpleResponse.builder()
                 .id(id)
@@ -58,6 +75,10 @@ public class BeerResponse {
         this.description = description;
         this.originCity = originCity;
         this.volume = volume;
+        this.brewery = brewery;
+        this.calorie = calorie;
+        this.calorieUnit = calorieUnit;
+        this.buyFrom = buyFrom;
         this.likeCount = likeCount;
         this.reviewCount = reviewCount;
         this.rate = rate;
@@ -75,6 +96,10 @@ public class BeerResponse {
                 .originCountry(beerInternational.getOriginCountry())
                 .originCity(beerInternational.getOriginCity())
                 .volume(beer.getVolume())
+                .brewery(beer.getBrewery())
+                .calorie(beer.getCalorie())
+                .calorieUnit(beer.getCalorieUnit())
+                .buyFrom(beer.getBuyFrom())
                 .imageUrl(beer.getImageUrl())
                 .likeCount(beer.getLikeCount())
                 .reviewCount(beer.getReviewCount())

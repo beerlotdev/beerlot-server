@@ -2,6 +2,7 @@ package com.beerlot.domain.beer;
 
 import com.beerlot.domain.category.Category;
 import com.beerlot.domain.common.entity.BaseEntity;
+import com.beerlot.domain.review.BuyFromConverter;
 import com.beerlot.domain.review.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -36,6 +39,10 @@ public class Beer extends BaseEntity {
 
     @Column(name = "calorie_unit", nullable = false)
     private Integer calorieUnit;
+
+    @Convert(converter = BuyFromConverter.class)
+    @Column(name = "buy_from")
+    private Set<String> buyFrom = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -76,12 +83,24 @@ public class Beer extends BaseEntity {
         this.rate = rate > 0 ? (this.rate * (reviewCount - 1) + rate) / reviewCount : (this.rate * (reviewCount + 1) + rate) / reviewCount;
     }
 
+    public void updateBuyFrom(Set<String> oldBuyFrom, Set<String> newBuyFrom) {
+        Set<String> temp = new HashSet<>();
+
+        for (String buyFrom : newBuyFrom) {
+            if (!oldBuyFrom.contains(buyFrom)) {
+                temp.add(buyFrom);
+            }
+        }
+        this.buyFrom = temp;
+    }
+
     @Builder
-    public Beer(Long id, Float volume, Category category, String imageUrl) {
+    public Beer(Long id, Float volume, Category category, String imageUrl, Set<String> buyFrom) {
         this.id = id;
         this.volume = volume;
         this.category = category;
         this.imageUrl = imageUrl;
+        this.buyFrom = buyFrom;
     }
 }
 

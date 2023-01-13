@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,7 +34,7 @@ public class Review extends BaseEntity {
 
     @Convert(converter = BuyFromConverter.class)
     @Column(name = "buy_from")
-    private Set<String> buyFrom;
+    private Set<String> buyFrom = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")
@@ -55,7 +56,7 @@ public class Review extends BaseEntity {
     }
 
     @Builder
-    public Review(String content, float rate, String imageUrl, Beer beer, Member member, Set<String> buyFrom) {
+    public Review(String content, float rate, String imageUrl, Set<String> buyFrom, Beer beer, Member member) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
