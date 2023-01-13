@@ -58,7 +58,7 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         List<BeerSimpleResponse> beerResponseList = query
                 .limit(pageRequest.getSize())
                 .offset(pageRequest.getOffset())
-                .orderBy(pageRequest.getSort().orderBy(QBeer.class))
+                .orderBy(pageRequest.getSort().orderBy(QBeer.class, beer))
                 .fetch();
 
         return new PageCustomImpl<>(beerResponseList, pageRequest, totalElements);
