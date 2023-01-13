@@ -27,7 +27,7 @@ public interface AuthApi {
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role."),
                     @ApiResponse(responseCode = "404", description = "Member does not exist."),
                     @ApiResponse(responseCode = "409", description = "Member already signed up.")
             }
@@ -45,7 +45,7 @@ public interface AuthApi {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "400", description = "Token is not expired yet or token is invalid."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role."),
                     @ApiResponse(responseCode = "404", description = "Member does not exist.")
             }
     )

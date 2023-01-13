@@ -1,5 +1,7 @@
 package com.beerlot.domain.beer.controller;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,6 +31,7 @@ public interface BeerLikeApi {
     )
     @PostMapping("/{beerId}/likes")
     ResponseEntity<Void> createBeerLike (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId
     );
 
@@ -44,6 +47,7 @@ public interface BeerLikeApi {
     )
     @DeleteMapping("/{beerId}/likes")
     ResponseEntity<Void> deleteBeerLike (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId
     );
 }

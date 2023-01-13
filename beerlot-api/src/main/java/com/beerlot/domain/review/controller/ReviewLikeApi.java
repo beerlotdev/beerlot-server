@@ -1,5 +1,7 @@
 package com.beerlot.domain.review.controller;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,6 +31,7 @@ public interface ReviewLikeApi {
     )
     @PostMapping("/reviews/{reviewId}/likes")
     ResponseEntity<Void> createReviewLike (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
     );
 
@@ -46,6 +49,7 @@ public interface ReviewLikeApi {
     )
     @DeleteMapping("/reviews/{reviewId}/likes")
     ResponseEntity<Void> deleteReviewLike (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
     );
 }

@@ -2,10 +2,14 @@ package com.beerlot.domain.common.util;
 
 import com.beerlot.domain.beer.QBeer;
 import com.beerlot.domain.common.entity.SortType;
+import com.beerlot.domain.review.QReview;
+import com.beerlot.domain.review.Review;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
 import org.springframework.data.domain.Sort;
 
 public class SortTypeHelper {
@@ -25,13 +29,12 @@ public class SortTypeHelper {
         return isCamelCase == true ? Sort.by(direction, SortTypeHelper.changeToCamelCase(property)) : Sort.by(direction, property);
     }
 
-    public static OrderSpecifier[] orderBy(Class clazz, SortType sortType) {
+    public static <T> OrderSpecifier[] orderBy(Class clazz, EntityPathBase<T> path, SortType sortType) {
         return SortTypeHelper.sortBy(false, sortType)
                 .stream().filter(sortBy -> !sortBy.getProperty().isBlank())
                 .map(sortBy -> {
                     Order _direction = sortBy.getDirection().isDescending() ? Order.DESC : Order.ASC;
-                    Path<QBeer> postPath = Expressions.path(clazz, sortBy.getProperty());
-                    return new OrderSpecifier(_direction, postPath);
+                    return new OrderSpecifier(_direction, Expressions.path(clazz, path, sortBy.getProperty()));
                 }).toArray(OrderSpecifier[]::new);
     }
 }

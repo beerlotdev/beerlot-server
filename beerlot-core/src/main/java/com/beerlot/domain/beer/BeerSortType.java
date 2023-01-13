@@ -3,6 +3,7 @@ package com.beerlot.domain.beer;
 import com.beerlot.domain.common.entity.SortType;
 import com.beerlot.domain.common.util.SortTypeHelper;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,7 +31,7 @@ public enum BeerSortType implements SortType {
     }
 
     @Override
-    public OrderSpecifier[] orderBy(Class clazz) {
-        return SortTypeHelper.orderBy(clazz, this);
+    public <T> OrderSpecifier[] orderBy(Class clazz, EntityPathBase<T> path) {
+        return SortTypeHelper.orderBy(clazz, path, this);
     }
 }

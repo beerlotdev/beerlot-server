@@ -1,5 +1,6 @@
 package com.beerlot.domain.beer.controller;
 
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerPage;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
@@ -53,14 +54,14 @@ public class BeerController implements BeerApi, BeerLikeApi {
     }
 
     @Override
-    public ResponseEntity<Void> createBeerLike (Long beerId) {
-        beerLikeService.likeBeer(beerId);
+    public ResponseEntity<Void> createBeerLike (OAuthUserPrincipal userPrincipal, Long beerId) {
+        beerLikeService.likeBeer(userPrincipal.getOauthId(), beerId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteBeerLike (Long beerId) {
-        beerLikeService.unlikeBeer(beerId);
+    public ResponseEntity<Void> deleteBeerLike (OAuthUserPrincipal userPrincipal, Long beerId) {
+        beerLikeService.unlikeBeer(userPrincipal.getOauthId(), beerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

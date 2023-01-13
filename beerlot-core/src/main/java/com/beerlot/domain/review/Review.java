@@ -58,7 +58,7 @@ public class Review extends BaseEntity {
         this.member = member;
     }
 
-    public void updateModel(ReviewRequest reviewURequest) {
+    public void update(ReviewRequest reviewURequest) {
         this.content = reviewURequest.getContent();
         this.rate = reviewURequest.getRate();
         this.imageUrl = reviewURequest.getImageUrl();

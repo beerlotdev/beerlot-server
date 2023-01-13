@@ -1,14 +1,11 @@
 package com.beerlot.domain.beer.controller;
 
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.Beer;
-import com.beerlot.domain.beer.BeerInternational;
-import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
-import com.beerlot.domain.category.CategoryInternational;
-import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
-import com.beerlot.domain.category.service.CategoryService;
 import com.beerlot.domain.common.entity.LanguageType;
+import com.beerlot.domain.member.Member;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.tool.fixture.Fixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -28,6 +24,7 @@ import java.util.NoSuchElementException;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,35 +100,42 @@ public class BeerControllerTest {
     @Nested
     class BeerLikeTest {
 
+        Member member;
+
+        @BeforeEach
+        public void setUp() {
+            member = Fixture.createMember();
+        }
+
         @Nested
         class CreateBeerLikeTest {
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
-                doNothing().when(beerLikeService).likeBeer(isA(Long.class));
+                doNothing().when(beerLikeService).likeBeer(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 1)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isCreated());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void beerNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(beerLikeService).likeBeer(2L);
+                doThrow(NoSuchElementException.class).when(beerLikeService).likeBeer(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 2)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void beerLikeAlreadyExist() throws Exception {
-                doThrow(ConflictException.class).when(beerLikeService).likeBeer(1L);
+                doThrow(ConflictException.class).when(beerLikeService).likeBeer(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(post("/api/v1/beers/{beerId}/likes", 1)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isConflict());
             }
@@ -141,21 +145,21 @@ public class BeerControllerTest {
         class DeleteBeerLikeTest {
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void success() throws Exception {
-                doNothing().when(beerLikeService).unlikeBeer(1L);
+                doNothing().when(beerLikeService).unlikeBeer(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/beers/{beerId}/likes", 1)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNoContent());
             }
 
             @Test
-            @WithMockUser(roles = {"MEMBER"})
             public void beerOrBeerLikeNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(beerLikeService).unlikeBeer(2L);
+                doThrow(NoSuchElementException.class).when(beerLikeService).unlikeBeer(isA(String.class), isA(Long.class));
 
                 mockMvc.perform(delete("/api/v1/beers/{beerId}/likes", 2)
+                                .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
             }

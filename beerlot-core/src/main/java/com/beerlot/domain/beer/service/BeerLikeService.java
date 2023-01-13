@@ -4,10 +4,12 @@ import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.BeerLike;
 import com.beerlot.domain.beer.repository.BeerLikeRepository;
 import com.beerlot.domain.beer.repository.BeerRepository;
+import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.repository.MemberRepository;
+import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
-import com.beerlot.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,10 @@ import java.util.NoSuchElementException;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BeerLikeService {
+
+    private final MemberService memberService;
 
     @Autowired
     private BeerLikeRepository beerLikeRepository;
@@ -30,19 +35,19 @@ public class BeerLikeService {
     @Autowired
     private MemberRepository memberRepository;
 
-    /* TODO: Include memberId and validateMember*/
-    public void likeBeer(Long beerId) {
+    public void likeBeer(String oauthId, Long beerId) {
         Beer beer = beerService.findBeerById(beerId);
-        checkBeerLikeExist(beerId, 1L, true);
-        BeerLike beerLike = new BeerLike(beer, memberRepository.findById(1L).get());
+        Member member = memberService.findMemberByOauthId(oauthId);
+        checkBeerLikeExist(beerId, member.getId(), true);
+        BeerLike beerLike = new BeerLike(beer, member);
         beerLikeRepository.save(beerLike);
     }
 
-    /* TODO: Include memberId and validateMember*/
-    public void unlikeBeer(Long beerId) {
+    public void unlikeBeer(String oauthId, Long beerId) {
         Beer beer = beerService.findBeerById(beerId);
-        checkBeerLikeExist(beerId, 1L, false);
-        beerLikeRepository.deleteByBeer_IdAndMember_Id(beerId, 1L);
+        Member member = memberService.findMemberByOauthId(oauthId);
+        checkBeerLikeExist(beerId, member.getId(), false);
+        beerLikeRepository.deleteByBeer_IdAndMember_Id(beerId, member.getId());
         beer.unlikeBeer();
     }
 
@@ -54,9 +59,9 @@ public class BeerLikeService {
 
     private void checkBeerLikeExist(Long beerId, Long memberId, boolean isPositive) {
         if (isPositive && beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
-            throw new ConflictException(ErrorMessage.BEER_LIKE_CONFLICT.getMessage());
+            throw new ConflictException(ErrorMessage.BEER_LIKE__CONFLICT.getMessage());
         } else if (!isPositive && !beerLikeRepository.existsByBeer_IdAndMember_Id(beerId, memberId)) {
-            throw new NoSuchElementException(ErrorMessage.BEER_LIKE_NOT_FOUND.getMessage());
+            throw new NoSuchElementException(ErrorMessage.BEER_LIKE__NOT_FOUND.getMessage());
         }
     }
 }

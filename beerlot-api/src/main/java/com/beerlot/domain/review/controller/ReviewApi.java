@@ -1,5 +1,8 @@
 package com.beerlot.domain.review.controller;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewPage;
@@ -29,6 +32,7 @@ public interface ReviewApi {
     )
     @PostMapping("/beers/{beerId}/reviews")
     ResponseEntity<Void> createReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for creating review")
             @RequestBody ReviewRequest reviewRequest
@@ -40,13 +44,11 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "204", description = "Empty result."),
-                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
                     @ApiResponse(responseCode = "404", description = "Beer does not exist.")
             }
     )
     @GetMapping("/beers/{beerId}/reviews")
-    ResponseEntity<ReviewPage> findReviewsByBeerId (
+    ResponseEntity<PageCustom<ReviewResponse>> findReviewsByBeerId (
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
@@ -61,7 +63,7 @@ public interface ReviewApi {
             }
     )
     @GetMapping("/reviews")
-    ResponseEntity<ReviewPage> findAllReviews (
+    ResponseEntity<PageCustom<ReviewResponse>> findAllReviews (
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam("sort") ReviewSortType sort
@@ -87,12 +89,13 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "204", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role. / Member has no proper rights."),
                     @ApiResponse(responseCode = "404", description = "Review does not exist."),
             }
     )
     @DeleteMapping("/reviews/{reviewId}")
     ResponseEntity<Void> deleteReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
     );
 
@@ -103,12 +106,13 @@ public interface ReviewApi {
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper role. / Member has no proper rights."),
                     @ApiResponse(responseCode = "404", description = "Review does not exist."),
             }
     )
     @PatchMapping("/reviews/{reviewId}")
     ResponseEntity<ReviewResponse> updateReview (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for updating review")
             @RequestBody ReviewRequest reviewRequest

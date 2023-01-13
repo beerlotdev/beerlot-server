@@ -11,15 +11,15 @@ public enum ErrorMessage {
     BEER_INTERNATIONAL__NOT_EXIST("Beer international does not exist."),
 
     // ===== Beer Like ===== //
-    BEER_LIKE_NOT_FOUND("Member has not liked the beer yet."),
-    BEER_LIKE_CONFLICT("Member already liked the beer."),
+    BEER_LIKE__NOT_FOUND("Member has not liked the beer yet."),
+    BEER_LIKE__CONFLICT("Member already liked the beer."),
 
     // ===== Review ===== //
-    REVIEW_NOT_FOUND("Review does not exist."),
+    REVIEW__NOT_FOUND("Review does not exist."),
 
     // ===== Review Like ===== //
-    REVIEW_LIKE_NOT_FOUND("Member has not liked the review yet."),
-    REVIEW_LIKE_CONFLICT("Member already liked the review."),
+    REVIEW_LIKE__NOT_FOUND("Member has not liked the review yet."),
+    REVIEW_LIKE__CONFLICT("Member already liked the review."),
 
     // ===== Category ===== //
     CATEGORY__NOT_EXIST("Category does not exist."),
@@ -31,10 +31,11 @@ public enum ErrorMessage {
     // ===== Member ===== //
     MEMBER__ALREADY_SIGNED_UP("Member already signed up."),
     MEMBER__NOT_EXIST("Member does not exist."),
-    MEMBER__ACCESS_DENIED("Member does not have proper rights."),
+    MEMBER__UNPROPER_ROLE("Member has no proper role."),
+    MEMBER__ACCESS_DENIED("Member has no proper rights."),
 
     // ===== Token ===== //
-    MEMBER_REFRESH_TOKEN_NOT_EXIST("Member refresh token does not exist."),
+    MEMBER_REFRESH_TOKEN__NOT_EXIST("Member refresh token does not exist."),
     TOKEN__INVALID("Token is invalid."),
     TOKEN__NOT_EXPIRED_YET("Token is not expired yet."),
     TOKEN__EXPIRED("Token is expired."),
