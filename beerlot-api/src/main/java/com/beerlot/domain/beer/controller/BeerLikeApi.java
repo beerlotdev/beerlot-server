@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,6 @@ public interface BeerLikeApi {
             }
     )
     @PostMapping("/{beerId}/likes")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> createBeerLike (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId
@@ -48,7 +46,6 @@ public interface BeerLikeApi {
             }
     )
     @DeleteMapping("/{beerId}/likes")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> deleteBeerLike (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId

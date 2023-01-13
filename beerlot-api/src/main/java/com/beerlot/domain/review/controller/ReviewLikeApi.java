@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,6 @@ public interface ReviewLikeApi {
             }
     )
     @PostMapping("/reviews/{reviewId}/likes")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> createReviewLike (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
@@ -50,7 +48,6 @@ public interface ReviewLikeApi {
             }
     )
     @DeleteMapping("/reviews/{reviewId}/likes")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> deleteReviewLike (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId

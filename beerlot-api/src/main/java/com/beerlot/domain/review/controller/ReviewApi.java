@@ -13,9 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1")
@@ -33,7 +31,6 @@ public interface ReviewApi {
             }
     )
     @PostMapping("/beers/{beerId}/reviews")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> createReview (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Beer ID") @PathVariable("beerId") Long beerId,
@@ -97,7 +94,6 @@ public interface ReviewApi {
             }
     )
     @DeleteMapping("/reviews/{reviewId}")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<Void> deleteReview (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
@@ -115,7 +111,6 @@ public interface ReviewApi {
             }
     )
     @PatchMapping("/reviews/{reviewId}")
-    @PreAuthorize("hasRole('MEMBER')")
     ResponseEntity<ReviewResponse> updateReview (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId,
