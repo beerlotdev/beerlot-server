@@ -4,6 +4,7 @@ import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
@@ -64,8 +65,17 @@ public class MemberService {
 
         PolicyType.validateAgreeOnRequiredPolicies(memberRequest.getAgreedPolicies());
 
-        member.updateMemberProfile(memberRequest);
+        member.updateProfile(memberRequest);
         member.updateAgreedPolicies(memberRequest.getAgreedPolicies());
         member.addRole(RoleType.MEMBER);
+    }
+
+    public MemberResponse getProfile(Member member) {
+        return MemberResponse.of(member);
+    }
+
+    public MemberResponse updateProfile(Member member, MemberRequest memberRequest) {
+        member.updateProfile(memberRequest);
+        return getProfile(member);
     }
 }

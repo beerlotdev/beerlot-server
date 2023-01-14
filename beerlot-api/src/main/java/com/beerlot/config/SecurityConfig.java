@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -77,6 +76,7 @@ public class SecurityConfig {
                     // ===== Permit Role Member ===== //
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
+                    .antMatchers("/api/v1/members/**").hasRole("MEMBER")
 
                     .anyRequest().authenticated();
                 //.and()

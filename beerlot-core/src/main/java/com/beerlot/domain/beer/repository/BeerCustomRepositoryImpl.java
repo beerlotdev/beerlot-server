@@ -1,6 +1,8 @@
 package com.beerlot.domain.beer.repository;
 
+import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.QBeer;
+import com.beerlot.domain.beer.QBeerLike;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
@@ -19,12 +21,16 @@ import java.util.List;
 
 import static com.beerlot.domain.beer.QBeer.beer;
 import static com.beerlot.domain.beer.QBeerInternational.beerInternational;
+import static com.beerlot.domain.beer.QBeerLike.beerLike;
 import static com.beerlot.domain.category.QCategoryInternational.categoryInternational;
+import static com.beerlot.domain.member.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
 public class BeerCustomRepositoryImpl implements BeerCustomRepository {
     private final JPAQueryFactory queryFactory;
+
+    @Override
     public PageCustom<BeerSimpleResponse> findBySearch (String keyword,
                                                         List<Long> categories,
                                                         List<String> countries,
@@ -64,8 +70,49 @@ public class BeerCustomRepositoryImpl implements BeerCustomRepository {
         return new PageCustomImpl<>(beerResponseList, pageRequest, totalElements);
     }
 
+    @Override
+    public PageCustom<BeerSimpleResponse> findByMember(String oauthId,
+                                                       PageCustomRequest pageRequest,
+                                                       LanguageType language) {
+        JPAQuery<BeerSimpleResponse> query = queryFactory
+                .select(Projections.fields(BeerSimpleResponse.class,
+                        beer.id,
+                        beerInternational.name,
+                        beerInternational.originCountry,
+                        beer.imageUrl,
+                        Projections.fields(CategorySimpleResponse.class,
+                                beer.category.id,
+                                categoryInternational.name
+                        ).as("category")
+                ))
+                .from(beer)
+                .innerJoin(beer.beerLikes, beerLike)
+                .innerJoin(beerLike.member, member)
+                .innerJoin(beer.beerInternationals, beerInternational)
+                .innerJoin(beer.category.categoryInternationals, categoryInternational)
+                .where(
+                        matchLanguage(language),
+                        matchOauthId(oauthId)
+                );
+
+        long totalElements = query.fetch().size();
+
+        List<BeerSimpleResponse> beerResponseList = query
+                .limit(pageRequest.getSize())
+                .offset(pageRequest.getOffset())
+                .orderBy(pageRequest.getSort().orderBy(QBeer.class, beer))
+                .fetch();
+
+        return new PageCustomImpl<>(beerResponseList, pageRequest, totalElements);
+    }
+
+    private BooleanExpression matchOauthId(String oauthId) {
+        return beerLike.member.oauthId.eq(oauthId);
+    }
+
     private BooleanExpression matchLanguage(LanguageType language) {
-        return beerInternational.id.language.stringValue().eq(language.toString());
+        return beerInternational.id.language.stringValue().eq(language.toString())
+                .and(categoryInternational.id.language.stringValue().eq(language.toString()));
     }
 
     private BooleanExpression hasKeyword(String keyword) {

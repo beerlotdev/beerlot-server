@@ -5,12 +5,15 @@ import com.beerlot.domain.common.entity.BaseEntity;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.domain.policy.PolicyTypeConverter;
+import com.beerlot.domain.review.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -52,6 +55,9 @@ public class Member extends BaseEntity {
     @Column(name = "status_message")
     private String statusMessage;
 
+    @OneToMany(mappedBy = "member")
+    private List<Review> reviews = new ArrayList<>();
+
     @Builder
     public Member(String oauthId, String email, String username, ProviderType provider, Set<RoleType> roles, String imageUrl, String statusMessage) {
         this.oauthId = oauthId;
@@ -71,7 +77,7 @@ public class Member extends BaseEntity {
         this.agreedPolicies = agreedPolicies;
     }
 
-    public void updateMemberProfile (MemberRequest memberRequest) {
+    public void updateProfile(MemberRequest memberRequest) {
         this.username = memberRequest.getUsername();
         this.statusMessage = memberRequest.getStatusMessage();
         this.imageUrl = memberRequest.getImageUrl();

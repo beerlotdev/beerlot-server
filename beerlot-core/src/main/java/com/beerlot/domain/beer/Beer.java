@@ -54,6 +54,9 @@ public class Beer extends BaseEntity {
     @OneToMany(mappedBy = "beer")
     private List<BeerInternational> beerInternationals = new ArrayList<>();
 
+    @OneToMany(mappedBy = "beer")
+    private List<BeerLike> beerLikes = new ArrayList<>();
+
     @Column(name = "like_count", columnDefinition = "int default 0")
     private long likeCount = 0L;
 
