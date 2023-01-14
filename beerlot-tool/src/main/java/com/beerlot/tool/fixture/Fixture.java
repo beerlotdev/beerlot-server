@@ -56,6 +56,7 @@ public class Fixture {
                 .imageUrl("https://beerlot.com/image_url")
                 .volume(4.4f)
                 .category(createCategory())
+                .buyFrom(Set.of("편의점-GS편의점", "마트-롯데마트"))
                 .build();
     }
 

@@ -61,6 +61,7 @@ public class ReviewService {
 
         beer.addReview();
         beer.calculateRate(review.getRate());
+        beer.updateBuyFrom(review.getBuyFrom(), reviewRequest.getBuyFrom());
 
         reviewRepository.save(review);
     }
@@ -72,6 +73,7 @@ public class ReviewService {
 
         review.update(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
+        review.getBeer().updateBuyFrom(review.getBuyFrom(), reviewRequest.getBuyFrom());
 
         return ReviewResponse.of(review);
     }
