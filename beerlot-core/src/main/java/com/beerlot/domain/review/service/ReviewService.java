@@ -3,13 +3,16 @@ package com.beerlot.domain.review.service;
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.repository.BeerRepository;
 import com.beerlot.domain.beer.service.BeerService;
+import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
+import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.domain.review.Review;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
+import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.repository.ReviewRepository;
 import com.beerlot.exception.ErrorMessage;
@@ -101,7 +104,14 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public void isReviewOwner(String oauthId, Review review) {
+    public PageCustom<ReviewArchiveResponse> getReviewsByMember(String oauthId,
+                                                                PageCustomRequest pageRequest,
+                                                                LanguageType language) {
+        return reviewRepository.findByMember(oauthId, pageRequest, language);
+    }
+
+    @Transactional(readOnly = true)
+    private void isReviewOwner(String oauthId, Review review) {
         if (!review.getMember().getOauthId().equals(oauthId)) {
             throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
         }

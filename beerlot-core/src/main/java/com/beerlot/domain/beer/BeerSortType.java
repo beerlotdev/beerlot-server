@@ -12,8 +12,8 @@ import org.springframework.data.domain.Sort.Direction;
 @Getter
 public enum BeerSortType implements SortType {
     
-    MOST_LIKES("like_count", Direction.DESC),
-    MOST_REVIEWS("review_count", Direction.DESC),
+    MOST_LIKES("likeCount", Direction.DESC),
+    MOST_REVIEWS("reviewCount", Direction.DESC),
     HIGH_RATE("rate", Direction.DESC)
     ;
 
@@ -31,7 +31,7 @@ public enum BeerSortType implements SortType {
     }
 
     @Override
-    public <T> OrderSpecifier[] orderBy(Class clazz, EntityPathBase<T> path) {
-        return SortTypeHelper.orderBy(clazz, path, this);
+    public <T> OrderSpecifier[] orderBy(Class clazz, String name) {
+        return SortTypeHelper.orderBy(clazz, name, this);
     }
 }

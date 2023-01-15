@@ -51,4 +51,11 @@ public class BeerService {
         return beerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.BEER__NOT_EXIST.getMessage()));
     }
+
+    @Transactional(readOnly = true)
+    public PageCustom<BeerSimpleResponse> getBeersByMember(String oauthId,
+                                                           PageCustomRequest request,
+                                                           LanguageType language) {
+        return beerRepository.findByMember(oauthId, request, language);
+    }
 }

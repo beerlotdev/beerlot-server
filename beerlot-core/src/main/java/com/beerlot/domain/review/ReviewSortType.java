@@ -9,8 +9,8 @@ import org.springframework.data.domain.Sort.Direction;
 
 @AllArgsConstructor
 public enum ReviewSortType implements SortType {
-    RECENTLY_UPDATED("updated_at", Direction.DESC),
-    MOST_LIKES("like_count", Direction.DESC),
+    RECENTLY_UPDATED("updatedAt", Direction.DESC),
+    MOST_LIKES("likeCount", Direction.DESC),
     HIGH_RATE("rate", Direction.DESC),
     LOW_RATE("rate", Direction.ASC)
     ;
@@ -29,7 +29,7 @@ public enum ReviewSortType implements SortType {
     }
 
     @Override
-    public <T> OrderSpecifier[] orderBy(Class clazz, EntityPathBase<T> path) {
-        return SortTypeHelper.orderBy(clazz, path, this);
+    public <T> OrderSpecifier[] orderBy(Class clazz, String name) {
+        return SortTypeHelper.orderBy(clazz, name, this);
     }
 }

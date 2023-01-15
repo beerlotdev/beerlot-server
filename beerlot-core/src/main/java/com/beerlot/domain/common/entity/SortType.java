@@ -8,5 +8,5 @@ public interface SortType {
 
     String getProperty();
     Direction getDirection();
-    <T> OrderSpecifier[] orderBy(Class clazz, EntityPathBase<T> path);
+    <T> OrderSpecifier[] orderBy(Class clazz, String name);
 }
