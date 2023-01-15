@@ -5,7 +5,6 @@ import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
-import com.beerlot.domain.review.dto.response.ReviewPage;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

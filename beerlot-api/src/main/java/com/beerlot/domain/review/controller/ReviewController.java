@@ -1,18 +1,14 @@
 package com.beerlot.domain.review.controller;
 
-import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
-import com.beerlot.domain.review.dto.response.ReviewPage;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

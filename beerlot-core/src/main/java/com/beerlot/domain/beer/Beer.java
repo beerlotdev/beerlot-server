@@ -1,7 +1,6 @@
 package com.beerlot.domain.beer;
 
 import com.beerlot.domain.category.Category;
-import com.beerlot.domain.common.entity.BaseEntity;
 import com.beerlot.domain.review.BuyFromConverter;
 import com.beerlot.domain.review.Review;
 import lombok.AccessLevel;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "beer")
-public class Beer extends BaseEntity {
+public class Beer {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

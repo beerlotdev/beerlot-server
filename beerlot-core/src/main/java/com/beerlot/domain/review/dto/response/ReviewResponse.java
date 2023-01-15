@@ -27,9 +27,6 @@ public class ReviewResponse {
     @JsonProperty("like_count")
     private Long likeCount;
 
-    @JsonProperty("beer_id")
-    private Long beerId;
-
     @JsonProperty("updated_at")
     private Date updatedAt;
 
@@ -37,14 +34,13 @@ public class ReviewResponse {
     private MemberResponse member;
 
     @Builder
-    public ReviewResponse(Long id, String content, String imageUrl, Float rate, Long likeCount, Long beerId,
+    public ReviewResponse(Long id, String content, String imageUrl, Float rate, Long likeCount,
                           Date updatedAt, MemberResponse member) {
         this.id = id;
         this.content = content;
         this.imageUrl = imageUrl;
         this.rate = rate;
         this.likeCount = likeCount;
-        this.beerId = beerId;
         this.member = member;
         this.updatedAt = updatedAt;
     }
@@ -56,7 +52,6 @@ public class ReviewResponse {
                 .imageUrl(review.getImageUrl())
                 .rate(review.getRate())
                 .likeCount(review.getLikeCount())
-                .beerId(review.getBeer().getId())
                 .updatedAt(review.getUpdatedAt())
                 .member(MemberResponse.of(review.getMember()))
                 .build();
