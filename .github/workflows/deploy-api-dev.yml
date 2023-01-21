@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+  workflow:
 
 permissions:
   id-token: 'write'
