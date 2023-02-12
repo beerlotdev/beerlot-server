@@ -3,6 +3,9 @@ spring:
     gcp:
       sql:
         enabled: false
+      storage:
+        access-base-url: https://storage.cloud.google.com
+        bucket-name: beerlot-images
 
   datasource:
     url: jdbc:h2:mem:beerlot_db
