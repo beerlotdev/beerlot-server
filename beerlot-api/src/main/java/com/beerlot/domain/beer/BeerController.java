@@ -1,7 +1,6 @@
-package com.beerlot.domain.beer.controller;
+package com.beerlot.domain.beer;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
-import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerPage;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
@@ -13,7 +12,6 @@ import com.beerlot.domain.common.page.PageCustomRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.beerlot.domain.beer.controller;
+package com.beerlot.domain.beer;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
