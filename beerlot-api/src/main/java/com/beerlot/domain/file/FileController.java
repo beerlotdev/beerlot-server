@@ -1,5 +1,6 @@
 package com.beerlot.domain.file;
 
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.file.dto.FileResponse;
 import com.beerlot.domain.file.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,9 @@ public class FileController implements FileApi {
     private final FileService fileService;
 
     @Override
-    public ResponseEntity<FileResponse> uploadFile(String fileDirectory, MultipartFile file) {
+    public ResponseEntity<FileResponse> uploadFile(OAuthUserPrincipal userPrincipal,
+                                                   String fileDirectory,
+                                                   MultipartFile file) {
         return new ResponseEntity<>(fileService.uploadFile(FileDirectoryType.valueOf(fileDirectory.toUpperCase()), file),
                 HttpStatus.OK);
     }

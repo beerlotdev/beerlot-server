@@ -1,5 +1,7 @@
 package com.beerlot.domain.file;
 
+import com.beerlot.annotation.CurrentUser;
+import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.file.dto.FileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +29,7 @@ public interface FileApi {
     )
     @PostMapping(value = "/{fileDirectory}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     ResponseEntity<FileResponse> uploadFile (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "file directory") @PathVariable("fileDirectory") String fileDirectory,
             @RequestPart("file") MultipartFile file
     );
