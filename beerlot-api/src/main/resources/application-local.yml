@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-    - secret/local/application-db-local.yml
+    - secret/local/application-cloud-local.yml
     - secret/local/application-oauth-local.yml
 
 # JPA

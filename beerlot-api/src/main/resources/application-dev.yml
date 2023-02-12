@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-      - secret/dev/application-db-dev.yml
+      - secret/dev/application-cloud-dev.yml
       - secret/dev/application-oauth-dev.yml
 
   jpa:
