@@ -44,9 +44,15 @@ public enum ErrorMessage {
     UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized."),
     NO_AUTHORIZATION("No Authorization was found."),
 
+    // ===== File ===== //
+    FILE__FILENAME_NULL("Filename cannot be null."),
+    FILE__CONVERT_PROCESSING_ERROR("An error has occured while converting the file."),
+    FILE__READ_PROCESSING_ERROR("An error has occured while reading the file."),
+
     // ===== Etc ===== //
     LANGUAGE__INVALID("Language code is invalid or not supported."),
-    POLICY__REQUIRED_NOT_AGREED("Required policies have not agreed yet.");
+    POLICY__REQUIRED_NOT_AGREED("Required policies have not agreed yet.")
+            ;
 
     private final String message;
 }

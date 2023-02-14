@@ -1,13 +1,13 @@
 spring:
   config:
     import:
-      - secret/dev/application-db-dev.yml
+      - secret/dev/application-cloud-dev.yml
       - secret/dev/application-oauth-dev.yml
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

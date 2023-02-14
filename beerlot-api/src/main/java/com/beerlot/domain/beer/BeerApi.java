@@ -1,4 +1,4 @@
-package com.beerlot.domain.beer.controller;
+package com.beerlot.domain.beer;
 
 import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerPage;

@@ -77,10 +77,9 @@ public class SecurityConfig {
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
                     .antMatchers("/api/v1/members/**").hasRole("MEMBER")
+                    .antMatchers("/api/v1/files/**").hasRole("MEMBER")
 
                     .anyRequest().authenticated();
-                //.and()
-                //.oauth2ResourceServer().jwt()
 
 
         return http.build();
