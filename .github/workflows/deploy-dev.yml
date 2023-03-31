@@ -39,7 +39,6 @@ jobs:
         run: terraform validate -no-color
 
       - name: Terraform Plan
-        working-directory: beerlot-api/terraform
         run: terraform plan -out=tfplan -input=false \
           -chdir=beerlot-api/terraform \
           -var-file=environments/${{ env.environment }}.tfvars \
