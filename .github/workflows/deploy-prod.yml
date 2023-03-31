@@ -37,7 +37,7 @@ jobs:
           
           terraform plan -out=tfplan -input=false \
           -var-file=environments/${{ env.environment }}.tfvars \
-          -var="project=${{ secrets.GCP_PROJECT }}" \
-          -var="region=${{ secrets.GCP_REGION }}"
+          -var="project=${{ vars.GCP_PROJECT }}" \
+          -var="region=${{ vars.GCP_REGION }}"
           
           terraform apply -input=false tfplan
