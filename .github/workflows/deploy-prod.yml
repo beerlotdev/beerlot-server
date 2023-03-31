@@ -1,4 +1,4 @@
-name: Terraform Dev
+name: Terraform Prod
 
 on:
   push:
@@ -13,9 +13,9 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    environment: dev
+    environment: prod
     env:
-      environment: dev
+      environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,6 +37,7 @@ jobs:
           
           terraform plan -out=tfplan -input=false \
           -var-file=environments/${{ env.environment }}.tfvars \
-          -var="project=${{ secrets.GCP_PROJECT }}"
+          -var="project=${{ secrets.GCP_PROJECT }}" \
+          -var="region=${{ secrets.GCP_REGION }}"
           
           terraform apply -input=false tfplan
