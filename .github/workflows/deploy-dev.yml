@@ -46,4 +46,4 @@ jobs:
 
       - name: Terraform Apply
         working-directory: beerlot-api/terraform
-        run: terraform apply -auto-approve
+        run: terraform apply -input=false tfplan
