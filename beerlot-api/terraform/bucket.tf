@@ -1,4 +1,4 @@
-resource "google_storage_bucket" "static-site" {
+resource "google_storage_bucket" "image_buckets" {
   for_each = toset(var.image_buckets)
   name          = "beerlot-images/${each.key}"
   project = var.project
@@ -6,4 +6,5 @@ resource "google_storage_bucket" "static-site" {
   force_destroy = true
 
   uniform_bucket_level_access = true
+
 }
