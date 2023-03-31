@@ -30,20 +30,13 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Init
+      - name: Terraform Deployment
         working-directory: beerlot-api/terraform
-        run: terraform init
-
-      - name: Terraform Validate
-        working-directory: beerlot-api/terraform
-        run: terraform validate -no-color
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan -input=false \
-          -chdir=beerlot-api/terraform \
+        run: |
+          terraform init
+          
+          terraform plan -out=tfplan -input=false \
           -var-file=environments/${{ env.environment }}.tfvars \
           -var="project=${{ secrets.GCP_PROJECT }}"
-
-      - name: Terraform Apply
-        working-directory: beerlot-api/terraform
-        run: terraform apply -input=false tfplan
+          
+          terraform apply -input=false tfplan
