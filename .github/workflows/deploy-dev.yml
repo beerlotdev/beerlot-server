@@ -8,8 +8,6 @@ on:
 
 jobs:
   terraform:
-    needs:
-      - job_information
     name: 'Terraform'
     runs-on: ubuntu-latest
     permissions:
