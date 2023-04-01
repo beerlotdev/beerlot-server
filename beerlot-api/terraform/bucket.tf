@@ -7,7 +7,7 @@ resource "google_storage_bucket" "image_bucket" {
   uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket" "image_bucket_subfolders" {
+resource "google_storage_bucket_object" "image_bucket_subfolders" {
   project       = var.project
   location      = var.region
 
