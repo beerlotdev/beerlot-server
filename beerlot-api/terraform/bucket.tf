@@ -8,12 +8,7 @@ resource "google_storage_bucket" "image_bucket" {
 }
 
 resource "google_storage_bucket_object" "image_bucket_subfolders" {
-  project       = var.project
-  location      = var.region
-
   for_each = toset(var.image_buckets)
   name          = "${each.key}/"
   bucket        = google_storage_bucket.image_bucket.name
-  force_destroy = true
-  uniform_bucket_level_access = true
 }
