@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum FileDirectoryType {
     BEER("beers"),
     REVIEW("reviews"),
-    PROFILE("members/profile");
+    PROFILE("members");
 
     private final String directoryName;
 }

@@ -10,5 +10,6 @@ resource "google_storage_bucket" "image_bucket" {
 resource "google_storage_bucket_object" "image_bucket_subfolders" {
   for_each = toset(var.image_buckets)
   name          = "${each.key}/"
+  content = "Images for ${title(each.key)}"
   bucket        = google_storage_bucket.image_bucket.name
 }
