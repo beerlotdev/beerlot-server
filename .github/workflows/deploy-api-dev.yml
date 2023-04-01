@@ -3,7 +3,7 @@ name: Deploy API on DEV
 on:
   push:
     branches:
-      - develop
+#      - develop
   workflow_dispatch:
 
 permissions:
