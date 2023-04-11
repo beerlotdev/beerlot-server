@@ -12,6 +12,8 @@ resource "null_resource" "docker_push" {
     command = <<END_OF_SCRIPT
 
       cd ../
+      ./gradlew clean build
+
       docker build -t ${local.docker_image} -f ${var.docker_file} .
       docker push ${local.docker_image}
 
