@@ -3,7 +3,7 @@ name: Terraform Prod
 on:
   push:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 jobs:
@@ -33,11 +33,12 @@ jobs:
       - name: Terraform Deployment
         working-directory: beerlot-api/terraform
         run: |
-          terraform init
+          terraform init -backend-config=environments/${{ env.environment }}.tfbackend
           
           terraform plan -out=tfplan -input=false \
-          -var-file=environments/${{ env.environment }}.tfvars \
+          -var-file=environments/${{ env.environment }}/${{ env.environment }}.tfvars \
           -var="project=${{ vars.GCP_PROJECT }}" \
           -var="region=${{ vars.GCP_REGION }}"
+          -var="image_tag=${{ github.sha }}"
           
           terraform apply -input=false tfplan
