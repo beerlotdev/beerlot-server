@@ -1,0 +1,14 @@
+spring:
+  config:
+    import:
+      - secret/dev/application-cloud-prod.yml
+      - secret/dev/application-oauth-prod.yml
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL81Dialect
