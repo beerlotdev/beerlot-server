@@ -5,5 +5,5 @@ resource "google_iap_brand" "project_brand" {
 
 resource "google_iap_client" "project_oauth_client" {
   display_name = "BeerLot OAuth Client"
-  brand        =  google_iap_brand.project_brand.name
+  brand        = google_iap_brand.project_brand.name
 }

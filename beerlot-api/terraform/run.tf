@@ -1,5 +1,5 @@
 locals {
-  docker_image = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.beerlot_core_api_repository.repository_id}/beerlot-core-api-image:${var.image_tag}",
+  docker_image = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.beerlot_core_api_repository.repository_id}/beerlot-core-api-image:${var.image_tag}"
 }
 
 resource "null_resource" "docker_push" {
@@ -32,7 +32,7 @@ resource "google_cloud_run_service" "beerlot_core_api" {
       containers {
         image = local.docker_image
         ports {
-          container_port =80
+          container_port = 80
         }
       }
     }
@@ -41,8 +41,8 @@ resource "google_cloud_run_service" "beerlot_core_api" {
       name = "beerlot-core-api-${var.image_tag}"
 
       annotations = {
-        "run.googleapis.com/cloudsql-instances"   = google_sql_database_instance.beerlot_database_instance.connection_name
-        "run.googleapis.com/client-name"          = "terraform"
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.beerlot_database_instance.connection_name
+        "run.googleapis.com/client-name"        = "terraform"
       }
     }
   }
