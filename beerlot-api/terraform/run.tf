@@ -24,7 +24,7 @@ resource "null_resource" "docker_push" {
 }
 
 resource "google_cloud_run_service" "beerlot_core_api" {
-  name     = beerlot-core-api
+  name     = "beerlot-core-api"
   location = var.region
 
   template {
