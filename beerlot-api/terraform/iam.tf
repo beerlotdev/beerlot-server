@@ -15,7 +15,7 @@ resource "google_project_iam_member" "storage_viewers" {
   member  = each.key
 }
 
-resource "google_project_iam_member" "storage_viewers" {
+resource "google_project_iam_member" "security_admins" {
   project = var.project
   role    = "roles/iam.securityAdmin"
   for_each = toset(var.project_security_admin)
