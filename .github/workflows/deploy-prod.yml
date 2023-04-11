@@ -22,6 +22,15 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
+
       - name: Authorize to GCP
         uses: google-github-actions/auth@v1
         with:
@@ -29,6 +38,11 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+
+      - name: Gradle Test and Build
+        working-directory: beerlot-api
+        run: |
+          ./gradlew clean build
 
       - name: Terraform Deployment
         working-directory: beerlot-api/terraform
