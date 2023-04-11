@@ -1,0 +1,45 @@
+name: Terraform Dev
+
+on:
+  push:
+    branches:
+      - develop
+
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: dev
+    env:
+      environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Authorize to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Deployment
+        working-directory: beerlot-api/terraform
+        run: |
+          terraform init -backend-config=environments/${{ env.environment }}/${{ env.environment }}.tfbackend
+          
+          terraform plan -out=tfplan -input=false \
+          -var-file=environments/${{ env.environment }}/${{ env.environment }}.tfvars \
+          -var="project=${{ vars.GCP_PROJECT }}" \
+          -var="region=${{ vars.GCP_REGION }}"
+          -var="tag_name=${{ github.sha }}"
+          
+          terraform apply -input=false tfplan
