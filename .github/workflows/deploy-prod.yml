@@ -36,6 +36,9 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
+      - name: Authorize to Docker Repository
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
