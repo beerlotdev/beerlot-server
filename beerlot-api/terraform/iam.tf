@@ -21,3 +21,12 @@ resource "google_project_iam_member" "security_admins" {
   for_each = toset(var.project_security_admin)
   member   = each.key
 }
+
+resource "google_cloud_run_service_iam_member" "allusers_cloud_run" {
+  role = "roles/run.invoker"
+  member = "allUsers"
+
+  project = var.project
+  location = var.region
+  service = google_cloud_run_service.beerlot_core_api.name
+}
