@@ -9,3 +9,5 @@
 **/beerlot-dev-363211.json
 
 beerlot-core/init.sql
+/**/data.sql
+PolicyControllerTest.java
