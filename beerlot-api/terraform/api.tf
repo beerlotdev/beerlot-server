@@ -3,7 +3,8 @@ resource "google_project_service" "apis" {
     "iam.googleapis.com",
     "run.googleapis.com",
     "artifactregistry.googleapis.com",
-    "sqladmin.googleapis.com"
+    "sqladmin.googleapis.com",
+    "cloudresourcemanager.googleapis.com"
   ])
   project                    = var.project
   service                    = each.key
