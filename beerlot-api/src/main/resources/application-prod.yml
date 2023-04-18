@@ -1,8 +1,8 @@
 spring:
   config:
     import:
-      - secret/dev/application-cloud-prod.yml
-      - secret/dev/application-oauth-prod.yml
+      - secret/prod/application-cloud-prod.yml
+      - secret/prod/application-oauth-prod.yml
 
   jpa:
     show-sql: true
