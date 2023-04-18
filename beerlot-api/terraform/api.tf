@@ -8,5 +8,4 @@ resource "google_project_service" "apis" {
   ])
   project                    = var.project
   service                    = each.key
-  disable_dependent_services = true
 }
