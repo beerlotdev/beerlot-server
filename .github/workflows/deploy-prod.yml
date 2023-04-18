@@ -52,7 +52,7 @@ jobs:
       - name: Terraform Deployment
         working-directory: beerlot-api/terraform
         run: |
-          terraform init -backend-config=environments/${{ env.environment }}.tfbackend
+          terraform init -backend-config=environments/${{ env.environment }}/${{ env.environment }}.tfbackend
           
           terraform plan -out=tfplan -input=false \
           -var-file=environments/${{ env.environment }}/${{ env.environment }}.tfvars \
