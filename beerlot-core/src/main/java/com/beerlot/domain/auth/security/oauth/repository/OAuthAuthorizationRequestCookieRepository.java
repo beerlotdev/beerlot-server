@@ -47,7 +47,6 @@ public class OAuthAuthorizationRequestCookieRepository implements AuthorizationR
         OAuth2AuthorizationRequest oAuth2AuthorizationRequest = removeAuthorizationRequest(request);
 
         CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_AUTH_REQUEST);
-        //CookieUtils.deleteCookie(request, response, OAUTH_REDIRECT_URI);
 
         return oAuth2AuthorizationRequest;
     }

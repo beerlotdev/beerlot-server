@@ -62,14 +62,6 @@ public class TokenService {
         return refreshTokenRepository.findByOauthId(oauthId);
     }
 
-    public void updateRefreshTokenInCookie(HttpServletRequest request,
-                                            HttpServletResponse response,
-                                            String name,
-                                            String refreshToken) {
-        CookieUtils.deleteCookie(request, response, name);
-        CookieUtils.addCookie(response, name, refreshToken, (int) jwtService.getRefreshTokenExpiryInMillisecond() / 60000);
-    }
-
     public AccessTokenResponse refreshTokens(HttpServletRequest request, HttpServletResponse response, String accessToken) {
         String newAccessToken = validateAndGenerateNewAccessToken(accessToken);
 
@@ -112,7 +104,6 @@ public class TokenService {
             refreshTokenFromDb.updateRefreshToken(newRefreshToken);
 
             CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_REDIRECT_URL);
-            CookieUtils.addCookie(response, CookieUtils.COOKIE_NAME_REDIRECT_URL, refreshTokenFromDb.getToken(), (int) jwtService.getRefreshTokenExpiryInMillisecond() / 60000);
         }
     }
 
