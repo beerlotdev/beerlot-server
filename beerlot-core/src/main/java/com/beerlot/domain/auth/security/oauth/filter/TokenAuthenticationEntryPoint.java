@@ -16,6 +16,5 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         throw new UnauthorizedException(ErrorMessage.NO_AUTHORIZATION.getMessage());
-        //response.sendError(HttpStatus.UNAUTHORIZED.value(), ErrorMessage.NO_AUTHORIZATION.getMessage());
     }
 }

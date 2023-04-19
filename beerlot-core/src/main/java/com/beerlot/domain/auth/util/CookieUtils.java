@@ -14,7 +14,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class CookieUtils {
 
-    public static final String COOKIE_NAME_REDIRECT_URL = "beerlot-oauth-redirect-url";
+    public static final String COOKIE_NAME_REDIRECT_URL = "redirect-url";
     public static final String COOKIE_NAME_AUTH_REQUEST = "beerlot-oauth-auth-request";
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
