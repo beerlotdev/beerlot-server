@@ -37,6 +37,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
     private final AppConfig appConfig;
     private final TokenService tokenService;
 
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
@@ -45,7 +46,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
             log.debug("Did not redirect to %s since response already committed." + targetUrl);
             return;
         }
-        clearAuthenticationAttributes(request, response);
+        //clearAuthenticationAttributes(request, response);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -75,10 +76,9 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
             isSignedUp = false;
         }
 
-        tokenService.updateRefreshTokenInCookie(request, response, "beerlot-oauth-refresh-token", tokenResponse.getRefreshToken());
-
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("access_token", tokenResponse.getAccessToken())
+                .queryParam("refresh_token", tokenResponse.getRefreshToken())
                 .queryParam("is_signed_up", isSignedUp)
                 .build().toUriString();
     }

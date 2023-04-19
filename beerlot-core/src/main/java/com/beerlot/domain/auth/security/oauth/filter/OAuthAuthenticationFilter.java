@@ -31,24 +31,16 @@ public class OAuthAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // Token already exists in SecurityContext
-
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Fetch token from request
         String bearerToken = HeaderUtils.getAccessToken(request);
 
         if (StringUtils.hasText(bearerToken)) {
-            // Get memberId from jwt
-            //Long memberId = Long.valueOf(jwtUtils.validateJwtAndGetClaims(bearerToken).get("oauthId").toString());
             String email = jwtService.getClaims(bearerToken).getSubject();
 
-            // Get member and make UserPrincipal
-            //OAuthUserPrincipal userPrincipal = OAuthUserPrincipal.of(memberService.findMemberById(memberId));
-            //OAuthUserPrincipal userPrincipal = OAuthUserPrincipal.of(memberService.findMemberByOauthId(oauthId).get());
             OAuthUserPrincipal userPrincipal = OAuthUserPrincipal.of(memberService.findMemberByEmail(email).get());
 
             AbstractAuthenticationToken authentication = new OAuth2AuthenticationToken(
