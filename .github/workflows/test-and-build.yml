@@ -6,12 +6,13 @@ on:
       - opened
       - synchronize
       - reopened
+  workflow_call:
 
 permissions:
   contents: read
 
 jobs:
-  test_and_build:
+  Test_and_Build:
     name: Gradle Test & Build
     runs-on: ubuntu-latest
     steps:
