@@ -16,6 +16,7 @@ public enum ErrorMessage {
 
     // ===== Review ===== //
     REVIEW__NOT_FOUND("Review does not exist."),
+    REVIEW__ALREADY_EXIST("Member already wrote the review."),
 
     // ===== Review Like ===== //
     REVIEW_LIKE__NOT_FOUND("Member has not liked the review yet."),
