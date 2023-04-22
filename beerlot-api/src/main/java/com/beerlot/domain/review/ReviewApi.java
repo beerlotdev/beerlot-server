@@ -1,4 +1,4 @@
-package com.beerlot.domain.review.controller;
+package com.beerlot.domain.review;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
