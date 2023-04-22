@@ -8,11 +8,13 @@ import com.beerlot.domain.review.Review;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
+import com.beerlot.domain.review.repository.ReviewRepository;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.tool.fixture.Fixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -101,6 +103,18 @@ public class ReviewControllerTest {
                                 .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
+            }
+
+            @Test
+            public void reviewAlreadyExist() throws Exception {
+                doThrow(ConflictException.class).when(reviewService).createReview(isA(String.class), isA(Long.class), isA(ReviewRequest.class));
+
+                mockMvc.perform(post("/api/v1/beers/{beerId}/reviews", 1)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(reviewRequest))
+                                .with(user(OAuthUserPrincipal.of(member)))
+                        )
+                        .andExpect(status().isConflict());
             }
         }
 
