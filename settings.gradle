@@ -3,4 +3,5 @@ rootProject.name = 'beerlot-server'
 include 'beerlot-api'
 include 'beerlot-core'
 include 'beerlot-tool'
+include 'beerlot-crawler'
 
