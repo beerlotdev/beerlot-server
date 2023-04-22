@@ -1,9 +1,8 @@
-package com.beerlot.domain.review.controller;
+package com.beerlot.domain.review;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
-import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.service.ReviewLikeService;
