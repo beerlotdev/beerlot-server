@@ -15,6 +15,7 @@ import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.repository.ReviewRepository;
+import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,10 @@ public class ReviewService {
     public void createReview(String oauthId, Long beerId, ReviewRequest reviewRequest) {
         Beer beer = beerService.findBeerById(beerId);
         Member member = memberService.findMemberByOauthId(oauthId);
+
+        if (reviewRepository.findByMember_Id(member.getId()).isPresent()) {
+            throw new ConflictException(ErrorMessage.REVIEW__ALREADY_EXIST.getMessage());
+        }
 
         Review review = ReviewRequest.to(reviewRequest, beer, member);
 
