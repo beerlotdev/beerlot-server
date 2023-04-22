@@ -1,17 +1,27 @@
-name: Deploy to Prod
+name: Deploy to PROD
 
 on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+      - releases/**
   push:
     branches:
       - main
       - releases/**
 
 jobs:
-  Test & Build:
+  Test_and_Build:
     uses: ./.github/workflows/test-and-build.yml
+    secrets: inherit
 
-  Deploy:
-    name: Deploy
+  Deploy_to_PROD:
+    needs: Test_and_Build
+    name: Deploy to PROD
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -23,7 +33,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
           submodules: true
           token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }}
 
@@ -52,15 +61,22 @@ jobs:
         run: |
           ./gradlew build -x test
 
-      - name: Terraform Deployment
+      - name: Terraform Init
         working-directory: beerlot-api/terraform
         run: |
           terraform init -backend-config=environments/${{ env.environment }}/${{ env.environment }}.tfbackend
-          
+
+      - name: Terraform Plan
+        working-directory: beerlot-api/terraform
+        run: |
           terraform plan -out=tfplan -input=false \
           -var-file=environments/${{ env.environment }}/${{ env.environment }}.tfvars \
           -var="project=${{ vars.GCP_PROJECT }}" \
           -var="region=${{ vars.GCP_REGION }}" \
           -var="image_tag=${{ github.sha }}"
-          
+
+      - name: Terraform Deploy
+        if: github.event_name == 'push'
+        working-directory: beerlot-api/terraform
+        run: |
           terraform apply -input=false tfplan
