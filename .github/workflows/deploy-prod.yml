@@ -1,18 +1,9 @@
 name: Deploy to PROD
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    branches:
-      - main
-      - releases/**
   push:
     branches:
       - main
-      - releases/**
 
 jobs:
   Test_and_Build:
@@ -76,7 +67,6 @@ jobs:
           -var="image_tag=${{ github.sha }}"
 
       - name: Terraform Deploy
-        if: github.event_name == 'push'
         working-directory: beerlot-api/terraform
         run: |
           terraform apply -input=false tfplan
