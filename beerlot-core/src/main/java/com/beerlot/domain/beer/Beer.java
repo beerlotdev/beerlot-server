@@ -3,6 +3,7 @@ package com.beerlot.domain.beer;
 import com.beerlot.domain.category.Category;
 import com.beerlot.domain.review.BuyFromConverter;
 import com.beerlot.domain.review.Review;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
