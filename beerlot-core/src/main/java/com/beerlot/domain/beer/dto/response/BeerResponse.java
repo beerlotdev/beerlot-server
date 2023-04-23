@@ -9,6 +9,7 @@ import lombok.Builder;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import java.util.List;
 import java.util.Set;
 
 public class BeerResponse {

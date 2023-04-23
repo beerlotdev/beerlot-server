@@ -86,15 +86,12 @@ public class Beer {
         this.rate = rate > 0 ? (this.rate * (reviewCount - 1) + rate) / reviewCount : (this.rate * (reviewCount + 1) + rate) / reviewCount;
     }
 
-    public void updateBuyFrom(Set<String> oldBuyFrom, Set<String> newBuyFrom) {
-        Set<String> temp = new HashSet<>();
+    public void addBuyFrom(String buyFrom) {
+        this.buyFrom.add(buyFrom);
+    }
 
-        for (String buyFrom : newBuyFrom) {
-            if (!oldBuyFrom.contains(buyFrom)) {
-                temp.add(buyFrom);
-            }
-        }
-        this.buyFrom = temp;
+    public void removeBuyFrom(String buyFrom) {
+        this.buyFrom.remove(buyFrom);
     }
 
     @Builder

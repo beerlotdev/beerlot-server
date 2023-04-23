@@ -11,6 +11,7 @@ import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.review.Review;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class Fixture {
@@ -56,7 +57,7 @@ public class Fixture {
                 .imageUrl("https://beerlot.com/image_url")
                 .volume(4.4f)
                 .category(createCategory())
-                .buyFrom(Set.of("편의점-GS편의점", "마트-롯데마트"))
+                .buyFrom(Set.of("편의점-GS편의점"))
                 .build();
     }
 
@@ -66,7 +67,7 @@ public class Fixture {
                 .content("이 맥주 최고!")
                 .rate(5.0f)
                 .imageUrl("https://beerlot.com/image_url")
-                .buyFrom(Set.of("편의점-GS편의점", "마트-롯데마트"))
+                .buyFrom("편의점-GS편의점")
                 .member(createMember())
                 .beer(createBeer())
                 .build();
