@@ -61,7 +61,7 @@ public class ReviewService {
         Beer beer = beerService.findBeerById(beerId);
         Member member = memberService.findMemberByOauthId(oauthId);
 
-        if (reviewRepository.findByMember_Id(member.getId()).isPresent()) {
+        if (reviewRepository.findByBeer_IdAndMember_Id(beer.getId(), member.getId()).isPresent()) {
             throw new ConflictException(ErrorMessage.REVIEW__ALREADY_EXIST.getMessage());
         }
 
