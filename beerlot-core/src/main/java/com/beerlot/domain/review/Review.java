@@ -32,9 +32,8 @@ public class Review {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Convert(converter = BuyFromConverter.class)
     @Column(name = "buy_from")
-    private Set<String> buyFrom = new HashSet<>();
+    private String buyFrom;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -64,7 +63,7 @@ public class Review {
     }
 
     @Builder
-    public Review(String content, float rate, String imageUrl, Set<String> buyFrom, Beer beer, Member member) {
+    public Review(String content, float rate, String imageUrl, String buyFrom, Beer beer, Member member) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;

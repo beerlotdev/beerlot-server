@@ -5,7 +5,6 @@ import com.beerlot.domain.beer.repository.BeerRepository;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
-import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.repository.MemberRepository;
@@ -69,7 +68,7 @@ public class ReviewService {
 
         beer.addReview();
         beer.calculateRate(review.getRate());
-        beer.updateBuyFrom(review.getBuyFrom(), reviewRequest.getBuyFrom());
+        beer.addBuyFrom(review.getBuyFrom());
 
         reviewRepository.save(review);
     }
@@ -79,9 +78,15 @@ public class ReviewService {
 
         isReviewOwner(oauthId, review);
 
+        if (!isBuyFromShared(review.getBuyFrom(), review.getId())) {
+            review.getBeer().removeBuyFrom(review.getBuyFrom());
+        }
+
         review.update(reviewRequest);
         review.getBeer().calculateRate(review.getRate());
-        review.getBeer().updateBuyFrom(review.getBuyFrom(), reviewRequest.getBuyFrom());
+        if (reviewRequest.getBuyFrom() != null) {
+            review.getBeer().addBuyFrom(review.getBuyFrom());
+        }
 
         return ReviewResponse.of(review);
     }
@@ -93,6 +98,9 @@ public class ReviewService {
 
         review.getBeer().removeReview();
         review.getBeer().calculateRate(0 - review.getRate());
+        if (!isBuyFromShared(review.getBuyFrom(), review.getId())) {
+            review.getBeer().removeBuyFrom(review.getBuyFrom());
+        }
 
         reviewRepository.delete(review);
     }
@@ -120,5 +128,10 @@ public class ReviewService {
         if (!review.getMember().getOauthId().equals(oauthId)) {
             throw new AccessDeniedException(ErrorMessage.MEMBER__ACCESS_DENIED.getMessage());
         }
+    }
+
+    @Transactional(readOnly = true)
+    private boolean isBuyFromShared(String buyFrom, Long reviewId) {
+        return reviewRepository.existsByIdNotAndBuyFrom(reviewId, buyFrom);
     }
 }
