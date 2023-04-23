@@ -22,10 +22,10 @@ public class ReviewRequest {
     private String imageUrl;
 
     @JsonProperty("buy_from")
-    private Set<String> buyFrom;
+    private String buyFrom;
 
     @Builder
-    public ReviewRequest(String content, Float rate, String imageUrl, Set<String> buyFrom) {
+    public ReviewRequest(String content, Float rate, String imageUrl, String buyFrom) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
