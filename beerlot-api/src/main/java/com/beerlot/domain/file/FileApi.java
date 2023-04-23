@@ -31,6 +31,6 @@ public interface FileApi {
     ResponseEntity<FileResponse> uploadFile (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @Parameter(description = "file directory") @PathVariable("fileDirectory") String fileDirectory,
-            @RequestPart("file") MultipartFile file
+            @RequestPart("files") MultipartFile[] file
     );
 }
