@@ -18,8 +18,8 @@ public class FileController implements FileApi {
     @Override
     public ResponseEntity<FileResponse> uploadFile(OAuthUserPrincipal userPrincipal,
                                                    String fileDirectory,
-                                                   MultipartFile file) {
-        return new ResponseEntity<>(fileService.uploadFile(FileDirectoryType.valueOf(fileDirectory.toUpperCase()), file),
+                                                   MultipartFile[] files) {
+        return new ResponseEntity<>(fileService.uploadFiles(FileDirectoryType.valueOf(fileDirectory.toUpperCase()), files),
                 HttpStatus.OK);
     }
 }

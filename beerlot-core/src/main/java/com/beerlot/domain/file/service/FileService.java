@@ -16,12 +16,19 @@ public class FileService {
 
     private final BucketUtils bucketUtils;
 
-    public FileResponse uploadFile(FileDirectoryType fileDirectory, MultipartFile file) {
-        String originalFilename = file.getOriginalFilename();
+    public FileResponse uploadFiles(FileDirectoryType fileDirectory, MultipartFile[] files) {
+        FileResponse fileResponse = new FileResponse();
 
-        if (originalFilename == null) {
+        for (MultipartFile file : files) {
+            fileResponse.addUrl(uploadSingleFile(fileDirectory, file));
+        }
+        return fileResponse;
+    }
+
+    private String uploadSingleFile(FileDirectoryType fileDirectory, MultipartFile file){
+        if (file.getOriginalFilename() == null) {
             throw new IllegalArgumentException(ErrorMessage.FILE__FILENAME_NULL.getMessage());
         }
-       return FileResponse.of(bucketUtils.uploadFile(fileDirectory, file));
+        return bucketUtils.uploadFile(fileDirectory, file);
     }
 }
