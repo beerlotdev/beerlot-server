@@ -1,15 +1,16 @@
 package com.beerlot.domain.beer;
 
 import com.beerlot.domain.category.Category;
+import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
 import com.beerlot.domain.review.BuyFromConverter;
 import com.beerlot.domain.review.Review;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "beer")
-public class Beer {
+public class Beer extends CreateAndUpdateDateTime {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "volume", nullable = false)
     private Float volume;
@@ -95,12 +96,15 @@ public class Beer {
     }
 
     @Builder
-    public Beer(Long id, Float volume, Category category, String imageUrl, Set<String> buyFrom) {
+    public Beer(Long id, Float volume, Category category, String imageUrl, Set<String> buyFrom,
+                OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.id = id;
         this.volume = volume;
         this.category = category;
         this.imageUrl = imageUrl;
         this.buyFrom = buyFrom;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
 

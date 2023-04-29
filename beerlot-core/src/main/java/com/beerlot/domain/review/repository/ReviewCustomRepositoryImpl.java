@@ -1,37 +1,28 @@
 package com.beerlot.domain.review.repository;
 
-import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.QBeer;
-import com.beerlot.domain.beer.QBeerInternational;
-import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
-import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.QMember;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.review.QReview;
-import com.beerlot.domain.review.Review;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static com.beerlot.domain.beer.QBeer.beer;
 import static com.beerlot.domain.beer.QBeerInternational.beerInternational;
 import static com.beerlot.domain.member.QMember.member;
 import static com.beerlot.domain.review.QReview.review;
-import static com.querydsl.core.alias.Alias.$;
-import static com.querydsl.core.alias.Alias.alias;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,8 +31,8 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
 
     @Override
     public PageCustom<ReviewResponse> findByBeerId(Long beerId, PageCustomRequest pageRequest) {
-        QMember member1 = new QMember("m");
-        QBeer beer1 = new QBeer("b");
+        QMember member = new QMember("m");
+        QBeer beer = new QBeer("b");
 
         JPAQuery<ReviewResponse> query = queryFactory
                 .select(Projections.fields(ReviewResponse.class,
@@ -52,17 +43,17 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                             review.updatedAt,
                             review.likeCount,
                             Projections.fields(MemberResponse.class,
-                                    member1.id,
-                                    member1.username,
-                                    member1.imageUrl
+                                    member.id,
+                                    member.username,
+                                    member.imageUrl
                             ).as("member")
                         )
                 )
                 .from(review)
-                .innerJoin(review.beer, beer1)
-                .innerJoin(review.member, member1)
+                .innerJoin(review.beer, beer)
+                .innerJoin(review.member, member)
                 .where(
-                        beer1.id.eq(beerId)
+                        beer.id.eq(beerId)
                 );
 
         long totalElements = query.fetch().size();

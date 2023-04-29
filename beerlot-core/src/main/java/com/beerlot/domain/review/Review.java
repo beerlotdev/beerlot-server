@@ -1,23 +1,22 @@
 package com.beerlot.domain.review;
 
 import com.beerlot.domain.beer.Beer;
+import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.*;
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "review")
-public class Review {
+public class Review extends CreateAndUpdateDateTime {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +33,6 @@ public class Review {
 
     @Column(name = "buy_from")
     private String buyFrom;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beer_id")
@@ -63,13 +54,16 @@ public class Review {
     }
 
     @Builder
-    public Review(String content, float rate, String imageUrl, String buyFrom, Beer beer, Member member) {
+    public Review(String content, float rate, String imageUrl, String buyFrom, Beer beer, Member member,
+                  OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.content = content;
         this.rate = rate;
         this.imageUrl = imageUrl;
         this.buyFrom = buyFrom;
         this.beer = beer;
         this.member = member;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void update(ReviewRequest reviewRequest) {

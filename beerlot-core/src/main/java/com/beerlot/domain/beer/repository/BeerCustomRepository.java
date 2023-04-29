@@ -1,6 +1,5 @@
 package com.beerlot.domain.beer.repository;
 
-import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;

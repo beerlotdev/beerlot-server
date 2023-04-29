@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.Set;
+import java.time.OffsetDateTime;
 
 @NoArgsConstructor
 public class ReviewResponse {
@@ -28,14 +27,14 @@ public class ReviewResponse {
     private Long likeCount;
 
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
     @JsonProperty("member")
     private MemberResponse member;
 
     @Builder
     public ReviewResponse(Long id, String content, String imageUrl, Float rate, Long likeCount,
-                          Date updatedAt, MemberResponse member) {
+                          OffsetDateTime updatedAt, MemberResponse member) {
         this.id = id;
         this.content = content;
         this.imageUrl = imageUrl;
