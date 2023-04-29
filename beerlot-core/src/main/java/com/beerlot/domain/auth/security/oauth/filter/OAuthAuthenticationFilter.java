@@ -24,13 +24,10 @@ import java.io.IOException;
 public class OAuthAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-
     private final MemberService memberService;
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;

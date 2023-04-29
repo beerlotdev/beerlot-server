@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 @Embeddable
 @NoArgsConstructor
@@ -29,13 +30,17 @@ public class BeerSimpleResponse implements Serializable {
     @JsonProperty("category")
     private CategorySimpleResponse category;
 
+    @JsonProperty("created_at")
+    private OffsetDateTime createdAt;
+
     @Builder
-    public BeerSimpleResponse(Long id, String name, String originCountry, String imageUrl, CategorySimpleResponse category) {
+    public BeerSimpleResponse(Long id, String name, String originCountry, String imageUrl, CategorySimpleResponse category, OffsetDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.originCountry = originCountry;
         this.imageUrl = imageUrl;
         this.category = category;
+        this.createdAt = createdAt;
     }
 
     public static BeerSimpleResponse of(LanguageType language, Beer beer) {
@@ -49,6 +54,7 @@ public class BeerSimpleResponse implements Serializable {
                 .originCountry(beerInternational.getOriginCountry())
                 .imageUrl(beer.getImageUrl())
                 .category(CategorySimpleResponse.of(language, beer.getCategory()))
+                .createdAt(beer.getCreatedAt())
                 .build();
     }
 

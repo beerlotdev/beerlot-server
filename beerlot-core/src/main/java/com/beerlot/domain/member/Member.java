@@ -1,6 +1,7 @@
 package com.beerlot.domain.member;
 
 import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
+import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.domain.policy.PolicyTypeConverter;
@@ -9,11 +10,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "member")
-public class Member {
+public class Member extends CreateAndUpdateDateTime {
 
     @Id
     @Column(name = "id")
@@ -56,15 +56,12 @@ public class Member {
     @Column(name = "status_message")
     private String statusMessage;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
-
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
     @Builder
-    public Member(String oauthId, String email, String username, ProviderType provider, Set<RoleType> roles, String imageUrl, String statusMessage) {
+    public Member(String oauthId, String email, String username, ProviderType provider, Set<RoleType> roles, String imageUrl,
+                  String statusMessage, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.oauthId = oauthId;
         this.email = email;
         this.username = username;
@@ -72,6 +69,8 @@ public class Member {
         this.roles = roles;
         this.imageUrl = imageUrl;
         this.statusMessage = statusMessage;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void updateEmail(String email) {

@@ -3,7 +3,6 @@ package com.beerlot.domain.review;
 import com.beerlot.domain.common.entity.SortType;
 import com.beerlot.domain.common.util.SortTypeHelper;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.EntityPathBase;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 

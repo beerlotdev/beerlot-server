@@ -1,13 +1,10 @@
 package com.beerlot.domain.review.dto.response;
 
-import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
-import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embedded;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @NoArgsConstructor
 public class ReviewArchiveResponse {
@@ -28,7 +25,7 @@ public class ReviewArchiveResponse {
     private Long likeCount;
 
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
     @Embedded
     @JsonProperty("beer")
