@@ -1,8 +1,6 @@
 package com.beerlot.domain.beer.repository;
 
-import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.QBeer;
-import com.beerlot.domain.beer.QBeerLike;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.category.dto.response.CategorySimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;

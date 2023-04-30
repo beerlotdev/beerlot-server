@@ -53,7 +53,7 @@ public interface MemberApi {
             @RequestBody MemberRequest memberRequest
     );
 
-    @Operation(description = "Get all reviews")
+    @Operation(description = "Get all reviews written by the member")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),
@@ -71,7 +71,7 @@ public interface MemberApi {
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
     );
 
-    @Operation(description = "Get all beers")
+    @Operation(description = "Get all beers that the member likes")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Success."),

@@ -4,8 +4,10 @@ import com.beerlot.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -25,6 +27,10 @@ public class ReviewLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    protected OffsetDateTime createdAt;
 
     public ReviewLike(Review review, Member member) {
         setReview(review);

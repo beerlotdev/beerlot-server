@@ -5,7 +5,10 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Converter

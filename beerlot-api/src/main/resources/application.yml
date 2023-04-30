@@ -1,9 +1,8 @@
-springdoc:
-  packagesToScan: com.beerlot
-  pathsToMatch: /api/v1/**
-  override-with-generic-response: false
-  swagger-ui:
-    tagsSorter: alpha
-    doc-expansion: none
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: GMT
 
 

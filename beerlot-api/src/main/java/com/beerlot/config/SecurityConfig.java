@@ -58,9 +58,6 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling()
                     .authenticationEntryPoint(authenticationEntryPoint);
-                //.and()
-                //.redirectionEndpoint()
-                    //.baseUri("/api/v1/auth/callback/*");
 
         http
                 .authorizeRequests()
@@ -72,10 +69,15 @@ public class SecurityConfig {
 
                     // ===== Permit Role Guest ===== //
                     .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
+                    .antMatchers("/api/v1/files/profile").hasRole("GUEST")
+
 
                     // ===== Permit Role Member ===== //
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
+                    .antMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasRole("MEMBER")
+                    .antMatchers(HttpMethod.PATCH, "/api/v1/reviews/**").hasRole("MEMBER")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasRole("MEMBER")
                     .antMatchers("/api/v1/members/**").hasRole("MEMBER")
                     .antMatchers("/api/v1/files/**").hasRole("MEMBER")
 
