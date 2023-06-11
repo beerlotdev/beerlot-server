@@ -5,6 +5,7 @@ import com.beerlot.domain.beer.dto.response.BeerPage;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.beer.service.BeerLikeService;
+import com.beerlot.domain.beer.service.BeerRecommendService;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
@@ -18,10 +19,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class BeerController implements BeerApi, BeerLikeApi {
+public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
 
     private final BeerService beerService;
     private final BeerLikeService beerLikeService;
+    private final BeerRecommendService beerRecommendService;
 
 
     @Override
@@ -61,5 +63,13 @@ public class BeerController implements BeerApi, BeerLikeApi {
     public ResponseEntity<Void> deleteBeerLike (OAuthUserPrincipal userPrincipal, Long beerId) {
         beerLikeService.unlikeBeer(userPrincipal.getOauthId(), beerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<List<BeerResponse>> recommendBeer (OAuthUserPrincipal userPrincipal, LanguageType language, int amount) {
+        LanguageType.validate(language);
+
+        List<BeerResponse> beerResponseList = beerRecommendService.recommend(userPrincipal.getOauthId(), language, amount);
+        return new ResponseEntity<>(beerResponseList, HttpStatus.OK);
     }
 }
