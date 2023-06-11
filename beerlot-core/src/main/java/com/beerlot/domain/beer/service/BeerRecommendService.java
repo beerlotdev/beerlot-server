@@ -8,7 +8,7 @@ import com.beerlot.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
-import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
@@ -34,7 +34,7 @@ public class BeerRecommendService {
 
         List<BeerResponse> response = new ArrayList<>();
         try {
-            ItemSimilarity itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
+            ItemSimilarity itemSimilarity = new UncenteredCosineSimilarity(dataModel);
             GenericItemBasedRecommender itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
 
             List<RecommendedItem> recommend = itemBasedRecommender.recommend(foundMember.getId(), amount);
@@ -44,6 +44,7 @@ public class BeerRecommendService {
             }
         } catch (Exception e) {
             log.error("Beer Recommend Error : {}", e.getMessage());
+            e.printStackTrace();
         }
 
         return response;
