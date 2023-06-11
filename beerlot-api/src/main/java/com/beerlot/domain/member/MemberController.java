@@ -8,17 +8,23 @@ import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
+import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
 import com.beerlot.domain.review.service.ReviewService;
+import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,9 +42,16 @@ public class MemberController implements MemberApi {
     }
 
     @Override
-    public ResponseEntity<MemberResponse> updateMemberProfile(OAuthUserPrincipal userPrincipal, MemberRequest memberRequest) {
+    public ResponseEntity<MemberResponse> updateMemberProfile(OAuthUserPrincipal userPrincipal, MemberProfileRequest memberProfileRequest) {
         return new ResponseEntity<>(
-                memberService.updateProfile(memberService.findMemberByOauthId(userPrincipal.getOauthId()), memberRequest),
+                memberService.updateProfile(memberService.findMemberByOauthId(userPrincipal.getOauthId()), memberProfileRequest),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MemberUsernameResponse> updateMemberUsername(OAuthUserPrincipal userPrincipal, MemberUsernameRequest memberUsernameRequest) {
+        return new ResponseEntity<>(
+                memberService.updateUsername(memberService.findMemberByOauthId(userPrincipal.getOauthId()), memberUsernameRequest),
                 HttpStatus.OK);
     }
 

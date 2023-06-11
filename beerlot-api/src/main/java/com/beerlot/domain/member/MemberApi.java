@@ -6,8 +6,11 @@ import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
+import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
@@ -18,6 +21,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Tag(name = "Member API", description = "The Member API.")
 @RequestMapping("/api/v1/members")
@@ -50,7 +55,24 @@ public interface MemberApi {
     ResponseEntity<MemberResponse> updateMemberProfile (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for updating profile")
-            @RequestBody MemberRequest memberRequest
+            @RequestBody @Valid MemberProfileRequest memberProfileRequest
+    );
+
+    @Operation(description = "Update member username")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success."),
+                    @ApiResponse(responseCode = "400", description = "Member already changed username within last 30 days."),
+                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper roles."),
+                    @ApiResponse(responseCode = "404", description = "Member does not exist.")
+            }
+    )
+    @PutMapping("/username")
+    ResponseEntity<MemberUsernameResponse> updateMemberUsername (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for updating username")
+            @RequestBody @Valid MemberUsernameRequest memberUsernameRequest
     );
 
     @Operation(description = "Get all reviews written by the member")
