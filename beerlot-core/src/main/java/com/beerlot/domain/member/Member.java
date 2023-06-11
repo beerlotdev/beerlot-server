@@ -2,6 +2,7 @@ package com.beerlot.domain.member;
 
 import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
 import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
+import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.domain.policy.PolicyTypeConverter;
@@ -10,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -38,6 +40,9 @@ public class Member extends CreateAndUpdateDateTime {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "username_updated_at")
+    private OffsetDateTime usernameUpdatedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false)
     private ProviderType provider;
@@ -61,7 +66,7 @@ public class Member extends CreateAndUpdateDateTime {
 
     @Builder
     public Member(String oauthId, String email, String username, ProviderType provider, Set<RoleType> roles, String imageUrl,
-                  String statusMessage, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+                  String statusMessage, OffsetDateTime createdAt, OffsetDateTime updatedAt, OffsetDateTime usernameUpdatedAt) {
         this.oauthId = oauthId;
         this.email = email;
         this.username = username;
@@ -71,6 +76,7 @@ public class Member extends CreateAndUpdateDateTime {
         this.statusMessage = statusMessage;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.usernameUpdatedAt = usernameUpdatedAt;
     }
 
     public void updateEmail(String email) {
@@ -81,14 +87,21 @@ public class Member extends CreateAndUpdateDateTime {
         this.agreedPolicies = agreedPolicies;
     }
 
-    public void updateProfile(MemberRequest memberRequest) {
-        this.username = memberRequest.getUsername();
-        this.statusMessage = memberRequest.getStatusMessage();
-        this.imageUrl = memberRequest.getImageUrl();
+    public void updateProfile(MemberProfileRequest memberProfileRequest) {
+        this.statusMessage = memberProfileRequest.getStatusMessage();
+        this.imageUrl = memberProfileRequest.getImageUrl();
+    }
+
+    public void updateUsername(String username) {
+        this.username = username;
     }
 
     public void addRole(RoleType role) {
         roles.add(role);
+    }
+
+    public void setUsernameUpdatedAtToNow() {
+        this.usernameUpdatedAt = OffsetDateTime.now();
     }
 }
 
