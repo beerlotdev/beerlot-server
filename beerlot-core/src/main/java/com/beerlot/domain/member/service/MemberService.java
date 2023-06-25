@@ -3,17 +3,21 @@ package com.beerlot.domain.member.service;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
+import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
-import com.beerlot.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -54,10 +58,6 @@ public class MemberService {
         member.updateEmail(email);
     }
 
-    public Member findMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.MEMBER__NOT_EXIST));
-    }
-
     public void signUpMember(Member member, MemberRequest memberRequest) {
         if (member.getRoles().contains(RoleType.MEMBER)) {
             throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
@@ -65,17 +65,35 @@ public class MemberService {
 
         PolicyType.validateAgreeOnRequiredPolicies(memberRequest.getAgreedPolicies());
 
-        member.updateProfile(memberRequest);
+        member.updateProfile(MemberProfileRequest.builder()
+                .statusMessage(memberRequest.getStatusMessage())
+                .imageUrl(memberRequest.getImageUrl())
+                .build());
+        member.updateUsername(memberRequest.getUsername());
         member.updateAgreedPolicies(memberRequest.getAgreedPolicies());
         member.addRole(RoleType.MEMBER);
+        member.setUsernameUpdatedAtToNow();
     }
 
     public MemberResponse getProfile(Member member) {
         return MemberResponse.of(member);
     }
 
-    public MemberResponse updateProfile(Member member, MemberRequest memberRequest) {
-        member.updateProfile(memberRequest);
+    public MemberResponse updateProfile(Member member, MemberProfileRequest memberProfileRequest) {
+        member.updateProfile(memberProfileRequest);
         return getProfile(member);
+    }
+
+    public MemberUsernameResponse updateUsername(Member member, MemberUsernameRequest memberUsernameRequest) {
+        if (!canUpdateUsername(member)) {
+            throw new IllegalStateException(ErrorMessage.MEMBER__USERNAME_30DAYS.getMessage());
+        }
+        member.updateUsername(memberUsernameRequest.getUsername());
+        member.setUsernameUpdatedAtToNow();
+        return MemberUsernameResponse.of(member.getUsername());
+    }
+
+    private boolean canUpdateUsername(Member member) {
+        return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
     }
 }
