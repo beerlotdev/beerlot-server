@@ -12,12 +12,10 @@ import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
-import com.beerlot.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.NoSuchElementException;
@@ -60,10 +58,6 @@ public class MemberService {
         member.updateEmail(email);
     }
 
-    public Member findMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.MEMBER__NOT_EXIST));
-    }
-
     public void signUpMember(Member member, MemberRequest memberRequest) {
         if (member.getRoles().contains(RoleType.MEMBER)) {
             throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
@@ -100,9 +94,6 @@ public class MemberService {
     }
 
     private boolean canUpdateUsername(Member member) {
-        if (member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)))) {
-            return true;
-        }
-        return false;
+        return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
     }
 }
