@@ -95,6 +95,7 @@ public class MemberService {
             throw new IllegalStateException(ErrorMessage.MEMBER__USERNAME_30DAYS.getMessage());
         }
         member.updateUsername(memberUsernameRequest.getUsername());
+        member.setUsernameUpdatedAtToNow();
         return MemberUsernameResponse.of(member.getUsername());
     }
 
