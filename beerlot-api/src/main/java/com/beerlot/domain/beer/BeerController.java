@@ -2,6 +2,7 @@ package com.beerlot.domain.beer;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.dto.response.BeerPage;
+import com.beerlot.domain.beer.dto.response.BeerRecommendResponse;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.beer.service.BeerLikeService;
@@ -66,10 +67,7 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     }
 
     @Override
-    public ResponseEntity<List<BeerResponse>> recommendBeer (OAuthUserPrincipal userPrincipal, LanguageType language, int amount) {
-        LanguageType.validate(language);
-
-        List<BeerResponse> beerResponseList = beerRecommendService.recommend(userPrincipal.getOauthId(), language, amount);
-        return new ResponseEntity<>(beerResponseList, HttpStatus.OK);
+    public ResponseEntity<BeerRecommendResponse> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
+        return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId(), amount), HttpStatus.OK);
     }
 }
