@@ -58,3 +58,9 @@ jwt:
   secret: eyJhbGciOiJIUzUxMiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjQ5Njg4OSwiaWF0IjoxNjcyNDk2ODg5fQ.2LCsaohEU0hC-DNm4MTcsHNgnmipRtAy3RcMJmukfdOBcbR_MP0W-G2L9LYDoZTebsOHAneG3sQ9pGz7ZouPSg
   access-token-expiry-in-millisecond: 86400000
   refresh-token-expiry-in-millisecond: 1296000000
+
+recommend:
+  table: recommend
+  user_id_column: member_id
+  item_id_column: item_id
+  pref_column: value
