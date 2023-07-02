@@ -44,6 +44,7 @@ resource "google_cloud_run_service" "beerlot_core_api" {
       annotations = {
         "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.beerlot_database_instance.connection_name
         "run.googleapis.com/client-name"        = "terraform"
+        "autoscaling.knative.dev/minScale"      = 1
       }
     }
   }
