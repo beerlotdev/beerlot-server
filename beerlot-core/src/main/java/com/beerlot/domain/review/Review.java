@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,6 +43,9 @@ public class Review extends CreateAndUpdateDateTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     @Column(name = "like_count", columnDefinition = "int default 0")
     private long likeCount = 0L;
