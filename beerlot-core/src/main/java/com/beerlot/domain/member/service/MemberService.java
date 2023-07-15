@@ -5,9 +5,7 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
-import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
-import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
@@ -80,17 +78,18 @@ public class MemberService {
     }
 
     public MemberResponse updateProfile(Member member, MemberProfileRequest memberProfileRequest) {
+        if (!member.getUsername().equals(memberProfileRequest.getUsername())) {
+            if (!canUpdateUsername(member)) {
+                throw new IllegalStateException(ErrorMessage.MEMBER__USERNAME_30DAYS.getMessage());
+            }
+            if (memberRepository.existsByUsername(memberProfileRequest.getUsername())) {
+                throw new ConflictException(ErrorMessage.MEMBER__USERNAME_ALREADY_EXIST.getMessage());
+            }
+            member.updateUsername(memberProfileRequest.getUsername());
+            member.setUsernameUpdatedAtToNow();
+        }
         member.updateProfile(memberProfileRequest);
         return getProfile(member);
-    }
-
-    public MemberUsernameResponse updateUsername(Member member, MemberUsernameRequest memberUsernameRequest) {
-        if (!canUpdateUsername(member)) {
-            throw new IllegalStateException(ErrorMessage.MEMBER__USERNAME_30DAYS.getMessage());
-        }
-        member.updateUsername(memberUsernameRequest.getUsername());
-        member.setUsernameUpdatedAtToNow();
-        return MemberUsernameResponse.of(member.getUsername());
     }
 
     private boolean canUpdateUsername(Member member) {
