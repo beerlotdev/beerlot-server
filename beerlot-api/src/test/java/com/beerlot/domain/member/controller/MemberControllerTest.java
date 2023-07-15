@@ -1,26 +1,19 @@
 package com.beerlot.domain.member.controller;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
-import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
-import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
-import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
 import com.beerlot.domain.member.service.MemberService;
-import com.beerlot.exception.NotFoundException;
-import com.beerlot.tool.fixture.Fixture;
+import com.beerlot.exception.ConflictException;
 import com.beerlot.tool.fixture.MemberFixture;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -97,16 +90,14 @@ public class MemberControllerTest {
 
         private MemberProfileRequest memberProfileRequest;
 
-        @BeforeEach
-        public void setUp() {
-            memberProfileRequest = MemberProfileRequest.builder()
-                    .statusMessage("")
-                    .imageUrl("")
-                    .build();
-        }
-
         @Test
-        void should_updateMemberProfile() throws Exception {
+        void should_updateMemberProfile_when_AllFieldsAreChanged() throws Exception {
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("New Beer Lover")
+                    .build();
+
             Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
                     .thenReturn(member);
             Mockito.when(memberService.updateProfile(isA(Member.class), isA(MemberProfileRequest.class)))
@@ -121,7 +112,98 @@ public class MemberControllerTest {
         }
 
         @Test
+        void should_updateMemberProfile_when_usernameIsNotChagned() throws Exception {
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("Beer Lover")
+                    .build();
+
+            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(member);
+            Mockito.when(memberService.updateProfile(isA(Member.class), isA(MemberProfileRequest.class)))
+                    .thenReturn(MemberResponse.of(member));
+
+            mockMvc.perform(put(MEMBER_BASEURL + "/me")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(memberProfileRequest))
+                            .with(user(OAuthUserPrincipal.of(member)))
+                    )
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        void should_updateMemberProfile_when_onlyUsernameIsChanged() throws Exception {
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member")
+                    .username("New Beer Lover")
+                    .build();
+
+            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(member);
+            Mockito.when(memberService.updateProfile(isA(Member.class), isA(MemberProfileRequest.class)))
+                    .thenReturn(MemberResponse.of(member));
+
+            mockMvc.perform(put(MEMBER_BASEURL + "/me")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(memberProfileRequest))
+                            .with(user(OAuthUserPrincipal.of(member)))
+                    )
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        void should_throwException_when_usernameAlreadyExists() throws Exception {
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("Exist Username")
+                    .build();
+
+            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(member);
+            Mockito.when(memberService.updateProfile(isA(Member.class), isA(MemberProfileRequest.class)))
+                    .thenThrow(ConflictException.class);
+
+            mockMvc.perform(put(MEMBER_BASEURL + "/me")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(memberProfileRequest))
+                            .with(user(OAuthUserPrincipal.of(member)))
+                    )
+                    .andExpect(status().isConflict());
+        }
+
+        @Test
+        void should_throwException_when_usernameHasChangedInLast30Days() throws Exception {
+            member.setUsernameUpdatedAtToNow();
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("New Beer Lover")
+                    .build();
+
+            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
+                    .thenReturn(member);
+            Mockito.when(memberService.updateProfile(isA(Member.class), isA(MemberProfileRequest.class)))
+                    .thenThrow(IllegalStateException.class);
+
+            mockMvc.perform(put(MEMBER_BASEURL + "/me")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(memberProfileRequest))
+                            .with(user(OAuthUserPrincipal.of(member)))
+                    )
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
         void should_throwException_when_memberNotExist() throws Exception {
+            memberProfileRequest = MemberProfileRequest.builder()
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("New Beer Lover")
+                    .build();
+
             Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
                     .thenThrow(NoSuchElementException.class);
 
@@ -145,6 +227,7 @@ public class MemberControllerTest {
             MemberProfileRequest incompleteRequest = MemberProfileRequest.builder()
                     .imageUrl(null)
                     .statusMessage("")
+                    .username("")
                     .build();
 
             mockMvc.perform(put(MEMBER_BASEURL + "/me")
@@ -160,6 +243,7 @@ public class MemberControllerTest {
             MemberProfileRequest incompleteRequest = MemberProfileRequest.builder()
                     .imageUrl("")
                     .statusMessage(null)
+                    .username("")
                     .build();
 
             mockMvc.perform(put(MEMBER_BASEURL + "/me")
@@ -169,63 +253,16 @@ public class MemberControllerTest {
                     )
                     .andExpect(status().isBadRequest());
         }
-    }
-
-    @Nested
-    class UpdateMemberUsernameTest {
-        private MemberUsernameRequest memberUsernameRequest;
-
-        @BeforeEach
-        public void setUp() {
-            memberUsernameRequest = MemberUsernameRequest.builder()
-                    .username("abc")
-                    .build();
-        }
-
-        @Test
-        void should_updateMemberUsername() throws Exception {
-            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
-                    .thenReturn(member);
-            Mockito.when(memberService.updateUsername(isA(Member.class), isA(MemberUsernameRequest.class)))
-                    .thenReturn(MemberUsernameResponse.of("abc"));
-
-            mockMvc.perform(put(MEMBER_BASEURL + "/username")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(memberUsernameRequest))
-                            .with(user(OAuthUserPrincipal.of(member)))
-                    )
-                    .andExpect(status().isOk());
-        }
-
-        @Test
-        void should_throwException_when_memberNotExist() throws Exception {
-            Mockito.when(memberService.findMemberByOauthId(isA(String.class)))
-                    .thenThrow(NoSuchElementException.class);
-
-            mockMvc.perform(put(MEMBER_BASEURL + "/username")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(memberUsernameRequest))
-                            .with(user(OAuthUserPrincipal.of(member)))
-                    )
-                    .andExpect(status().isNotFound());
-        }
-
-        @Test
-        void should_throwException_when_guestMember() throws Exception {
-            mockMvc.perform(put(MEMBER_BASEURL + "/username")
-                            .with(user(OAuthUserPrincipal.of(guestMember)))
-                    )
-                    .andExpect(status().isForbidden());
-        }
 
         @Test
         void should_throwException_when_usernameIsNull() throws Exception {
-            MemberUsernameRequest incompleteRequest = MemberUsernameRequest.builder()
-                            .username(null)
-                            .build();
+            MemberProfileRequest incompleteRequest = MemberProfileRequest.builder()
+                    .imageUrl("")
+                    .statusMessage("")
+                    .username(null)
+                    .build();
 
-            mockMvc.perform(put(MEMBER_BASEURL + "/username")
+            mockMvc.perform(put(MEMBER_BASEURL + "/me")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(incompleteRequest))
                             .with(user(OAuthUserPrincipal.of(member)))

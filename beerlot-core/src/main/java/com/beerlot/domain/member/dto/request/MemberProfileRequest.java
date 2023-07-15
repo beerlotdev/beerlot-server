@@ -18,9 +18,14 @@ public class MemberProfileRequest {
     @JsonProperty("image_url")
     private String imageUrl;
 
+    @NotNull
+    @JsonProperty("username")
+    private String username;
+
     @Builder
-    public MemberProfileRequest(String statusMessage, String imageUrl) {
+    public MemberProfileRequest(String statusMessage, String imageUrl, String username) {
         this.statusMessage = statusMessage;
         this.imageUrl = imageUrl;
+        this.username = username;
     }
 }

@@ -3,25 +3,30 @@ package com.beerlot.core.domain.member;
 import com.beerlot.core.fixture.Fixture;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
-import com.beerlot.domain.member.dto.request.MemberUsernameRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
-import com.beerlot.domain.member.dto.response.MemberUsernameResponse;
+import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.member.service.MemberService;
-import com.beerlot.exception.ErrorMessage;
+import com.beerlot.exception.ConflictException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.isA;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
 
     @InjectMocks
     private MemberService memberService;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     private Member member;
 
@@ -33,17 +38,82 @@ public class MemberServiceTest {
     @Nested
     class MemberUpdateProfileTest {
         @Test
-        public void should_updateProfile() {
+        public void should_updateProfile_when_allFieldsAreChanged() {
+            Mockito.when(memberRepository.existsByUsername(isA(String.class)))
+                    .thenReturn(false);
             MemberProfileRequest memberProfileRequest = MemberProfileRequest.builder()
                     .imageUrl("https://beerlot.com/profiles/official_member_new_image")
-                    .statusMessage("New Status Message!")
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .username("New Beer Lover")
                     .build();
 
             MemberResponse result = memberService.updateProfile(member, memberProfileRequest);
 
-            assertSame("Beer Lover", result.getUsername());
             assertSame("https://beerlot.com/profiles/official_member_new_image", result.getImageUrl());
-            assertSame("New Status Message!", result.getStatusMessage());
+            assertSame("Another perfect day for one cold beer!", result.getStatusMessage());
+            assertSame("New Beer Lover", result.getUsername());
+        }
+
+        @Test
+        public void should_updateProfile_when_usernameIsNotChanged() {
+            MemberProfileRequest memberProfileRequest = MemberProfileRequest.builder()
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .username("Beer Lover")
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .build();
+
+            MemberResponse result = memberService.updateProfile(member, memberProfileRequest);
+
+            assertSame("https://beerlot.com/profiles/official_member_new_image", result.getImageUrl());
+            assertSame("Another perfect day for one cold beer!", result.getStatusMessage());
+            assertSame("Beer Lover", result.getUsername());
+        }
+
+        @Test
+        public void should_updateProfile_when_onlyUsernameIsChanged() {
+            Mockito.when(memberRepository.existsByUsername(isA(String.class)))
+                    .thenReturn(false);
+            MemberProfileRequest memberProfileRequest = MemberProfileRequest.builder()
+                    .imageUrl("https://beerlot.com/profiles/official_member")
+                    .username("New Beer Lover")
+                    .statusMessage("Perfect day for one cold beer!")
+                    .build();
+
+            MemberResponse result = memberService.updateProfile(member, memberProfileRequest);
+
+            assertSame("https://beerlot.com/profiles/official_member", result.getImageUrl());
+            assertSame("Perfect day for one cold beer!", result.getStatusMessage());
+            assertSame("New Beer Lover", result.getUsername());
+        }
+
+        @Test
+        public void should_throwException_when_usernameAlreadyExists() {
+            Mockito.when(memberRepository.existsByUsername(isA(String.class)))
+                    .thenReturn(true);
+            MemberProfileRequest memberProfileRequest = MemberProfileRequest.builder()
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .username("Exist Username")
+                    .build();
+
+            ConflictException exception = assertThrows(ConflictException.class, () -> {
+                memberService.updateProfile(member, memberProfileRequest);
+            });
+        }
+
+        @Test
+        public void should_throwException_when_usernameHasChangedIn30LastDays() {
+            member.setUsernameUpdatedAtToNow();
+
+            MemberProfileRequest memberProfileRequest = MemberProfileRequest.builder()
+                    .imageUrl("https://beerlot.com/profiles/official_member_new_image")
+                    .statusMessage("Another perfect day for one cold beer!")
+                    .username("Exist Username")
+                    .build();
+
+            IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+                memberService.updateProfile(member, memberProfileRequest);
+            });
         }
     }
 
@@ -58,33 +128,4 @@ public class MemberServiceTest {
             assertSame("https://beerlot.com/profiles/official_member", result.getImageUrl());
         }
     }
-
-    @Nested
-    class MemberUpdateUsernameTest {
-        @Test
-        public void should_updateUsername() {
-            MemberUsernameRequest memberUsernameRequest = MemberUsernameRequest.builder()
-                    .username("New Beer Lover")
-                    .build();
-
-            MemberUsernameResponse result = memberService.updateUsername(member, memberUsernameRequest);
-
-            assertSame("New Beer Lover", result.getUsername());
-        }
-
-        @Test
-        public void should_throwException_when_memberAlreadyChangedUsernameWithin30days() {
-            member.setUsernameUpdatedAtToNow();
-            MemberUsernameRequest memberUsernameRequest = MemberUsernameRequest.builder()
-                    .username("New Beer Lover")
-                    .build();
-
-            IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-                memberService.updateUsername(member, memberUsernameRequest);
-            });
-            assertTrue(exception.getMessage().contains(ErrorMessage.MEMBER__USERNAME_30DAYS.getMessage()));
-        }
-    }
-
-
 }

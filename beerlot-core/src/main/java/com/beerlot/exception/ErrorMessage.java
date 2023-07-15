@@ -35,6 +35,7 @@ public enum ErrorMessage {
     MEMBER__UNPROPER_ROLE("Member has no proper role."),
     MEMBER__ACCESS_DENIED("Member has no proper rights."),
     MEMBER__USERNAME_30DAYS("Member already changed username within last 30 days."),
+    MEMBER__USERNAME_ALREADY_EXIST("The username already exists."),
 
     // ===== Token ===== //
     MEMBER_REFRESH_TOKEN__NOT_EXIST("Member refresh token does not exist."),
