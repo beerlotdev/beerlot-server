@@ -1,6 +1,7 @@
 package com.beerlot.domain.review.repository;
 
 import com.beerlot.domain.beer.QBeer;
+import com.beerlot.domain.beer.QBeerInternational;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
@@ -68,7 +69,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
     }
 
     @Override
-    public PageCustom<ReviewResponse> findAll(PageCustomRequest pageRequest) {
+    public PageCustom<ReviewResponse> findAll(PageCustomRequest pageRequest, LanguageType language) {
         JPAQuery<ReviewResponse> query = queryFactory
                 .select(Projections.fields(ReviewResponse.class,
                                 review.id,
@@ -81,11 +82,19 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                                         review.member.id,
                                         review.member.username,
                                         review.member.imageUrl
-                                ).as("member")
+                                ).as("member"),
+                                Projections.fields(ReviewResponse.BeerResponse.class,
+                                        review.beer.id,
+                                        beerInternational.name
+                                ).as("beer")
                         )
                 )
                 .from(review)
-                .innerJoin(review.beer, beer);
+                .innerJoin(review.beer, beer)
+                .innerJoin(review.beer.beerInternationals, beerInternational)
+                .where(
+                        matchLanguage(language)
+                );
 
         long totalElements = query.fetch().size();
 
@@ -138,7 +147,6 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
     }
 
     private BooleanExpression matchLanguage(LanguageType language) {
-
         return beerInternational.id.language.stringValue().eq(language.toString());
     }
 

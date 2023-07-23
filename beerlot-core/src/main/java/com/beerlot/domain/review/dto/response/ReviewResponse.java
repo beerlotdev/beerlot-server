@@ -32,6 +32,10 @@ public class ReviewResponse {
     @JsonProperty("member")
     private MemberResponse member;
 
+    @JsonProperty("beer")
+    private BeerResponse beer;
+
+
     @Builder
     public ReviewResponse(Long id, String content, String imageUrl, Float rate, Long likeCount,
                           OffsetDateTime updatedAt, MemberResponse member) {
@@ -54,5 +58,13 @@ public class ReviewResponse {
                 .updatedAt(review.getUpdatedAt())
                 .member(MemberResponse.of(review.getMember()))
                 .build();
+    }
+
+    public static class BeerResponse {
+        @JsonProperty("id")
+        private Long id;
+
+        @JsonProperty("name")
+        private String name;
     }
 }
