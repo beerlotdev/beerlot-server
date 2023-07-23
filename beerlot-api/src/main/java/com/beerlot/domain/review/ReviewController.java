@@ -1,6 +1,7 @@
 package com.beerlot.domain.review;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
@@ -47,9 +48,10 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     }
 
     @Override
-    public ResponseEntity<PageCustom<ReviewResponse>> findAllReviews(Integer page, Integer size, ReviewSortType sort) {
+    public ResponseEntity<PageCustom<ReviewResponse>> findAllReviews(Integer page, Integer size, ReviewSortType sort, LanguageType language) {
+        LanguageType.validate(language);
         try {
-            return new ResponseEntity<>(reviewService.findAllReviews(new PageCustomRequest(page, size, sort)), HttpStatus.OK);
+            return new ResponseEntity<>(reviewService.findAllReviews(new PageCustomRequest(page, size, sort), language), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

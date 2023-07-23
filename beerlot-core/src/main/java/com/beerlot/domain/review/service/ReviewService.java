@@ -106,8 +106,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public PageCustom<ReviewResponse> findAllReviews(PageCustomRequest pageRequest) {
-        return reviewRepository.findAll(pageRequest);
+    public PageCustom<ReviewResponse> findAllReviews(PageCustomRequest pageRequest, LanguageType language) {
+        return reviewRepository.findAll(pageRequest, language);
     }
 
     @Transactional(readOnly = true)

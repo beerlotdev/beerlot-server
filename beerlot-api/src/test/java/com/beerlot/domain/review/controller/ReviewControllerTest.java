@@ -1,6 +1,7 @@
 package com.beerlot.domain.review.controller;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustomImpl;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.Member;
@@ -268,7 +269,7 @@ public class ReviewControllerTest {
             @Test
             @WithAnonymousUser
             public void success() throws Exception {
-                when(reviewService.findAllReviews(isA(PageCustomRequest.class)))
+                when(reviewService.findAllReviews(isA(PageCustomRequest.class), isA(LanguageType.class)))
                         .thenReturn(new PageCustomImpl<>(
                                 List.of(ReviewResponse.of(review)),
                                 new PageCustomRequest(1, 10, ReviewSortType.MOST_LIKES),
@@ -278,6 +279,7 @@ public class ReviewControllerTest {
                                 .param("page", "1")
                                 .param("size", "10")
                                 .param("sort", "MOST_LIKES")
+                                .param("language", "KR")
                                 .contentType(MediaType.APPLICATION_JSON)
                         )
                         .andExpect(status().isOk());
