@@ -2,6 +2,7 @@ package com.beerlot.domain.review;
 
 import com.beerlot.annotation.CurrentUser;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
@@ -65,8 +66,9 @@ public interface ReviewApi {
     ResponseEntity<PageCustom<ReviewResponse>> findAllReviews (
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
-            @RequestParam("sort") ReviewSortType sort
-    );
+            @RequestParam("sort") ReviewSortType sort,
+            @RequestParam("language") LanguageType language
+            );
 
     @Tag(name = "Review API", description = "The Review API.")
     @Operation(description = "Get one review by ID")
