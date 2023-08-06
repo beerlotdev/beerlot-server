@@ -8,6 +8,8 @@ import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerRecommendService;
 import com.beerlot.domain.beer.service.BeerService;
+import com.beerlot.domain.category.dto.response.CategoryResponse;
+import com.beerlot.domain.category.service.CategoryService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
@@ -25,6 +27,7 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     private final BeerService beerService;
     private final BeerLikeService beerLikeService;
     private final BeerRecommendService beerRecommendService;
+    private final CategoryService categoryService;
 
 
     @Override
@@ -69,5 +72,10 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     @Override
     public ResponseEntity<BeerRecommendResponse> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
         return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId(), amount), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryResponse>> getCategories(LanguageType language) {
+        return new ResponseEntity<>(categoryService.getCategories(language), HttpStatus.OK);
     }
 }
