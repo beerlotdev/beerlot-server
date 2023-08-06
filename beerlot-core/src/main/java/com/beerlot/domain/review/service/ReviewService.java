@@ -43,11 +43,6 @@ public class ReviewService {
     private MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public ReviewResponse findReviewById(Long reviewId) {
-        return ReviewResponse.of(findById(reviewId));
-    }
-
-    @Transactional(readOnly = true)
     public PageCustom<ReviewResponse> findByBeerId(Long beerId, PageCustomRequest pageRequest) {
         Beer beer = beerService.findBeerById(beerId);
 
@@ -114,6 +109,11 @@ public class ReviewService {
     public Review findById(Long reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.REVIEW__NOT_FOUND.getMessage()));
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewResponse findByReviewIdAndLanguage(Long reviewId, LanguageType language) {
+        return reviewRepository.findByReviewId(reviewId, language);
     }
 
     @Transactional(readOnly = true)

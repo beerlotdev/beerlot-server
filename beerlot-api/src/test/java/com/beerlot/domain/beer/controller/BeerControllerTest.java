@@ -8,7 +8,8 @@ import com.beerlot.domain.category.service.CategoryService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.exception.ConflictException;
-import com.beerlot.tool.fixture.Fixture;
+import com.beerlot.tool.fixture.BeerFixture;
+import com.beerlot.tool.fixture.MemberFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public class BeerControllerTest {
 
             @BeforeEach
             public void setUp() {
-                beer = Fixture.createBeer();
+                beer = BeerFixture.createBeer();
             }
 
             @Test
@@ -110,7 +111,7 @@ public class BeerControllerTest {
 
         @BeforeEach
         public void setUp() {
-            member = Fixture.createMember();
+            member = MemberFixture.createMember();
         }
 
         @Nested

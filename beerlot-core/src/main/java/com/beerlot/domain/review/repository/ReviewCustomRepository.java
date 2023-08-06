@@ -9,6 +9,6 @@ import com.beerlot.domain.review.dto.response.ReviewResponse;
 public interface ReviewCustomRepository {
     PageCustom<ReviewResponse> findByBeerId(Long beerId, PageCustomRequest pageRequest);
     PageCustom<ReviewResponse> findAll(PageCustomRequest pageRequest, LanguageType language);
-
     PageCustom<ReviewArchiveResponse> findByMember(String oauthId, PageCustomRequest pageRequest, LanguageType language);
+    ReviewResponse findByReviewId(Long reviewId, LanguageType language);
 }
