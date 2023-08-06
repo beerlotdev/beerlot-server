@@ -4,6 +4,7 @@ import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
+import com.beerlot.domain.category.service.CategoryService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.exception.ConflictException;
@@ -11,6 +12,7 @@ import com.beerlot.tool.fixture.Fixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -41,6 +44,9 @@ public class BeerControllerTest {
 
     @MockBean
     BeerLikeService beerLikeService;
+
+    @MockBean
+    CategoryService categoryService;
 
     Beer beer;
 
@@ -162,6 +168,20 @@ public class BeerControllerTest {
                                 .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
+            }
+        }
+
+        @Nested
+        class BeerCategoryTest {
+            @Test
+            public void success() throws Exception {
+                Mockito.when(categoryService.getCategories(LanguageType.KR))
+                        .thenReturn(new ArrayList<>());
+
+                mockMvc.perform(get("/api/v1/beers/category")
+                                .param("language", String.valueOf(LanguageType.KR))
+                        )
+                        .andExpect(status().isOk());
             }
         }
     }
