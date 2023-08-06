@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,9 +24,11 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @BatchSize(size = 50)
     @OneToMany(mappedBy = "parent")
     private List<Category> children = new ArrayList<>();
 
+    @BatchSize(size = 50)
     @OneToMany(mappedBy = "category")
     private List<CategoryInternational> categoryInternationals = new ArrayList<>();
 

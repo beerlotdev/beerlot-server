@@ -4,6 +4,7 @@ import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerPage;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
+import com.beerlot.domain.category.dto.response.CategoryResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,6 +46,19 @@ public interface BeerApi {
     @GetMapping("/top")
     ResponseEntity<List<BeerSimpleResponse>> findTop10Beers (
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
+    );
+
+
+    @Tag(name = "Beer Category API")
+    @Operation(description = "Get category of beers")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success.")
+            }
+    )
+    @GetMapping("/category")
+    ResponseEntity<List<CategoryResponse>> getCategories(
+            @Parameter(description = "Language Code") @RequestParam("language") LanguageType language
     );
 
     @Tag(name = "Beer API", description = "The Beer API.")
