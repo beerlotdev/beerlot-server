@@ -38,8 +38,9 @@ public class ReviewController implements ReviewApi, ReviewLikeApi {
     }
 
     @Override
-    public ResponseEntity<ReviewResponse> findReviewById(Long reviewId) {
-        return new ResponseEntity<>(reviewService.findReviewById(reviewId), HttpStatus.OK);
+    public ResponseEntity<ReviewResponse> findReviewById(Long reviewId, LanguageType language) {
+        LanguageType.validate(language);
+        return new ResponseEntity<>(reviewService.findByReviewIdAndLanguage(reviewId, language), HttpStatus.OK);
     }
 
     @Override

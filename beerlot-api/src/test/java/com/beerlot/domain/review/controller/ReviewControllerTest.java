@@ -9,13 +9,13 @@ import com.beerlot.domain.review.Review;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.request.ReviewRequest;
 import com.beerlot.domain.review.dto.response.ReviewResponse;
-import com.beerlot.domain.review.repository.ReviewRepository;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
 import com.beerlot.exception.ConflictException;
-import com.beerlot.tool.fixture.Fixture;
+import com.beerlot.tool.fixture.BeerFixture;
+import com.beerlot.tool.fixture.MemberFixture;
+import com.beerlot.tool.fixture.ReviewFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -54,16 +54,12 @@ public class ReviewControllerTest {
     ReviewRequest reviewRequest;
     Review review;
 
-    @BeforeEach
-    public void setUp() {
-        review = Fixture.createReview();
-    }
-
     @Nested
     class ReviewTest {
 
         @BeforeEach
         public void setUp() {
+            review = ReviewFixture.createReview(BeerFixture.createBeer());
             reviewRequest = ReviewRequest.builder()
                     .content("이 맥주 최고!")
                     .rate(5.0f)
@@ -78,7 +74,7 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test
@@ -126,7 +122,7 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test
@@ -164,7 +160,7 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test
@@ -198,17 +194,18 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test
             @WithAnonymousUser
             public void success() throws Exception {
 
-                when(reviewService.findReviewById(isA(Long.class)))
+                when(reviewService.findByReviewIdAndLanguage(isA(Long.class), isA(LanguageType.class)))
                         .thenReturn(ReviewResponse.of(review));
 
                 mockMvc.perform(get("/api/v1/reviews/{reviewId}", 1)
+                                .param("language", "KR")
                                 .contentType(MediaType.APPLICATION_JSON)
                         )
                         .andExpect(status().isOk());
@@ -217,9 +214,10 @@ public class ReviewControllerTest {
             @Test
             @WithAnonymousUser
             public void reviewNotExist() throws Exception {
-                doThrow(NoSuchElementException.class).when(reviewService).findReviewById(isA(Long.class));
+                doThrow(NoSuchElementException.class).when(reviewService).findByReviewIdAndLanguage(isA(Long.class), isA(LanguageType.class));
 
                 mockMvc.perform(get("/api/v1/reviews/{reviewId}", 2)
+                                .param("language", "KR")
                                 .contentType(MediaType.APPLICATION_JSON)
                         )
                         .andExpect(status().isNotFound());
@@ -292,7 +290,7 @@ public class ReviewControllerTest {
 
         @BeforeEach
         public void setUp() {
-            review = Fixture.createReview();
+            review = ReviewFixture.createReview(BeerFixture.createBeer());
         }
 
         @Nested
@@ -302,7 +300,7 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test
@@ -346,7 +344,7 @@ public class ReviewControllerTest {
 
             @BeforeEach
             public void setUp() {
-                member = Fixture.createMember();
+                member = MemberFixture.createMember();
             }
 
             @Test

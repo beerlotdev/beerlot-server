@@ -219,7 +219,7 @@ INSERT INTO public.beer_tag(
 
 INSERT INTO public.member(
 	id, oauth_id, email, image_url, role_type, provider_type, username, status_message)
-	VALUES (1, "123456789", test@email.com', 'https://image_url', 'GENERAL', 'KAKAO', '테스트유저', '1일 1맥중');
+	VALUES (1, '123456789', test@email.com', 'https://image_url', 'GENERAL', 'KAKAO', '테스트유저', '1일 1맥중');
 
 INSERT INTO public.review(
 	id, content, image_url, rate, beer_id, member_id, created_at)

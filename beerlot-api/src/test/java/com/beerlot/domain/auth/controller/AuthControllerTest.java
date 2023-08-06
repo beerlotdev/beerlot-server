@@ -6,7 +6,7 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.domain.policy.PolicyType;
-import com.beerlot.tool.fixture.Fixture;
+import com.beerlot.tool.fixture.MemberFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -17,9 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Set;
 
@@ -67,8 +65,8 @@ public class AuthControllerTest {
                     .agreedPolicies(Set.of(PolicyType.TERMS_OF_SERVICE, PolicyType.PERSONAL_INFORMATION_POLICY))
                     .build();
 
-            guestMember = Fixture.createGuestMember();
-            member = Fixture.createMember();
+            guestMember = MemberFixture.createGuestMember();
+            member = MemberFixture.createMember();
         }
 
         @Test
@@ -80,7 +78,7 @@ public class AuthControllerTest {
             mockMvc.perform(patch("/api/v1/auth/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request))
-                            .with(user(OAuthUserPrincipal.of(Fixture.createMember())))
+                            .with(user(OAuthUserPrincipal.of(MemberFixture.createMember())))
                     )
                     .andExpect(status().isOk());
         }

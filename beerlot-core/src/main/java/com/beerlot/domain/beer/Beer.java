@@ -97,7 +97,7 @@ public class Beer extends CreateAndUpdateDateTime {
 
     @Builder
     public Beer(Long id, Float volume, Category category, String imageUrl, Set<String> buyFrom,
-                OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+                OffsetDateTime createdAt, OffsetDateTime updatedAt, List<BeerInternational> beerInternationals) {
         this.id = id;
         this.volume = volume;
         this.category = category;
@@ -105,6 +105,7 @@ public class Beer extends CreateAndUpdateDateTime {
         this.buyFrom = buyFrom;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.beerInternationals = beerInternationals;
     }
 }
 
