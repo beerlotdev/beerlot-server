@@ -16,6 +16,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -78,6 +79,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                                 review.rate,
                                 review.updatedAt,
                                 review.likeCount,
+                                review.buyFrom,
                                 Projections.fields(MemberResponse.class,
                                         review.member.id,
                                         review.member.username,
@@ -144,6 +146,34 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .fetch();
 
         return new PageCustomImpl<>(reviewResponseList, pageRequest, totalElements);
+    }
+
+    @Override
+    public ReviewResponse findByReviewId(Long reviewId, LanguageType language) {
+        JPAQuery<ReviewResponse> query = queryFactory
+                .select(Projections.fields(ReviewResponse.class,
+                                review.id,
+                                review.content,
+                                review.imageUrl,
+                                review.rate,
+                                review.updatedAt,
+                                review.likeCount,
+                                review.buyFrom,
+                                Projections.fields(ReviewResponse.BeerResponse.class,
+                                        review.beer.id,
+                                        beerInternational.name
+                                ).as("beer")
+                        )
+                )
+                .from(review)
+                .innerJoin(review.beer, beer)
+                .innerJoin(review.beer.beerInternationals, beerInternational)
+                .where(
+                        matchLanguage(language)
+                );
+
+        System.out.println("query.fetch.size: " + query.fetch().size());
+        return query.fetchFirst();
     }
 
     private BooleanExpression matchLanguage(LanguageType language) {

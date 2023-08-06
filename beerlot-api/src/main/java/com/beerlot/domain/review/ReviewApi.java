@@ -80,7 +80,8 @@ public interface ReviewApi {
     )
     @GetMapping("/reviews/{reviewId}")
     ResponseEntity<ReviewResponse> findReviewById (
-            @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId
+            @Parameter(description = "Review ID") @PathVariable("reviewId") Long reviewId,
+            @RequestParam("language") LanguageType language
     );
 
     @Tag(name = "Review API", description = "The Review API.")
