@@ -1,5 +1,6 @@
 package com.beerlot.domain.beer;
 
+import com.beerlot.domain.brewery.Brewery;
 import com.beerlot.domain.category.Category;
 import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
 import com.beerlot.domain.review.BuyFromConverter;
@@ -32,8 +33,9 @@ public class Beer extends CreateAndUpdateDateTime {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(name = "brewery", nullable = false)
-    private String brewery;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brewery_id")
+    private Brewery brewery;
 
     @Column(name = "calorie")
     private Integer calorie;
