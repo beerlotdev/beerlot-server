@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "Member API", description = "The Member API.")
 @RequestMapping("/api/v1/members")
@@ -90,5 +91,20 @@ public interface MemberApi {
             @RequestParam("size") Integer size,
             @RequestParam("sort") BeerSortType sort,
             @Parameter(description = "Language code") @RequestParam("language") LanguageType language
+    );
+
+    @Operation(description = "Get all reviews that the member likes")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success."),
+                    @ApiResponse(responseCode = "204", description = "No review liked by the member."),
+                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper roles."),
+                    @ApiResponse(responseCode = "404", description = "Member does not exist.")
+            }
+    )
+    @GetMapping("/reviews/likes")
+    ResponseEntity<List<Long>> getAllLikedReviews (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal
     );
 }
