@@ -8,12 +8,13 @@ import com.beerlot.domain.brewery.dto.BrewerySimpleResponse;
 import com.beerlot.domain.brewery.repository.BreweryInternationalRepository;
 import com.beerlot.domain.brewery.repository.BreweryRepository;
 import com.beerlot.domain.common.entity.LanguageType;
+import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +37,9 @@ public class BreweryService {
     }
 
     public BreweryResponse getBrewery(Long breweryId, LanguageType languageType) {
-        BreweryInternational breweryInternational = breweryInternationalRepository.findOneByBreweryIdAndLanguageType(breweryId, languageType);
+        BreweryInternational breweryInternational = breweryInternationalRepository.
+                findOneByBreweryIdAndLanguageType(breweryId, languageType)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.BREWERY_INTERNATIONAL__NOT_EXIST.getMessage()));
 
         BreweryResponse breweryResponse = new BreweryResponse(
                 breweryInternational.getName(),

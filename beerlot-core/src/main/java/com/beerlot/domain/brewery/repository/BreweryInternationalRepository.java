@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BreweryInternationalRepository extends JpaRepository<BreweryInternational, BreweryInternationalId> {
 
@@ -16,7 +17,7 @@ public interface BreweryInternationalRepository extends JpaRepository<BreweryInt
 
     @Query("select m from BreweryInternational m " +
             "where m.breweryInternationalId.breweryId = :breweryId and m.breweryInternationalId.languageType = :languageType")
-    BreweryInternational findOneByBreweryIdAndLanguageType(@Param("breweryId") Long breweryId,
-                                                           @Param("languageType") LanguageType languageType);
+    Optional<BreweryInternational> findOneByBreweryIdAndLanguageType(@Param("breweryId") Long breweryId,
+                                                                     @Param("languageType") LanguageType languageType);
 
 }

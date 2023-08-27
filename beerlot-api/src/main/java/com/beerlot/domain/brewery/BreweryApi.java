@@ -21,15 +21,6 @@ public interface BreweryApi {
 
     @Tag(name = "Breweries API", description = "The Brewery API.")
     @Operation(description = "Get All Breweries")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "201", description = "Success."),
-                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
-                    @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
-                    @ApiResponse(responseCode = "404", description = "Beer does not exist."),
-                    @ApiResponse(responseCode = "409", description = "Member already liked the beer.")
-            }
-    )
     @GetMapping
     ResponseEntity<List<BrewerySimpleResponse>> getBreweries(
             @RequestParam("languageType") LanguageType languageType);
@@ -41,7 +32,7 @@ public interface BreweryApi {
                     @ApiResponse(responseCode = "201", description = "Success."),
                     @ApiResponse(responseCode = "401", description = "No Authorization was found."),
                     @ApiResponse(responseCode = "403", description = "Member does not have proper rights."),
-                    @ApiResponse(responseCode = "404", description = "Beer does not exist."),
+                    @ApiResponse(responseCode = "404", description = "Brewery does not exist."),
                     @ApiResponse(responseCode = "409", description = "Member already liked the beer.")
             }
     )
