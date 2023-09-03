@@ -2,7 +2,10 @@ package com.beerlot.domain.brewery;
 
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.common.entity.LanguageType;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.Optional;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Brewery {
 
     @Id
@@ -35,4 +39,11 @@ public class Brewery {
         return maybeBreweryInternational.isEmpty() ? "" : maybeBreweryInternational.get().getName();
     }
 
+    @Builder
+    public Brewery(Long breweryId, List<BreweryInternational> breweryInternationals, List<Beer> beers, String imageUrl) {
+        this.breweryId = breweryId;
+        this.breweryInternationals = breweryInternationals;
+        this.beers = beers;
+        this.imageUrl = imageUrl;
+    }
 }
