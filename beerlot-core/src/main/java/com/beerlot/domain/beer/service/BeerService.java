@@ -53,9 +53,9 @@ public class BeerService {
     }
 
     @Transactional(readOnly = true)
-    public PageCustom<BeerSimpleResponse> getBeersByMember(String oauthId,
-                                                           PageCustomRequest request,
-                                                           LanguageType language) {
+    public PageCustom<BeerSimpleResponse> getBeerLikesByMember(String oauthId,
+                                                               PageCustomRequest request,
+                                                               LanguageType language) {
         return beerRepository.findByMember(oauthId, request, language);
     }
 }

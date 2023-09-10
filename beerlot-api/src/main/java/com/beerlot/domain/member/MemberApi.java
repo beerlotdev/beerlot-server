@@ -85,7 +85,7 @@ public interface MemberApi {
             }
     )
     @GetMapping("/beers")
-    ResponseEntity<PageCustom<BeerSimpleResponse>> getAllBeers (
+    ResponseEntity<PageCustom<BeerSimpleResponse>> getAllLikedBeers(
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,

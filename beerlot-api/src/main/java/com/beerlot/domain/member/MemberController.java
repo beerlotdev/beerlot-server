@@ -15,7 +15,6 @@ import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,13 +58,13 @@ public class MemberController implements MemberApi {
     }
 
     @Override
-    public ResponseEntity<PageCustom<BeerSimpleResponse>> getAllBeers(OAuthUserPrincipal userPrincipal,
-                                                                        Integer page,
-                                                                        Integer size,
-                                                                        BeerSortType sort,
-                                                                        LanguageType language) {
+    public ResponseEntity<PageCustom<BeerSimpleResponse>> getAllLikedBeers(OAuthUserPrincipal userPrincipal,
+                                                                           Integer page,
+                                                                           Integer size,
+                                                                           BeerSortType sort,
+                                                                           LanguageType language) {
         return new ResponseEntity<>(
-                beerService.getBeersByMember(userPrincipal.getOauthId(),
+                beerService.getBeerLikesByMember(userPrincipal.getOauthId(),
                                              new PageCustomRequest(page, size, sort),
                                              language),
                 HttpStatus.OK);
