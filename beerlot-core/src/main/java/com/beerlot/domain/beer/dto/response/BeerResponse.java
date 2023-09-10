@@ -97,7 +97,7 @@ public class BeerResponse {
                 .originCountry(beerInternational.getOriginCountry())
                 .originCity(beerInternational.getOriginCity())
                 .volume(beer.getVolume())
-                .brewery(beer.getBrewery())
+                .brewery(beer.getBrewery().getName(language))
                 .calorie(beer.getCalorie())
                 .calorieUnit(beer.getCalorieUnit())
                 .buyFrom(beer.getBuyFrom())

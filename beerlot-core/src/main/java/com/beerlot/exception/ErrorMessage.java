@@ -10,6 +10,10 @@ public enum ErrorMessage {
     BEER__NOT_EXIST("Beer does not exist."),
     BEER_INTERNATIONAL__NOT_EXIST("Beer international does not exist."),
 
+    // ===== Brewery ===== //
+    BREWERY__NOT_EXIST("Brewery does not exist."),
+    BREWERY_INTERNATIONAL__NOT_EXIST("Brewery international does not exist."),
+
     // ===== Beer Like ===== //
     BEER_LIKE__NOT_FOUND("Member has not liked the beer yet."),
     BEER_LIKE__CONFLICT("Member already liked the beer."),

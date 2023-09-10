@@ -66,6 +66,7 @@ public class SecurityConfig {
                     // ===== Permit All ===== //
                     .antMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/breweries/**").permitAll()
 
                     // ===== Permit Role Guest ===== //
                     .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
