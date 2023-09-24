@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +29,6 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     private final BeerLikeService beerLikeService;
     private final BeerRecommendService beerRecommendService;
     private final CategoryService categoryService;
-
 
     @Override
     public ResponseEntity<BeerResponse> findBeerById (LanguageType language, Long beerId) {
@@ -70,8 +70,8 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     }
 
     @Override
-    public ResponseEntity<BeerRecommendResponse> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
-        return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId(), amount), HttpStatus.OK);
+    public ResponseEntity<Map<Long, Long>> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
+        return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId()), HttpStatus.OK);
     }
 
     @Override
