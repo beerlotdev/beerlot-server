@@ -21,7 +21,7 @@ import java.util.Set;
 
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Table(name = "member")
 public class Member extends CreateAndUpdateDateTime {
