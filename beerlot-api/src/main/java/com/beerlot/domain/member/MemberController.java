@@ -3,6 +3,7 @@ package com.beerlot.domain.member;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
+import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
