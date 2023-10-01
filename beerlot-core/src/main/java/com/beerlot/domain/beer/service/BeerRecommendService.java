@@ -2,6 +2,7 @@ package com.beerlot.domain.beer.service;
 
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.dto.response.BeerRecommendResponse;
+import com.beerlot.domain.beer.repository.BeerRecommendRepository;
 import com.beerlot.domain.category.Category;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.service.MemberService;
@@ -10,11 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
-import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
-import org.apache.mahout.cf.taste.model.DataModel;
-import org.apache.mahout.cf.taste.recommender.RecommendedItem;
-import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,19 +22,25 @@ public class BeerRecommendService {
 
     private final MemberService memberService;
     private final BeerLikeService beerLikeService;
+    private final BeerRecommendRepository beerRecommendRepository;
 
-    public Map<Long, Long> recommend(String oauthId) {
+    public BeerRecommendResponse recommend(String oauthId) {
         Member member = memberService.findMemberByOauthId(oauthId);
         List<Beer> likedBeers = beerLikeService.getLikedBeers(member.getId());
 
         MappedCategory aggregated = aggregate(likedBeers);
         MappedCategory excluded = exclude(aggregated);
+
         if (excluded.parents.size() == 0 && excluded.children.size() == 0) {
-            return calculateRatio(new MappedCategory(null, aggregated.children), 1L);
+            return new BeerRecommendResponse(beerRecommendRepository.getRecommendBeer(
+                    calculateRatio(new MappedCategory(null, aggregated.children), 1L),
+                    oauthId));
         }
         else {
             long gcd = getGcd(excluded);
-            return calculateRatio(excluded, gcd);
+            return new BeerRecommendResponse(beerRecommendRepository.getRecommendBeer(
+                    calculateRatio(excluded, gcd),
+                    oauthId));
         }
     }
 

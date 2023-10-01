@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,7 +69,7 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     }
 
     @Override
-    public ResponseEntity<Map<Long, Long>> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
+    public ResponseEntity<BeerRecommendResponse> recommendBeer (OAuthUserPrincipal userPrincipal, int amount) {
         return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId()), HttpStatus.OK);
     }
 

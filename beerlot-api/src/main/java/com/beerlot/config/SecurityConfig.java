@@ -75,6 +75,7 @@ public class SecurityConfig {
 
                     // ===== Permit Role Member ===== //
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
+                    .antMatchers( "/api/v1/beers/recommend").hasRole("MEMBER")
                     .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
                     .antMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasRole("MEMBER")
                     .antMatchers(HttpMethod.PATCH, "/api/v1/reviews/**").hasRole("MEMBER")
