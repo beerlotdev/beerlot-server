@@ -2,10 +2,7 @@ package com.beerlot.domain.beer.service;
 
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.dto.response.BeerRecommendResponse;
-import com.beerlot.domain.beer.dto.response.BeerResponse;
-import com.beerlot.domain.beer.repository.BeerRecommendRepository;
 import com.beerlot.domain.category.Category;
-import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -21,7 +18,6 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,7 +26,6 @@ public class BeerRecommendService {
 
     private final MemberService memberService;
     private final BeerLikeService beerLikeService;
-    private final BeerRecommendRepository beerRecommendRepository;
 
     public Map<Long, Long> recommend(String oauthId) {
         Member member = memberService.findMemberByOauthId(oauthId);
@@ -117,27 +112,5 @@ public class BeerRecommendService {
     public static class MappedCategory {
         Map<Category, Long> parents;
         Map<Category, Long> children;
-    }
-
-    public BeerRecommendResponse recommend(String oauthId, int amount) {
-        Member foundMember = memberService.findMemberByOauthId(oauthId);
-        DataModel dataModel = beerRecommendRepository.getDataModel();
-
-        try {
-            ItemSimilarity itemSimilarity = new UncenteredCosineSimilarity(dataModel);
-            GenericItemBasedRecommender itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
-
-            List<Long> recommendItems = itemBasedRecommender.recommend(foundMember.getId(), amount)
-                    .stream()
-                    .map(RecommendedItem::getItemID)
-                    .toList();
-
-            return new BeerRecommendResponse(recommendItems);
-        } catch (Exception e) {
-            log.error("Beer Recommend Error : {}", e.getMessage());
-            e.printStackTrace();
-        }
-
-        return new BeerRecommendResponse(null);
     }
 }
