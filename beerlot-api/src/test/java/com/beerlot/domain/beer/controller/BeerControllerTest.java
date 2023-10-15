@@ -10,10 +10,10 @@ import com.beerlot.domain.member.Member;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.tool.fixture.BeerFixture;
 import com.beerlot.tool.fixture.MemberFixture;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +30,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -171,9 +172,13 @@ public class BeerControllerTest {
                         .andExpect(status().isNotFound());
             }
         }
+    }
+
+    @Nested
+    class BeerCategoryTest {
 
         @Nested
-        class BeerCategoryTest {
+        class GetCategoryTest {
             @Test
             public void success() throws Exception {
                 Mockito.when(categoryService.getCategories(LanguageType.KR))
@@ -183,6 +188,27 @@ public class BeerControllerTest {
                                 .param("language", String.valueOf(LanguageType.KR))
                         )
                         .andExpect(status().isOk());
+            }
+        }
+    }
+
+    @Nested
+    class BeerCountriesTest {
+
+        @Nested
+        class GetCountries {
+
+            @Test
+            public void success() throws Exception {
+                List<String> countries = List.of("Category1", "Category2");
+                String jsonValue = new ObjectMapper().writeValueAsString(countries);
+
+                Mockito.when(beerService.getCountriesOfBeer(Mockito.any()))
+                        .thenReturn(countries);
+
+                mockMvc.perform(get("/api/v1/beers/countries")
+                        .param("language", String.valueOf(LanguageType.KR))
+                ).andExpect(status().isOk()).andExpect(content().string(jsonValue));
             }
         }
     }
