@@ -3,6 +3,7 @@ package com.beerlot.domain.beer.service;
 import com.beerlot.domain.beer.Beer;
 import com.beerlot.domain.beer.dto.response.BeerResponse;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
+import com.beerlot.domain.beer.repository.BeerInternationalRepository;
 import com.beerlot.domain.beer.repository.BeerRepository;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class BeerService {
 
     private final BeerRepository beerRepository;
+
+    private final BeerInternationalRepository beerInternationalRepository;
 
     @Transactional(readOnly = true)
     public BeerResponse findBeerByIdAndLanguage(Long id, LanguageType language) {
@@ -57,5 +60,10 @@ public class BeerService {
                                                                PageCustomRequest request,
                                                                LanguageType language) {
         return beerRepository.findByMember(oauthId, request, language);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getCountriesOfBeer(LanguageType languageType) {
+        return beerInternationalRepository.getCountriesOfBeer(languageType);
     }
 }

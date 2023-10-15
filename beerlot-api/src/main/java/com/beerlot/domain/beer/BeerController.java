@@ -77,4 +77,9 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     public ResponseEntity<List<CategoryResponse>> getCategories(LanguageType language) {
         return new ResponseEntity<>(categoryService.getCategories(language), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<String>> getCountries(LanguageType language) {
+        return new ResponseEntity<>(beerService.getCountriesOfBeer(language), HttpStatus.OK);
+    }
 }
