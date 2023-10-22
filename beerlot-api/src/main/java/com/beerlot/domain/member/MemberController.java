@@ -74,9 +74,6 @@ public class MemberController implements MemberApi {
     @Override
     public ResponseEntity<List<Long>> getAllLikedReviews(OAuthUserPrincipal userPrincipal) {
         List<Long> reviewIds = reviewLikeService.getReviewLikesByMember(userPrincipal.getOauthId());
-        if (reviewIds.size() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(reviewIds, HttpStatus.OK);
     }
 }
