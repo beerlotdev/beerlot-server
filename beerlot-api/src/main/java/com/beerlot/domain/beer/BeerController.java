@@ -50,9 +50,6 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
                                                        Integer page, Integer size, BeerSortType sort, LanguageType language) {
         LanguageType.validate(language);
         PageCustom<BeerSimpleResponse> beerResponsePage = beerService.findBeersBySearch(keyword, categories, countries, volumeMin, volumeMax, language, new PageCustomRequest(page, size, sort));
-        if (beerResponsePage.getContents().isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(new BeerPage(beerResponsePage.getContents(), beerResponsePage.getPageRequest(), beerResponsePage.getTotalElements()), HttpStatus.OK);
     }
 
