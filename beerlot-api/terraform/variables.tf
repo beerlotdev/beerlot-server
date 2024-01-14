@@ -14,10 +14,6 @@ variable "project_members" {
   type = list(string)
 }
 
-variable "project_security_admin" {
-  type = list(string)
-}
-
 variable "backend_developers" {
   type = list(string)
 }
