@@ -62,12 +62,16 @@ public class MemberService {
         }
 
         PolicyType.validateAgreeOnRequiredPolicies(memberRequest.getAgreedPolicies());
-
         member.updateProfile(MemberProfileRequest.builder()
                 .statusMessage(memberRequest.getStatusMessage())
                 .imageUrl(memberRequest.getImageUrl())
                 .build());
+
+        if (countByUsername(memberRequest.getUsername()) != 0) {
+            throw new ConflictException(ErrorMessage.MEMBER__USERNAME_ALREADY_EXIST.getMessage());
+        }
         member.updateUsername(memberRequest.getUsername());
+
         member.updateAgreedPolicies(memberRequest.getAgreedPolicies());
         member.addRole(RoleType.MEMBER);
         member.setUsernameUpdatedAtToNow();
