@@ -1,3 +1,8 @@
+backend_developers = [
+  "user:youjin.lee.dev@gmail.com",
+  "user:imonizryu@gmail.com"
+]
+
 project_members = [
   "user:youjin.lee.dev@gmail.com",
   "user:taedabomd@gmail.com",

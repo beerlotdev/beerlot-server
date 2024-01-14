@@ -22,11 +22,22 @@ resource "google_project_iam_member" "security_admins" {
   member   = each.key
 }
 
-resource "google_cloud_run_service_iam_member" "allusers_cloud_run" {
+resource "google_cloud_run_service_iam_member" "cloud_run_invoker" {
+  for_each = concat(var.backend_developers, [google_service_account.beerlot_client_service_account.member])
   role = "roles/run.invoker"
-  member = "allUsers"
+  member = each.key
 
   project = var.project
   location = var.region
   service = google_cloud_run_service.beerlot_core_api.name
+}
+
+resource "google_service_account"  "beerlot_client_service_account"{
+  account_id   = "beerlot-client"
+  display_name = "BeerLot Client"
+  description  = "BeerLot Client Service Account"
+  project      = var.project
+  depends_on = [
+    google_project_service.apis
+  ]
 }

@@ -18,6 +18,10 @@ variable "project_security_admin" {
   type = list(string)
 }
 
+variable "backend_developers" {
+  type = list(string)
+}
+
 variable "image_tag" {
   type = string
 }
