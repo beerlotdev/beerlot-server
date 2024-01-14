@@ -44,7 +44,9 @@ public class OAuthService extends DefaultOAuth2UserService implements UserDetail
             return OAuthUserPrincipal.of(member);
         } catch (NoSuchElementException e) {
             long count = memberService.countByUsername(oAuthUserPrincipal.getUsername());
+            System.out.println("count: " + count);
             oAuthUserPrincipal.setUsername(oAuthUserPrincipal.getUsername() + String.valueOf(count + 1));
+            System.out.println("username: " + oAuthUserPrincipal.getUsername());
             memberService.createMember(oAuthUserPrincipal);
             return oAuthUserPrincipal;
         }
