@@ -18,20 +18,14 @@ resource "google_project_iam_member" "storage_viewers" {
 resource "google_project_iam_member" "security_admins" {
   project  = var.project
   role     = "roles/iam.securityAdmin"
-  for_each = toset(var.backend_developers)
+  for_each = toset(var.project_security_admin)
   member   = each.key
 }
 
-resource "google_project_iam_member" "cloud_run_invoker_for_devs" {
-  project  = var.project
-  role     = "roles/run.invoker"
-  for_each = toset(var.backend_developers)
-  member   = each.key
-}
-
-resource "google_cloud_run_service_iam_member" "cloud_run_invokers" {
+resource "google_cloud_run_service_iam_member" "cloud_run_invoker" {
+  for_each = toset(concat(var.backend_developers, tolist([google_service_account.beerlot_client_service_account.member])))
   role = "roles/run.invoker"
-  member = google_service_account.beerlot_client_service_account.member
+  member = each.key
 
   project = var.project
   location = var.region
