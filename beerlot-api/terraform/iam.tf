@@ -47,9 +47,3 @@ resource "google_service_account"  "beerlot_client_service_account"{
     google_project_service.apis
   ]
 }
-
-resource "google_project_iam_member" "run_invoker_for_beerlot_client" {
-  project  = var.project
-  role     = "roles/run.invoker"
-  member   = google_service_account.beerlot_client_service_account.member
-}
