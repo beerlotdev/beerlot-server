@@ -23,7 +23,7 @@ resource "google_project_iam_member" "security_admins" {
 }
 
 resource "google_cloud_run_service_iam_member" "cloud_run_invoker" {
-  for_each = concat(var.backend_developers, tolist([google_service_account.beerlot_client_service_account.member]))
+  for_each = concat(var.backend_developers, [google_service_account.beerlot_client_service_account.member])
   role = "roles/run.invoker"
   member = each.key
 
