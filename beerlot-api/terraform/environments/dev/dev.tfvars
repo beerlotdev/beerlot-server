@@ -10,6 +10,11 @@ project_members = [
   "user:imonizryu@gmail.com"
 ]
 
+project_security_admin = [
+  "user:youjin.lee.dev@gmail.com",
+  "user:imonizryu@gmail.com"
+]
+
 image_buckets = [
   "beers",
   "reviews",
