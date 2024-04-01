@@ -48,7 +48,7 @@ public enum ErrorMessage {
     TOKEN__EXPIRED("Token is expired."),
 
     // ===== Auth ===== //
-    UNAUTHORIZED_REDIRECT_URI("Redirect URI is authorized."),
+    UNAUTHORIZED_REDIRECT_URI("Redirect URI is not authorized."),
     NO_AUTHORIZATION("No Authorization was found."),
 
     // ===== File ===== //
