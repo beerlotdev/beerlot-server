@@ -99,10 +99,6 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
             log.error("client redirect URL is not authorized, client Redirect URL : {}, authorized : {}", url, appConfig.getRedirectUrl());
         }
 
-        if (url.contains("beerlot")) {
-            return true;
-        }
-
         return checkAuthorization;
     }
 }
