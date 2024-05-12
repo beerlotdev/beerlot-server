@@ -2,10 +2,13 @@ package com.beerlot.domain.member.service;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
+import com.beerlot.domain.member.MemberStatus;
 import com.beerlot.domain.member.RoleType;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
+import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
@@ -94,6 +97,24 @@ public class MemberService {
         }
         member.updateProfile(memberProfileRequest);
         return getProfile(member);
+    }
+
+    public MemberStatusResponse getMemberStatus(MemberStatusRequest memberStatusRequest) {
+        Optional<Member> foundMember = memberRepository.findByEmail(memberStatusRequest.getEmail());
+
+        if (foundMember.isEmpty()) {
+            return MemberStatusResponse.builder()
+                    .status(MemberStatus.NOT_EXIST)
+                    .provider(null)
+                    .build();
+        }
+
+        Member member = foundMember.get();
+
+        return MemberStatusResponse.builder()
+                .status(member.getStatus())
+                .provider(member.getProvider())
+                .build();
     }
 
     private boolean canUpdateUsername(Member member) {

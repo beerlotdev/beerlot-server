@@ -3,7 +3,6 @@ package com.beerlot.domain.member;
 import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
 import com.beerlot.domain.common.entity.CreateAndUpdateDateTime;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
-import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.domain.policy.PolicyTypeConverter;
 import com.beerlot.domain.review.Review;
@@ -11,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -50,6 +49,11 @@ public class Member extends CreateAndUpdateDateTime {
     @Convert(converter = RoleTypeConverter.class)
     @Column(name = "roles", nullable = false)
     private Set<RoleType> roles;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    @ColumnDefault(value = "'ACTIVE'")
+    private MemberStatus status;
 
     @Convert(converter = PolicyTypeConverter.class)
     @Column(name = "agreed_policies")

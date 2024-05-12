@@ -3,13 +3,14 @@ package com.beerlot.domain.member;
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
-import com.beerlot.domain.beer.service.BeerLikeService;
 import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
+import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.service.MemberService;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
@@ -43,6 +44,14 @@ public class MemberController implements MemberApi {
         return new ResponseEntity<>(
                 memberService.updateProfile(memberService.findMemberByOauthId(userPrincipal.getOauthId()), memberProfileRequest),
                 HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MemberStatusResponse> getMemberStatus(MemberStatusRequest memberStatusRequest) {
+        return new ResponseEntity<>(
+                memberService.getMemberStatus(memberStatusRequest),
+                HttpStatus.OK
+        );
     }
 
     @Override

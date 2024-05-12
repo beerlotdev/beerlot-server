@@ -7,7 +7,9 @@ import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
+import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.MemberResponse;
+import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.review.ReviewSortType;
 import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +57,20 @@ public interface MemberApi {
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request form for updating profile")
             @RequestBody @Valid MemberProfileRequest memberProfileRequest
+    );
+
+    @Operation(description = "Get member status")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success."),
+                    @ApiResponse(responseCode = "401", description = "No Authorization was found."),
+                    @ApiResponse(responseCode = "403", description = "Member has no proper roles."),
+                    @ApiResponse(responseCode = "404", description = "Member does not exist.")
+            }
+    )
+    @PostMapping("/status")
+    ResponseEntity<MemberStatusResponse> getMemberStatus (
+            @RequestBody MemberStatusRequest memberStatusRequest
     );
 
     @Operation(description = "Get all reviews written by the member")
