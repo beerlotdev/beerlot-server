@@ -81,6 +81,7 @@ public class Member extends CreateAndUpdateDateTime {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.usernameUpdatedAt = usernameUpdatedAt;
+        this.status = MemberStatus.ACTIVE;
     }
 
     public void updateEmail(String email) {
