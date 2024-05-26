@@ -4,9 +4,11 @@ import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.MemberStatus;
 import com.beerlot.domain.member.RoleType;
+import com.beerlot.domain.member.dto.request.CheckUsernameRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
+import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
@@ -119,5 +121,11 @@ public class MemberService {
 
     private boolean canUpdateUsername(Member member) {
         return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
+    }
+
+    public CheckUsernameResponse checkDuplicateUsername(CheckUsernameRequest checkUsernameRequest) {
+        boolean isAlreadyExist = memberRepository.existsByUsername(checkUsernameRequest.getUsername());
+
+        return new CheckUsernameResponse(isAlreadyExist ? "N" : "Y");
     }
 }

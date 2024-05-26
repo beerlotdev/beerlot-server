@@ -6,8 +6,10 @@ import com.beerlot.domain.beer.BeerSortType;
 import com.beerlot.domain.beer.dto.response.BeerSimpleResponse;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
+import com.beerlot.domain.member.dto.request.CheckUsernameRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
+import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.review.ReviewSortType;
@@ -122,5 +124,16 @@ public interface MemberApi {
     @GetMapping("/reviews/likes")
     ResponseEntity<List<Long>> getAllLikedReviews (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal
+    );
+
+    @Operation(description = "Check for duplicate usernames")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success.")
+            }
+    )
+    @PostMapping("/check-username")
+    ResponseEntity<CheckUsernameResponse> checkDuplicateUsername (
+            @RequestBody CheckUsernameRequest checkUsernameRequest
     );
 }

@@ -7,8 +7,10 @@ import com.beerlot.domain.beer.service.BeerService;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomRequest;
+import com.beerlot.domain.member.dto.request.CheckUsernameRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
+import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.service.MemberService;
@@ -84,5 +86,12 @@ public class MemberController implements MemberApi {
     public ResponseEntity<List<Long>> getAllLikedReviews(OAuthUserPrincipal userPrincipal) {
         List<Long> reviewIds = reviewLikeService.getReviewLikesByMember(userPrincipal.getOauthId());
         return new ResponseEntity<>(reviewIds, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CheckUsernameResponse> checkDuplicateUsername(CheckUsernameRequest checkUsernameRequest) {
+        CheckUsernameResponse checkUsernameResponse = memberService.checkDuplicateUsername(checkUsernameRequest);
+
+        return new ResponseEntity<>(checkUsernameResponse, HttpStatus.OK);
     }
 }
