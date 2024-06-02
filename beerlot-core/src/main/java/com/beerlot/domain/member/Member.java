@@ -108,5 +108,9 @@ public class Member extends CreateAndUpdateDateTime {
     public void setUsernameUpdatedAtToNow() {
         this.usernameUpdatedAt = OffsetDateTime.now();
     }
+
+    public void exit() {
+        this.status = MemberStatus.IN_ACTIVE;
+    }
 }
 

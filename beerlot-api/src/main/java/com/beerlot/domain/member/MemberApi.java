@@ -10,6 +10,7 @@ import com.beerlot.domain.member.dto.request.CheckUsernameRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
+import com.beerlot.domain.member.dto.response.MemberExitResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.review.ReviewSortType;
@@ -135,5 +136,16 @@ public interface MemberApi {
     @PostMapping("/check-username")
     ResponseEntity<CheckUsernameResponse> checkDuplicateUsername (
             @RequestBody CheckUsernameRequest checkUsernameRequest
+    );
+
+    @Operation(description = "Exit Member")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Success.")
+            }
+    )
+    @PostMapping("/exit")
+    ResponseEntity<MemberExitResponse> exitUser (
+            @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal
     );
 }

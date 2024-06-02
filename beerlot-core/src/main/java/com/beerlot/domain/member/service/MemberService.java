@@ -1,6 +1,7 @@
 package com.beerlot.domain.member.service;
 
 import com.beerlot.domain.auth.security.oauth.entity.OAuthUserPrincipal;
+import com.beerlot.domain.auth.security.oauth.entity.ProviderType;
 import com.beerlot.domain.member.Member;
 import com.beerlot.domain.member.MemberStatus;
 import com.beerlot.domain.member.RoleType;
@@ -9,6 +10,7 @@ import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
+import com.beerlot.domain.member.dto.response.MemberExitResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.repository.MemberRepository;
@@ -16,6 +18,7 @@ import com.beerlot.domain.policy.PolicyType;
 import com.beerlot.exception.ConflictException;
 import com.beerlot.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,8 @@ import java.util.Set;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
@@ -119,13 +124,34 @@ public class MemberService {
                 .build();
     }
 
-    private boolean canUpdateUsername(Member member) {
-        return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
-    }
-
     public CheckUsernameResponse checkDuplicateUsername(CheckUsernameRequest checkUsernameRequest) {
         boolean isAlreadyExist = memberRepository.existsByUsername(checkUsernameRequest.getUsername());
 
         return new CheckUsernameResponse(isAlreadyExist ? "N" : "Y");
+    }
+
+    public MemberExitResponse exitUser(OAuthUserPrincipal oAuthUser) {
+        Optional<Member> maybeMember = memberRepository.findByOauthId(oAuthUser.getOauthId());
+
+        if (maybeMember.isEmpty()) {
+            throw new IllegalArgumentException(ErrorMessage.MEMBER__NOT_EXIST.getMessage());
+        }
+
+        Member currentMember = maybeMember.get();
+        ProviderType provider = currentMember.getProvider();
+
+        currentMember.exit();
+        currentMember.setUsernameUpdatedAtToNow();
+
+        return MemberExitResponse.builder()
+                .email(currentMember.getEmail())
+                .provider(provider)
+                .status(currentMember.getStatus())
+                .exitedAt(currentMember.getUsernameUpdatedAt())
+                .build();
+    }
+
+    private boolean canUpdateUsername(Member member) {
+        return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
     }
 }
