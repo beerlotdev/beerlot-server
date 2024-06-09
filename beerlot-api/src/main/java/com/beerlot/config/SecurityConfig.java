@@ -1,5 +1,6 @@
 package com.beerlot.config;
 
+import com.beerlot.domain.auth.security.oauth.filter.ExceptionHandlerFilter;
 import com.beerlot.domain.auth.security.oauth.filter.OAuthAuthenticationFilter;
 import com.beerlot.domain.auth.security.oauth.filter.TokenAuthenticationEntryPoint;
 import com.beerlot.domain.auth.security.oauth.handler.OAuthAuthenticationFailureHandler;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
     private final OAuthService oAuthService;
     private final OAuthAuthenticationFilter oAuthAuthenticationFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final OAuthAuthorizationRequestCookieRepository authorizationRequestRepository;
     private final OAuthAuthenticationSuccessHandler authenticationSuccessHandler;
     private final OAuthAuthenticationFailureHandler authenticationFailureHandler;
@@ -30,7 +32,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http    .addFilterBefore(oAuthAuthenticationFilter, CorsFilter.class);
+        http    .addFilterBefore(oAuthAuthenticationFilter, CorsFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, OAuthAuthenticationFilter.class);
 
         http
                 .csrf().disable()
