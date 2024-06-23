@@ -139,7 +139,7 @@ public class MemberService {
     public CheckUsernameResponse checkDuplicateUsername(CheckUsernameRequest checkUsernameRequest) {
         boolean isAlreadyExist = memberRepository.existsByUsername(checkUsernameRequest.getUsername());
 
-        return new CheckUsernameResponse(isAlreadyExist ? "N" : "Y");
+        return new CheckUsernameResponse(String.valueOf(isAlreadyExist));
     }
 
     public MemberExitResponse exitUser(OAuthUserPrincipal oAuthUser) {
