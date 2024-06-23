@@ -11,6 +11,7 @@ import com.beerlot.domain.member.dto.request.CheckUsernameRequest;
 import com.beerlot.domain.member.dto.request.MemberProfileRequest;
 import com.beerlot.domain.member.dto.request.MemberStatusRequest;
 import com.beerlot.domain.member.dto.response.CheckUsernameResponse;
+import com.beerlot.domain.member.dto.response.MemberExitResponse;
 import com.beerlot.domain.member.dto.response.MemberResponse;
 import com.beerlot.domain.member.dto.response.MemberStatusResponse;
 import com.beerlot.domain.member.service.MemberService;
@@ -93,5 +94,12 @@ public class MemberController implements MemberApi {
         CheckUsernameResponse checkUsernameResponse = memberService.checkDuplicateUsername(checkUsernameRequest);
 
         return new ResponseEntity<>(checkUsernameResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MemberExitResponse> exitUser(OAuthUserPrincipal userPrincipal) {
+        MemberExitResponse memberExitResponse = memberService.exitUser(userPrincipal);
+
+        return new ResponseEntity<>(memberExitResponse, HttpStatus.OK);
     }
 }
