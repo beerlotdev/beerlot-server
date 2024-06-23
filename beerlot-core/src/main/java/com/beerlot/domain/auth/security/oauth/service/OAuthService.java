@@ -56,8 +56,7 @@ public class OAuthService extends DefaultOAuth2UserService implements UserDetail
                 throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
             }
 
-            long count = memberService.countByUsername(oAuthUserPrincipal.getUsername());
-            oAuthUserPrincipal.setUsername(oAuthUserPrincipal.getUsername() + String.valueOf(count + 1));
+            oAuthUserPrincipal.setUsername("USER_" + System.nanoTime());
 
             memberService.createMember(oAuthUserPrincipal);
             return oAuthUserPrincipal;
