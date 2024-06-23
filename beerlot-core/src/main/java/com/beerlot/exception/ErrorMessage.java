@@ -40,6 +40,7 @@ public enum ErrorMessage {
     MEMBER__ACCESS_DENIED("Member has no proper rights."),
     MEMBER__USERNAME_30DAYS("Member already changed username within last 30 days."),
     MEMBER__USERNAME_ALREADY_EXIST("The username already exists."),
+    MEMBER__FAILED_TO_REVOKE_OAUTH("Failed to revoke user from OAuth Provider"),
 
     // ===== Token ===== //
     MEMBER_REFRESH_TOKEN__NOT_EXIST("Member refresh token does not exist."),

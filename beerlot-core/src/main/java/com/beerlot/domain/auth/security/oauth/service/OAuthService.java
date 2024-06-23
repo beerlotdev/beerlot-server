@@ -42,17 +42,22 @@ public class OAuthService extends DefaultOAuth2UserService implements UserDetail
         // 4: Check if registered user
         try {
             Member member = memberService.findMemberByOauthId(oAuthUserPrincipal.getId());
+            if (!member.isActive()) {
+                // if member exited before, change member status to active
+                memberService.updateStatusToActive(member);
+            }
+
             memberService.updateEmail(member, oAuthUserPrincipal.getEmail());
             return OAuthUserPrincipal.of(member);
         } catch (NoSuchElementException e) {
-            long count = memberService.countByUsername(oAuthUserPrincipal.getUsername());
-            oAuthUserPrincipal.setUsername(oAuthUserPrincipal.getUsername() + String.valueOf(count + 1));
-
             // if email exists, a user already signed up with other provider
             Optional<Member> maybeMemberByEmail = memberService.findMemberByEmail(oAuthUserPrincipal.getEmail());
             if (maybeMemberByEmail.isPresent()) {
                 throw new ConflictException(ErrorMessage.MEMBER__ALREADY_SIGNED_UP.getMessage());
             }
+
+            long count = memberService.countByUsername(oAuthUserPrincipal.getUsername());
+            oAuthUserPrincipal.setUsername(oAuthUserPrincipal.getUsername() + String.valueOf(count + 1));
 
             memberService.createMember(oAuthUserPrincipal);
             return oAuthUserPrincipal;
