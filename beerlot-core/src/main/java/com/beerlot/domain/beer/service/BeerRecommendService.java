@@ -48,7 +48,10 @@ public class BeerRecommendService {
         Map<Category, Long> parents = new HashMap<>();
         Map<Category, Long> children = new HashMap<>();
         beers.stream().forEach(beer -> {
-            parents.merge(beer.getCategory().getParent(), 1L, Long::sum);
+            if (beer.getCategory().getParent() != null) {
+                parents.merge(beer.getCategory().getParent(), 1L, Long::sum);
+            }
+
             children.merge(beer.getCategory(), 1L, Long::sum);
         });
 
@@ -58,9 +61,6 @@ public class BeerRecommendService {
     public MappedCategory exclude(MappedCategory mappedCategory) {
         HashMap<Category, Long> parents = new HashMap<>(mappedCategory.parents);
         HashMap<Category, Long> children = new HashMap<>(mappedCategory.children);
-
-        parents.entrySet().removeIf(category -> category.getValue()==1L);
-        children.entrySet().removeIf(category -> category.getValue()==1L);
 
         children.entrySet().forEach(child -> {
             if (Objects.equals(parents.get(child.getKey().getParent()), child.getValue())) {

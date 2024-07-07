@@ -27,6 +27,11 @@ public class CustomBeerRecommendRepositoryImpl implements BeerRecommendRepositor
             result.addAll(getQuery(element, oauthId));
         }
 
+        if (result.size() != 10) {
+            List<Long> famousBeerDesc = getFamousBeerDesc(10 - result.size(), result);
+            result.addAll(famousBeerDesc);
+        }
+
         return result;
     }
 
@@ -35,16 +40,25 @@ public class CustomBeerRecommendRepositoryImpl implements BeerRecommendRepositor
                 .from(beer)
                 .where(beer.category.id.eq(element.getKey()))
                 .where(beer.id.notIn(
-                        JPAExpressions.select(beer.id)
+                        JPAExpressions.select(beerLike.beer.id)
                                 .from(beerLike)
                                 .where(beerLike.member.oauthId.eq(oauthId))))
                 .where(beer.id.notIn(
-                        JPAExpressions.select(beer.id)
+                        JPAExpressions.select(review.beer.id)
                                 .from(review)
                                 .where(review.member.oauthId.eq(oauthId))
                 ))
                 .orderBy(beer.rate.desc())
                 .limit(element.getValue())
+                .fetch();
+    }
+
+    private List<Long> getFamousBeerDesc(int limitCount, List<Long> excluded) {
+        return queryFactory.select(beer.id)
+                .from(beer)
+                .where(beer.id.notIn(excluded))
+                .orderBy(beer.rate.desc())
+                .limit(limitCount)
                 .fetch();
     }
 }
