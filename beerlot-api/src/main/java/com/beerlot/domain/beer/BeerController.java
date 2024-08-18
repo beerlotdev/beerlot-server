@@ -68,6 +68,7 @@ public class BeerController implements BeerApi, BeerLikeApi, BeerRecommendApi {
     @Override
     public ResponseEntity<BeerRecommendResponse> recommendBeer (OAuthUserPrincipal userPrincipal) {
         return new ResponseEntity<>(beerRecommendService.recommend(userPrincipal.getOauthId()), HttpStatus.OK);
+
     }
 
     @Override

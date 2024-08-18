@@ -166,7 +166,7 @@ public class MemberService {
                 .exitedAt(currentMember.getUsernameUpdatedAt())
                 .build();
     }
-
+  
     private boolean canUpdateUsername(Member member) {
         return member.getUsernameUpdatedAt().isBefore(OffsetDateTime.now().minus(Duration.ofDays(30)));
     }

@@ -6,5 +6,4 @@ import java.util.Map;
 public interface BeerRecommendRepository {
 
     List<Long> getRecommendBeer(Map<Long, Long> elements, String oauthId);
-
 }

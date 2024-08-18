@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -170,6 +171,20 @@ public class BeerControllerTest {
                                 .with(user(OAuthUserPrincipal.of(member)))
                         )
                         .andExpect(status().isNotFound());
+            }
+        }
+
+        @Nested
+        class BeerCategoryTest {
+            @Test
+            public void success() throws Exception {
+                Mockito.when(categoryService.getCategories(LanguageType.KR))
+                        .thenReturn(new ArrayList<>());
+
+                mockMvc.perform(get("/api/v1/beers/category")
+                                .param("language", String.valueOf(LanguageType.KR))
+                        )
+                        .andExpect(status().isOk());
             }
         }
     }

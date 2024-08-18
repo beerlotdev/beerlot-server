@@ -20,6 +20,7 @@ import com.beerlot.domain.review.dto.response.ReviewArchiveResponse;
 import com.beerlot.domain.review.service.ReviewLikeService;
 import com.beerlot.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

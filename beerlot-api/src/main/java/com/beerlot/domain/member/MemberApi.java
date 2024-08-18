@@ -126,7 +126,7 @@ public interface MemberApi {
     ResponseEntity<List<Long>> getAllLikedReviews (
             @Parameter(hidden = true) @CurrentUser OAuthUserPrincipal userPrincipal
     );
-
+  
     @Operation(description = "Check for duplicate usernames")
     @ApiResponses(
             value = {
