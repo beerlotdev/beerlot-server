@@ -65,27 +65,27 @@ public class SecurityConfig {
                 .authorizeRequests()
                     .antMatchers("swagger/**","/swagger-ui/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/configuration/**","/v3/api-docs/**", "/docs").permitAll()
 
-                    // ===== Permit All ===== //
-                    .antMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/v1/breweries/**").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/v1/members/status").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/v1/members/check-username").permitAll()
-
                     // ===== Permit Role Guest ===== //
                     .antMatchers(HttpMethod.PATCH, "/api/v1/auth/signup").hasRole("GUEST")
                     .antMatchers("/api/v1/files/profile").hasRole("GUEST")
 
-
                     // ===== Permit Role Member ===== //
                     .antMatchers( "/api/v1/beers/**/likes").hasRole("MEMBER")
                     .antMatchers( "/api/v1/beers/recommend").hasRole("MEMBER")
+                    .antMatchers("/api/v1/beers/**/reviews/me").hasRole("MEMBER")
                     .antMatchers("/api/v1/reviews/**/likes").hasRole("MEMBER")
                     .antMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasRole("MEMBER")
                     .antMatchers(HttpMethod.PATCH, "/api/v1/reviews/**").hasRole("MEMBER")
                     .antMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasRole("MEMBER")
                     .antMatchers("/api/v1/members/**").hasRole("MEMBER")
                     .antMatchers("/api/v1/files/**").hasRole("MEMBER")
+
+                    // ===== Permit All ===== //
+                    .antMatchers(HttpMethod.GET, "/api/v1/policies/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/beers/**", "/api/v1/reviews/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/breweries/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/members/status").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/members/check-username").permitAll()
 
                     .anyRequest().authenticated();
 
