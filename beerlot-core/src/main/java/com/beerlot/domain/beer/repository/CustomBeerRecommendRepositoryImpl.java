@@ -27,12 +27,12 @@ public class CustomBeerRecommendRepositoryImpl implements BeerRecommendRepositor
             result.addAll(getQuery(element, oauthId));
         }
 
-        if (result.size() != 10) {
+        if (result.size() < 10) {
             List<Long> famousBeerDesc = getFamousBeerDesc(10 - result.size(), result);
             result.addAll(famousBeerDesc);
         }
 
-        return result;
+        return result.subList(0, 10);
     }
 
     private List<Long> getQuery(Map.Entry<Long, Long> element, String oauthId) {
