@@ -1,7 +1,6 @@
 package com.beerlot.domain.review.repository;
 
 import com.beerlot.domain.beer.QBeer;
-import com.beerlot.domain.beer.QBeerInternational;
 import com.beerlot.domain.common.entity.LanguageType;
 import com.beerlot.domain.common.page.PageCustom;
 import com.beerlot.domain.common.page.PageCustomImpl;
@@ -16,7 +15,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,8 +40,9 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                             review.content,
                             review.imageUrl,
                             review.rate,
-                            review.updatedAt,
                             review.likeCount,
+                            review.updatedAt,
+                            review.buyFrom,
                             Projections.fields(MemberResponse.class,
                                     member.id,
                                     member.username,
@@ -169,15 +168,19 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .innerJoin(review.beer, beer)
                 .innerJoin(review.beer.beerInternationals, beerInternational)
                 .where(
+                        matchReviewId(reviewId),
                         matchLanguage(language)
                 );
 
-        System.out.println("query.fetch.size: " + query.fetch().size());
         return query.fetchFirst();
     }
-
+  
     private BooleanExpression matchLanguage(LanguageType language) {
         return beerInternational.id.language.stringValue().eq(language.toString());
+    }
+
+    private BooleanExpression matchReviewId(Long reviewId) {
+        return review.id.eq(reviewId);
     }
 
     private BooleanExpression matchOauthId(String oauthId) {
