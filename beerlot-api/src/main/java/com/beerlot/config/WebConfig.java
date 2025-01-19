@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://beerlot.info", "https://beerlot-core-api-lopbi5pmwq-du.a.run.app")
+                .allowedOrigins("https://beerlot.site", "https://beerlot-core-api-lopbi5pmwq-du.a.run.app")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true)
